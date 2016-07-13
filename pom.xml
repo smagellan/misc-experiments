@@ -15,7 +15,7 @@
         <maven.compiler.target>1.8</maven.compiler.target>
 
         <slf4j.version>1.7.21</slf4j.version>
-        <log4j.version>2.6.1</log4j.version>
+        <log4j.version>2.6.2</log4j.version>
         <netty.version>4.1.2.Final</netty.version>
     </properties>
 
@@ -54,12 +54,6 @@
 
         <dependency>
             <groupId>io.netty</groupId>
-            <artifactId>netty-codec-memcache</artifactId>
-            <version>${netty.version}</version>
-        </dependency>
-
-        <dependency>
-            <groupId>io.netty</groupId>
             <artifactId>netty-common</artifactId>
             <version>${netty.version}</version>
         </dependency>
@@ -88,7 +82,57 @@
             <artifactId>javassist</artifactId>
             <version>3.20.0-GA</version>
         </dependency>
+
+        <dependency>
+            <groupId>biz.paluch.redis</groupId>
+            <artifactId>lettuce</artifactId>
+            <version>4.2.1.Final</version>
+        </dependency>
+
+        <dependency>
+            <groupId>org.apache.commons</groupId>
+            <artifactId>commons-pool2</artifactId>
+            <version>2.4.2</version>
+        </dependency>
+
+        <dependency>
+            <groupId>redis.clients</groupId>
+            <artifactId>jedis</artifactId>
+            <version>2.8.1</version>
+        </dependency>
+
+        <dependency>
+            <groupId>com.google.guava</groupId>
+            <artifactId>guava</artifactId>
+            <version>19.0</version>
+        </dependency>
+
+        <dependency>
+            <groupId>it.unimi.dsi</groupId>
+            <artifactId>fastutil</artifactId>
+            <version>7.0.12</version>
+        </dependency>
+
+        <!-- https://mvnrepository.com/artifact/it.unimi.dsi/dsiutils -->
+        <dependency>
+            <groupId>it.unimi.dsi</groupId>
+            <artifactId>dsiutils</artifactId>
+            <version>2.3.3</version>
+
+            <exclusions>
+                <exclusion>
+                    <groupId>ch.qos.logback</groupId>
+                    <artifactId>logback-classic</artifactId>
+                </exclusion>
+            </exclusions>
+
+        </dependency>
+
+        <!-- https://mvnrepository.com/artifact/org.apache.directory.mavibot/mavibot -->
+        <dependency>
+            <groupId>org.apache.directory.mavibot</groupId>
+            <artifactId>mavibot</artifactId>
+            <version>1.0.0-M8</version>
+        </dependency>
     </dependencies>
-
-
 </project>
