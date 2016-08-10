@@ -1,7 +1,5 @@
 import org.slf4j.LoggerFactory;
-import redis.clients.jedis.Jedis;
-import redis.clients.jedis.JedisPool;
-import redis.clients.jedis.JedisPoolConfig;
+import redis.clients.jedis.*;
 
 import java.io.IOException;
 import java.nio.charset.StandardCharsets;
@@ -22,6 +20,7 @@ public class JedisBuilder implements RedisTestBuilder {
         JedisPoolConfig conf = new JedisPoolConfig();
         conf.setMaxTotal(maxThreads * 8);
         pool = new JedisPool(conf, "localhost");
+        JedisCluster cl = new JedisCluster(HostAndPort.parseString(""));
     }
 
     public JedisRunnable build() {

@@ -3,5 +3,5 @@
  */
 public class ConfigData {
     public static final int NUM_THREADS = 16;
-    public static final int ITEMS_PER_THREAD = 100_000;
+    public static final int ITEMS_PER_THREAD = 10;
 }

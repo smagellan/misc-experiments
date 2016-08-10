@@ -22,12 +22,12 @@ public class TestRunner {
         List<String> keyCache = keysCache(1000);
         LOGGER.info("running lettuce");
         try (LettuceBuilder bldr1 = new LettuceBuilder(keyCache)) {
-            //runTests(bldr1);
+            runTests(bldr1);
         }
         LOGGER.info("running jedis");
         List<byte[]> keysCache2 = keysCache2(1000);
         try (JedisBuilder bldr2   = new JedisBuilder(keyCache, keysCache2,  ConfigData.NUM_THREADS)) {
-            runTests(bldr2);
+            //runTests(bldr2);
         }
     }
 
