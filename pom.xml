@@ -4,8 +4,8 @@
          xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/xsd/maven-4.0.0.xsd">
     <modelVersion>4.0.0</modelVersion>
 
-    <groupId>misc-tests</groupId>
-    <artifactId>test</artifactId>
+    <groupId>misc-experiments</groupId>
+    <artifactId>experiments</artifactId>
     <version>1.0-SNAPSHOT</version>
 
     <properties>
@@ -15,8 +15,8 @@
         <maven.compiler.target>1.8</maven.compiler.target>
 
         <slf4j.version>1.7.21</slf4j.version>
-        <log4j.version>2.6.1</log4j.version>
-        <netty.version>4.1.2.Final</netty.version>
+        <log4j.version>2.6.2</log4j.version>
+        <netty.version>4.1.4.Final</netty.version>
     </properties>
 
 
