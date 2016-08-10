@@ -1,3 +1,5 @@
+package redis;
+
 import java.io.Closeable;
 
 /**

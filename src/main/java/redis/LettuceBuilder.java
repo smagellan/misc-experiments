@@ -1,3 +1,5 @@
+package redis;
+
 import com.lambdaworks.redis.RedisClient;
 import com.lambdaworks.redis.RedisURI;
 import com.lambdaworks.redis.api.sync.RedisCommands;

@@ -5,7 +5,7 @@ import org.apache.commons.collections4.trie.KeyAnalyzer;
 /**
  * Created by vladimir on 7/29/16.
  */
-public class ByteKeyAnalyzer extends KeyAnalyzer<UInt128> {
+public class ByteKeyAnalyzer extends KeyAnalyzer<UInt128V0> {
     private static final byte[] masks = createByteMasks();
 
     public static byte[] createByteMasks() {
@@ -22,12 +22,12 @@ public class ByteKeyAnalyzer extends KeyAnalyzer<UInt128> {
     }
 
     @Override
-    public int lengthInBits(UInt128 key) {
+    public int lengthInBits(UInt128V0 key) {
         return key.getUsedBits();
     }
 
     @Override
-    public boolean isBitSet(UInt128 key, int bitIndex, int lengthInBits) {
+    public boolean isBitSet(UInt128V0 key, int bitIndex, int lengthInBits) {
         boolean result;
         if (key == null || bitIndex >= lengthInBits) {
             result = false;
@@ -36,18 +36,18 @@ public class ByteKeyAnalyzer extends KeyAnalyzer<UInt128> {
             byte bValue = 0;
             byte mask   = (byte)(1 << (bitIndex % Byte.SIZE));
             result      = (bValue & mask) != 0;
-            throw new IllegalStateException("not implemented");
+            throw new RuntimeException("not implemented");
         }
         return result;
     }
 
     @Override
-    public int bitIndex(UInt128 key, int offsetInBits, int lengthInBits, UInt128 other, int otherOffsetInBits, int otherLengthInBits) {
+    public int bitIndex(UInt128V0 key, int offsetInBits, int lengthInBits, UInt128V0 other, int otherOffsetInBits, int otherLengthInBits) {
         return 0;
     }
 
     @Override
-    public boolean isPrefix(UInt128 prefix, int offsetInBits, int lengthInBits, UInt128 key) {
+    public boolean isPrefix(UInt128V0 prefix, int offsetInBits, int lengthInBits, UInt128V0 key) {
         return false;
     }
 }
