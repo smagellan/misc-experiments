@@ -13,13 +13,22 @@ import com.google.common.jimfs.Jimfs;
 
 public class JimFsTest {
     public static void main(String[] args) throws IOException{
-        FileSystem fs = Jimfs.newFileSystem(Configuration.unix().toBuilder().setMaxSize(1024 * 8 * 100).build());
+        FileSystem fs = Jimfs.newFileSystem(
+                Configuration
+                .unix()
+                .toBuilder()
+                .setMaxSize(1024 * 4 * 4)
+                .setBlockSize(1024 * 4)
+                .build());
         traceFs(fs);
         Path foo = fs.getPath("/foo");
         Files.createDirectory(foo);
-
+        traceFs(fs);
         Path hello = foo.resolve("hello.txt"); // /foo/hello.txt
         Files.write(hello, ImmutableList.of("hello world"), StandardCharsets.UTF_8);
+        traceFs(fs);
+        Path hello2 = foo.resolve("hello2.txt"); // /foo/hello2.txt
+        Files.write(hello2, ImmutableList.of("hello world2"), StandardCharsets.UTF_8);
         traceFs(fs);
     }
 
