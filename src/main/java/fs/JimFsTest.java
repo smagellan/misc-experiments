@@ -13,26 +13,30 @@ import com.google.common.jimfs.Jimfs;
 
 public class JimFsTest {
     public static void main(String[] args) throws IOException{
+        final int kb = 1024;
+        final long maxSize = 16 * kb;
         FileSystem fs = Jimfs.newFileSystem(
                 Configuration
                 .unix()
                 .toBuilder()
-                .setMaxSize(1024 * 4 * 4)
-                .setBlockSize(1024 * 4)
+                .setMaxSize(maxSize)
+                .setBlockSize(4 * kb)
                 .build());
-        traceFs(fs);
+        System.err.print("maxSize: " + maxSize + "\n");
+        traceFs("initial", fs);
         Path foo = fs.getPath("/foo");
         Files.createDirectory(foo);
-        traceFs(fs);
+        traceFs("dir creation", fs);
         Path hello = foo.resolve("hello.txt"); // /foo/hello.txt
         Files.write(hello, ImmutableList.of("hello world"), StandardCharsets.UTF_8);
-        traceFs(fs);
+        traceFs("file1 creation", fs);
         Path hello2 = foo.resolve("hello2.txt"); // /foo/hello2.txt
         Files.write(hello2, ImmutableList.of("hello world2"), StandardCharsets.UTF_8);
-        traceFs(fs);
+        traceFs("file2 creation", fs);
     }
 
-    public static void traceFs(FileSystem fs) throws IOException {
+    public static void traceFs(String descr, FileSystem fs) throws IOException {
+        System.err.println("fs trace for " + descr);
         System.err.print("filestores:");
         for (FileStore store : fs.getFileStores()){
             System.err.println(store + "; unallocated: " + store.getUnallocatedSpace() + "; usable: " + store.getUsableSpace());
