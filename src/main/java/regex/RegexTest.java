@@ -22,12 +22,13 @@ public class RegexTest {
     @Benchmark
     public void splitTest(Blackhole bh) throws Exception {
         String s = StringUtils.repeat(" ", 100_000);
+        String s2 = s;//s + "," + s;
         Pattern regex = Pattern.compile("\\s*,\\s*");
-        String tokens[] = regex.split(s);
+        String tokens[] = regex.split(s2);
         bh.consume(tokens);
     }
 
-    @Benchmark
+    //@Benchmark
     public void matchTest(Blackhole bh) throws Exception {
         String s = StringUtils.repeat(" ", 100_000);
         Pattern regex = Pattern.compile("\\s*,\\s*");
