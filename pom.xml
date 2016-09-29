@@ -9,15 +9,34 @@
     <version>1.0-SNAPSHOT</version>
 
     <properties>
-        <jmh.version>1.14</jmh.version>
+        <jmh.version>1.14.1</jmh.version>
         <project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
         <maven.compiler.source>1.8</maven.compiler.source>
         <maven.compiler.target>1.8</maven.compiler.target>
+        <mysql.version>5.1.39</mysql.version>
+        <jooq.version>3.8.4</jooq.version>
+        <jdbc.driver>com.mysql.jdbc.Driver</jdbc.driver>
+        <org.springframework.version>4.3.3.RELEASE</org.springframework.version>
 
         <slf4j.version>1.7.21</slf4j.version>
         <log4j.version>2.6.2</log4j.version>
         <netty.version>4.1.5.Final</netty.version>
     </properties>
+
+    <profiles>
+        <profile>
+            <id>sample-profile</id>
+            <activation>
+                <activeByDefault>true</activeByDefault>
+            </activation>
+            <properties>
+                <jdbc.user>testuser</jdbc.user>
+                <jdbc.password>dbsecret</jdbc.password>
+                <jdbc.url>jdbc:mysql://localhost:3306/experimentsdb</jdbc.url>
+                <jdbc.database.name>experimentsdb</jdbc.database.name>
+            </properties>
+        </profile>
+    </profiles>
 
 
     <dependencies>
@@ -156,7 +175,7 @@
         <dependency>
             <groupId>net.bytebuddy</groupId>
             <artifactId>byte-buddy</artifactId>
-            <version>1.4.22</version>
+            <version>1.4.27</version>
         </dependency>
 
         <!-- TODO: inspect Patricia -->
@@ -194,7 +213,199 @@
         <dependency>
             <groupId>com.fasterxml.jackson.core</groupId>
             <artifactId>jackson-databind</artifactId>
-            <version>2.8.2</version>
+            <version>2.8.3</version>
+        </dependency>
+
+        <dependency>
+            <groupId>org.jooq</groupId>
+            <artifactId>jooq</artifactId>
+            <version>3.8.4</version>
+        </dependency>
+        <dependency>
+            <groupId>org.jooq</groupId>
+            <artifactId>jooq-meta</artifactId>
+            <version>3.8.4</version>
+        </dependency>
+        <dependency>
+            <groupId>org.jooq</groupId>
+            <artifactId>jooq-codegen</artifactId>
+            <version>3.8.4</version>
+        </dependency>
+
+        <!--
+            Core utilities used by other modules.
+            Define this if you use Spring Utility APIs (org.springframework.core.*/org.springframework.util.*)
+        -->
+        <dependency>
+            <groupId>org.springframework</groupId>
+            <artifactId>spring-core</artifactId>
+            <version>${org.springframework.version}</version>
+            <exclusions>
+                <exclusion>
+                    <groupId>commons-logging</groupId>
+                    <artifactId>commons-logging</artifactId>
+                </exclusion>
+            </exclusions>
+        </dependency>
+
+        <!--
+            Expression Language (depends on spring-core)
+            Define this if you use Spring Expression APIs (org.springframework.expression.*)
+        -->
+        <dependency>
+            <groupId>org.springframework</groupId>
+            <artifactId>spring-expression</artifactId>
+            <version>${org.springframework.version}</version>
+        </dependency>
+
+        <!--
+            Bean Factory and JavaBeans utilities (depends on spring-core)
+            Define this if you use Spring Bean APIs (org.springframework.beans.*)
+        -->
+        <dependency>
+            <groupId>org.springframework</groupId>
+            <artifactId>spring-beans</artifactId>
+            <version>${org.springframework.version}</version>
+        </dependency>
+
+        <!--
+            Application Context (depends on spring-core, spring-expression, spring-aop, spring-beans)
+            This is the central artifact for Spring's Dependency Injection Container and is generally always defined
+        -->
+        <dependency>
+            <groupId>org.springframework</groupId>
+            <artifactId>spring-context</artifactId>
+            <version>${org.springframework.version}</version>
+        </dependency>
+
+        <!--
+            Various Application Context utilities, including EhCache, JavaMail, Quartz, and Freemarker integration
+            Define this if you need any of these integrations
+        -->
+        <dependency>
+            <groupId>org.springframework</groupId>
+            <artifactId>spring-context-support</artifactId>
+            <version>${org.springframework.version}</version>
+        </dependency>
+
+        <!--
+            JDBC Data Access Library (depends on spring-core, spring-beans, spring-context, spring-tx)
+            Define this if you use Spring's JdbcTemplate API (org.springframework.jdbc.*)
+        -->
+        <dependency>
+            <groupId>org.springframework</groupId>
+            <artifactId>spring-jdbc</artifactId>
+            <version>${org.springframework.version}</version>
+        </dependency>
+
+        <dependency>
+            <groupId>mysql</groupId>
+            <artifactId>mysql-connector-java</artifactId>
+            <version>${mysql.version}</version>
         </dependency>
     </dependencies>
+
+    <build>
+        <plugins>
+            <plugin>
+                <groupId>org.jooq</groupId>
+                <artifactId>jooq-codegen-maven</artifactId>
+                <version>${jooq.version}</version>
+                <executions>
+                    <execution>
+                        <goals>
+                            <goal>generate</goal>
+                        </goals>
+                    </execution>
+                </executions>
+                <dependencies>
+                    <dependency>
+                        <groupId>mysql</groupId>
+                        <artifactId>mysql-connector-java</artifactId>
+                        <version>${mysql.version}</version>
+                    </dependency>
+                </dependencies>
+                <configuration>
+                    <jdbc>
+                        <driver>${jdbc.driver}</driver>
+                        <url>${jdbc.url}</url>
+                        <user>${jdbc.user}</user>
+                        <password>${jdbc.password}</password>
+                    </jdbc>
+                    <generator>
+                        <name>org.jooq.util.DefaultGenerator</name>
+                        <database>
+                            <name>org.jooq.util.mysql.MySQLDatabase</name>
+                            <includes>.*</includes>
+                            <excludes></excludes>
+                            <inputSchema>${jdbc.database.name}</inputSchema>
+                        </database>
+                        <generate>
+                            <deprecated>false</deprecated>
+                        </generate>
+                        <target>
+                            <packageName>generated.jooq</packageName>
+                            <directory>src/generated-sources/jooq</directory>
+                        </target>
+                    </generator>
+                </configuration>
+            </plugin>
+            <plugin>
+                <groupId>org.codehaus.mojo</groupId>
+                <artifactId>build-helper-maven-plugin</artifactId>
+                <version>1.8</version>
+                <executions>
+                    <execution>
+                        <id>add-source</id>
+                        <phase>generate-sources</phase>
+                        <goals>
+                            <goal>add-source</goal>
+                        </goals>
+                        <configuration>
+                            <sources>
+                                <source>src/generated-sources/jooq</source>
+                            </sources>
+                        </configuration>
+                    </execution>
+                </executions>
+            </plugin>
+            <plugin>
+                <groupId>org.codehaus.mojo</groupId>
+                <artifactId>exec-maven-plugin</artifactId>
+                <version>1.3.1</version>
+                <executions>
+                    <execution>
+                        <goals>
+                            <goal>exec</goal>
+                        </goals>
+                    </execution>
+                </executions>
+                <configuration>
+                    <systemProperties>
+                        <systemProperty>
+                            <key>jdbc.driver</key>
+                            <value>${jdbc.driver}</value>
+                        </systemProperty>
+                        <systemProperty>
+                            <key>jdbc.user</key>
+                            <value>${jdbc.user}</value>
+                        </systemProperty>
+                        <systemProperty>
+                            <key>jdbc.password</key>
+                            <value>${jdbc.password}</value>
+                        </systemProperty>
+                        <systemProperty>
+                            <key>jdbc.url</key>
+                            <value>${jdbc.url}</value>
+                        </systemProperty>
+                        <systemProperty>
+                            <key>jdbc.database.name</key>
+                            <value>${jdbc.database.name}</value>
+                        </systemProperty>
+                    </systemProperties>
+                </configuration>
+            </plugin>
+        </plugins>
+    </build>
+
 </project>

@@ -1,0 +1,50 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<beans xmlns="http://www.springframework.org/schema/beans"
+       xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+       xsi:schemaLocation="http://www.springframework.org/schema/beans http://www.springframework.org/schema/beans/spring-beans.xsd">
+    <bean id="dataSource" class="org.springframework.jdbc.datasource.DriverManagerDataSource">
+        <!-- property name="driverClassName" value="${jdbc.driverClassName}"/ -->
+        <property name="url" value="${jdbc.url}"/>
+        <property name="username" value="${jdbc.username}"/>
+        <property name="password" value="${jdbc.password}"/>
+    </bean>
+
+    <bean class="org.springframework.beans.factory.config.PropertyPlaceholderConfigurer">
+        <property name="location" value="classpath:db.properties"/>
+    </bean>
+
+    <bean id="transactionManager" class="org.springframework.jdbc.datasource.DataSourceTransactionManager">
+        <property name="dataSource" ref="dataSource" />
+    </bean>
+
+    <!-- Configure jOOQ's ConnectionProvider to use Spring's TransactionAwareDataSourceProxy,
+         which can dynamically discover the transaction context -->
+    <bean id="transactionAwareDataSource" class="org.springframework.jdbc.datasource.TransactionAwareDataSourceProxy">
+        <constructor-arg ref="dataSource" />
+    </bean>
+
+
+    <bean class="org.jooq.impl.DataSourceConnectionProvider" name="connectionProvider">
+        <constructor-arg ref="transactionAwareDataSource" />
+    </bean>
+
+    <!-- Configure the DSL object, optionally overriding jOOQ Exceptions with Spring Exceptions -->
+    <bean id="dsl" class="org.jooq.impl.DefaultDSLContext">
+        <constructor-arg ref="config" />
+    </bean>
+
+    <!-- Invoking an internal, package-private constructor for the example
+         Implement your own Configuration for more reliable behaviour -->
+    <bean class="org.jooq.impl.DefaultConfiguration" name="config">
+        <property name="SQLDialect"><value type="org.jooq.SQLDialect">MYSQL</value></property>
+        <property name="connectionProvider" ref="connectionProvider" />
+        <!-- property name="transactionProvider" ref="transactionProvider" />
+        <property name="executeListenerProvider">
+            <array>
+                <bean class="org.jooq.impl.DefaultExecuteListenerProvider">
+                    <constructor-arg index="0" ref="exceptionTranslator"/>
+                </bean>
+            </array>
+        </property -->
+    </bean>
+</beans>
