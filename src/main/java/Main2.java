@@ -11,7 +11,7 @@ import java.io.IOException;
  */
 public class Main2 {
     public static void main(String[] args) throws IOException {
-        InMemoryBTreeConfiguration<Integer, String> conf = new InMemoryBTreeConfiguration();
+        InMemoryBTreeConfiguration<Integer, String> conf = new InMemoryBTreeConfiguration<>();
         conf.setName("ff");
         conf.setKeySerializer(IntSerializer.INSTANCE );
         conf.setValueSerializer(StringSerializer.INSTANCE );

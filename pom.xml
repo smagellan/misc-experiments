@@ -9,7 +9,7 @@
     <version>1.0-SNAPSHOT</version>
 
     <properties>
-        <jmh.version>1.14.1</jmh.version>
+        <jmh.version>1.15</jmh.version>
         <project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
         <maven.compiler.source>1.8</maven.compiler.source>
         <maven.compiler.target>1.8</maven.compiler.target>
@@ -19,7 +19,7 @@
         <org.springframework.version>4.3.3.RELEASE</org.springframework.version>
 
         <slf4j.version>1.7.21</slf4j.version>
-        <log4j.version>2.6.2</log4j.version>
+        <log4j.version>2.7</log4j.version>
         <netty.version>4.1.5.Final</netty.version>
     </properties>
 
@@ -99,7 +99,7 @@
         <dependency>
             <groupId>org.javassist</groupId>
             <artifactId>javassist</artifactId>
-            <version>3.20.0-GA</version>
+            <version>3.21.0-GA</version>
         </dependency>
 
         <dependency>
@@ -175,7 +175,7 @@
         <dependency>
             <groupId>net.bytebuddy</groupId>
             <artifactId>byte-buddy</artifactId>
-            <version>1.4.27</version>
+            <version>1.4.31</version>
         </dependency>
 
         <!-- TODO: inspect Patricia -->
