@@ -17,16 +17,16 @@ import java.util.stream.IntStream;
  * Created by vladimir on 7/9/16.
  */
 public class TestRunner {
-    private static final org.slf4j.Logger LOGGER = LoggerFactory.getLogger(TestRunner.class);
+    private static final org.slf4j.Logger logger = LoggerFactory.getLogger(TestRunner.class);
 
 
     public static void main(String[] args) throws IOException, InterruptedException{
         List<String> keyCache = keysCache(1000);
-        LOGGER.info("running lettuce");
+        logger.info("running lettuce");
         try (LettuceBuilder bldr1 = new LettuceBuilder(keyCache)) {
             runTests(bldr1);
         }
-        LOGGER.info("running jedis");
+        logger.info("running jedis");
         List<byte[]> keysCache2 = keysCache2(1000);
         try (JedisBuilder bldr2   = new JedisBuilder(keyCache, keysCache2,  ConfigData.NUM_THREADS)) {
             //runTests(bldr2);
@@ -38,7 +38,7 @@ public class TestRunner {
         for (int i = 0; i < ConfigData.NUM_THREADS; ++i) {
             executor.submit(new TestRunnable(bldr.build()));
         }
-        LOGGER.info("sent {} runnables", ConfigData.NUM_THREADS);
+        logger.info("sent {} runnables", ConfigData.NUM_THREADS);
         executor.shutdown();
         executor.awaitTermination(1000, TimeUnit.DAYS);
     }
