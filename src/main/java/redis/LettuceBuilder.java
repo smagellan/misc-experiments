@@ -24,7 +24,7 @@ public class LettuceBuilder implements RedisTestBuilder{
     }
 
     public LettuceRunnable build() {
-        RedisCommands connection = client.connect().sync();
+        RedisCommands<String, String> connection = client.connect().sync();
         return new LettuceRunnable(connection, keyCache);
     }
 
@@ -34,7 +34,7 @@ public class LettuceBuilder implements RedisTestBuilder{
 }
 
 class LettuceRunnable implements RedisRunnable {
-    private static final org.slf4j.Logger LOGGER = LoggerFactory.getLogger(LettuceRunnable.class);
+    private static final org.slf4j.Logger logger = LoggerFactory.getLogger(LettuceRunnable.class);
     private final RedisCommands<String, String> connection;
     private final List<String> keyCache;
 
