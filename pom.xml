@@ -20,7 +20,7 @@
 
         <slf4j.version>1.7.21</slf4j.version>
         <log4j.version>2.7</log4j.version>
-        <netty.version>4.1.5.Final</netty.version>
+        <netty.version>4.1.6.Final</netty.version>
     </properties>
 
     <profiles>
@@ -194,7 +194,7 @@
         <dependency>
             <groupId>org.apache.commons</groupId>
             <artifactId>commons-lang3</artifactId>
-            <version>3.4</version>
+            <version>3.5</version>
         </dependency>
 
         <dependency>
@@ -225,17 +225,17 @@
         <dependency>
             <groupId>org.jooq</groupId>
             <artifactId>jooq</artifactId>
-            <version>3.8.4</version>
+            <version>${jooq.version}</version>
         </dependency>
         <dependency>
             <groupId>org.jooq</groupId>
             <artifactId>jooq-meta</artifactId>
-            <version>3.8.4</version>
+            <version>${jooq.version}</version>
         </dependency>
         <dependency>
             <groupId>org.jooq</groupId>
             <artifactId>jooq-codegen</artifactId>
-            <version>3.8.4</version>
+            <version>${jooq.version}</version>
         </dependency>
 
         <!--
