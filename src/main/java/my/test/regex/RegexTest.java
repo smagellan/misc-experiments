@@ -1,4 +1,4 @@
-package regex;
+package my.test.regex;
 
 import org.apache.commons.lang3.StringUtils;
 import java.util.regex.Pattern;

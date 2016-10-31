@@ -1,3 +1,5 @@
+package my.test;
+
 import java.io.Serializable;
 import java.lang.reflect.InvocationHandler;
 import java.lang.reflect.Method;

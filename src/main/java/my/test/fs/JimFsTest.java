@@ -1,4 +1,4 @@
-package fs;
+package my.test.fs;
 import java.io.IOException;
 import java.nio.charset.StandardCharsets;
 import java.nio.file.FileStore;
@@ -36,7 +36,7 @@ public class JimFsTest {
     }
 
     public static void traceFs(String descr, FileSystem fs) throws IOException {
-        System.err.println("fs trace for " + descr);
+        System.err.println("my.test.fs trace for " + descr);
         System.err.print("filestores:");
         for (FileStore store : fs.getFileStores()){
             System.err.println(store + "; unallocated: " + store.getUnallocatedSpace() + "; usable: " + store.getUsableSpace());

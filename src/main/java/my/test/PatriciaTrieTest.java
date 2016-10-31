@@ -1,3 +1,5 @@
+package my.test;
+
 import org.apache.commons.collections4.trie.PatriciaTrie;
 import org.apache.commons.collections4.trie.analyzer.StringKeyAnalyzer;
 

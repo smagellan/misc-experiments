@@ -1,3 +1,5 @@
+package my.test;
+
 import java.util.Objects;
 
 /**

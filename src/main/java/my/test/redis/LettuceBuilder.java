@@ -1,4 +1,4 @@
-package redis;
+package my.test.redis;
 
 import com.lambdaworks.redis.RedisClient;
 import com.lambdaworks.redis.RedisURI;

@@ -1,9 +1,8 @@
+package my.test;
+
 import net.bytebuddy.ByteBuddy;
 import net.bytebuddy.implementation.FixedValue;
 import net.bytebuddy.matcher.ElementMatchers;
-
-import java.lang.reflect.InvocationTargetException;
-import java.util.Collections;
 
 /**
  * Created by vladimir on 7/22/16.

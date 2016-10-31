@@ -1,3 +1,5 @@
+package my.test;
+
 import org.apache.commons.collections4.trie.KeyAnalyzer;
 
 

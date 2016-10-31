@@ -1,4 +1,4 @@
-package redis;
+package my.test.redis;
 
 import java.io.Closeable;
 
