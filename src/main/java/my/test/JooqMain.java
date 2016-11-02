@@ -1,10 +1,10 @@
 package my.test;
 
-import java.net.URISyntaxException;
 import java.sql.Connection;
 import java.sql.DriverManager;
 import java.sql.ResultSet;
 import java.sql.SQLException;
+import java.sql.Statement;
 import java.sql.Timestamp;
 import java.time.Duration;
 import java.time.ZoneOffset;
@@ -38,11 +38,40 @@ public class JooqMain {
         //clickhouseJooqTest(context);
         //metedataGeneration();
         //metadataSelection(context);
-        System.err.println(Tables.COLUMNS.NAME.toString());
+        //System.err.println(Tables.COLUMNS.NAME.toString());
+        pgInsertTest(context);
 
         //DSLContext ctxt = context.getBean(DSLContext.class);
         //ZoneOffset offset = fetchMySqlTimezoneOffset(ctxt);
         //System.err.println(offset);
+    }
+
+    public static void pgSelectTest(ApplicationContext context) throws SQLException {
+        DataSource ds = context.getBean("dataSource", DataSource.class);
+        try (Connection conn = ds.getConnection()) {
+            try (Statement stmt = conn.createStatement()) {
+                try (ResultSet rs = stmt.executeQuery("SELECT c1, c2 FROM test_table")) {
+                    System.err.println(stmt.getUpdateCount());
+                    System.err.println(stmt.getUpdateCount());
+                }
+                System.err.println(stmt.getUpdateCount());
+            }
+        }
+    }
+
+    public static void pgInsertTest(ApplicationContext context) throws SQLException {
+        DataSource ds = context.getBean("dataSource", DataSource.class);
+        try (Connection conn = ds.getConnection()) {
+            try (Statement stmt = conn.createStatement()) {
+                stmt.executeUpdate("INSERT into test_table VALUES (1,2), (3,4)");
+                System.err.println(stmt.getUpdateCount());
+                System.err.println(stmt.getUpdateCount());
+                stmt.executeUpdate("DELETE FROM test_table WHERE c1=1");
+                System.err.println(stmt.getUpdateCount());
+                stmt.executeUpdate("DELETE FROM test_table WHERE c1=1");
+                System.err.println(stmt.getUpdateCount());
+            }
+        }
     }
 
     public static void metadataSelection(ApplicationContext ctxt) {
@@ -116,12 +145,6 @@ public class JooqMain {
         return ZoneOffset.ofHours(Ints.checkedCast(Duration.ofMillis(offset.longValue()).toHours()));
     }
 
-
-    /**
-     * @param ctxt используемый DSL
-     * @return текущий timestamp на сервере
-     * @see DSL#currentTimestamp()
-     */
     public static Timestamp fetchMySqlCurrentTimestamp(DSLContext ctxt) {
         Field<Timestamp> tsField = DSL.field("cur_time", Timestamp.class);
         return ctxt

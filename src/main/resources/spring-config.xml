@@ -15,7 +15,9 @@
     </bean>
 
     <bean id="dataSource" class="org.springframework.jdbc.datasource.DriverManagerDataSource">
-        <property name="url" value="jdbc:postgresql://localhost:5433/db?myprop=myval&amp;user=usr&amp;password=passwd"/>
+        <property name="url" value="jdbc:postgresql://localhost:5433/test_database"/>
+        <property name="username" value="${postgres.username}"/>
+        <property name="password" value="${postgres.password}"/>
     </bean>
 
     <bean class="org.springframework.beans.factory.config.PropertyPlaceholderConfigurer">
