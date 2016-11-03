@@ -1,24 +1,14 @@
-import java.sql.Timestamp;
-import java.time.Duration;
-import java.time.ZoneOffset;
-import java.util.Collection;
-import java.util.Iterator;
-
 import com.google.common.primitives.Ints;
 import org.jooq.DSLContext;
 import org.jooq.Field;
-import org.jooq.Insert;
-import org.jooq.InsertOnDuplicateSetMoreStep;
-import org.jooq.InsertOnDuplicateStep;
-import org.jooq.InsertValuesStepN;
-import org.jooq.Record;
-import org.jooq.Select;
-import org.jooq.Table;
 import org.jooq.impl.DSL;
 import org.jooq.types.DayToSecond;
-import org.jooq.util.mysql.MySQLDSL;
 import org.springframework.context.ApplicationContext;
 import org.springframework.context.support.ClassPathXmlApplicationContext;
+
+import java.sql.Timestamp;
+import java.time.Duration;
+import java.time.ZoneOffset;
 
 public class JooqMain {
     public static void main(String[] args) {
