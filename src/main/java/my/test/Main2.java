@@ -1,3 +1,5 @@
+package my.test;
+
 import org.apache.directory.mavibot.btree.BTree;
 import org.apache.directory.mavibot.btree.BTreeFactory;
 import org.apache.directory.mavibot.btree.InMemoryBTreeConfiguration;

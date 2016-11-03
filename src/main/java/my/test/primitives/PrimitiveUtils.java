@@ -1,4 +1,4 @@
-package primitives;
+package my.test.primitives;
 
 import java.nio.ByteBuffer;
 import java.util.StringJoiner;

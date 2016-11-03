@@ -1,3 +1,5 @@
+package my.test;
+
 import org.slf4j.LoggerFactory;
 import org.slf4j.MDC;
 import org.springframework.context.ApplicationContext;

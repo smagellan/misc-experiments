@@ -1,4 +1,4 @@
-package redis;
+package my.test.redis;
 
 import org.slf4j.LoggerFactory;
 import redis.clients.jedis.*;

@@ -15,7 +15,8 @@
         <maven.compiler.target>1.8</maven.compiler.target>
         <mysql.version>5.1.40</mysql.version>
         <jooq.version>3.8.5</jooq.version>
-        <jdbc.driver>com.mysql.jdbc.Driver</jdbc.driver>
+        <mysql.driver>com.mysql.jdbc.Driver</mysql.driver>
+        <clickhouse.driver>ru.yandex.clickhouse.ClickHouseDriver</clickhouse.driver>
         <org.springframework.version>4.3.3.RELEASE</org.springframework.version>
 
         <slf4j.version>1.7.21</slf4j.version>
@@ -30,10 +31,15 @@
                 <activeByDefault>true</activeByDefault>
             </activation>
             <properties>
-                <jdbc.user>testuser</jdbc.user>
-                <jdbc.password>dbsecret</jdbc.password>
-                <jdbc.url>jdbc:mysql://localhost:3306/experimentsdb</jdbc.url>
-                <jdbc.database.name>experimentsdb</jdbc.database.name>
+                <mysql.user>testuser</mysql.user>
+                <mysql.password>dbsecret</mysql.password>
+                <mysql.url>jdbc:mysql://localhost:3306/experimentsdb</mysql.url>
+                <mysql.database.name>experimentsdb</mysql.database.name>
+
+                <clickhouse.user></clickhouse.user>
+                <clickhouse.password></clickhouse.password>
+                <clickhouse.url>jdbc:clickhouse://localhost:8123/system</clickhouse.url>
+                <clickhouse.database.name>system</clickhouse.database.name>
             </properties>
         </profile>
     </profiles>
@@ -111,7 +117,7 @@
         <dependency>
             <groupId>biz.paluch.redis</groupId>
             <artifactId>lettuce</artifactId>
-            <version>4.2.2.Final</version>
+            <version>4.3.0.Final</version>
         </dependency>
 
         <dependency>
@@ -129,7 +135,7 @@
         <dependency>
             <groupId>com.google.guava</groupId>
             <artifactId>guava</artifactId>
-            <version>19.0</version>
+            <version>20.0</version>
         </dependency>
 
         <dependency>
@@ -181,7 +187,13 @@
         <dependency>
             <groupId>net.bytebuddy</groupId>
             <artifactId>byte-buddy</artifactId>
-            <version>1.5.0</version>
+            <version>1.5.2</version>
+        </dependency>
+
+        <dependency>
+            <groupId>com.zaxxer</groupId>
+            <artifactId>HikariCP</artifactId>
+            <version>2.5.1</version>
         </dependency>
 
         <!-- TODO: inspect Patricia -->
@@ -221,6 +233,13 @@
             <artifactId>jackson-databind</artifactId>
             <version>2.8.4</version>
         </dependency>
+
+        <dependency>
+            <groupId>com.fasterxml.jackson.core</groupId>
+            <artifactId>jackson-annotations</artifactId>
+            <version>2.8.4</version>
+        </dependency>
+
 
         <dependency>
             <groupId>org.jooq</groupId>
@@ -309,6 +328,25 @@
             <artifactId>mysql-connector-java</artifactId>
             <version>${mysql.version}</version>
         </dependency>
+
+        <dependency>
+            <groupId>ru.yandex.clickhouse</groupId>
+            <artifactId>clickhouse-jdbc</artifactId>
+            <!-- version>0.1.12</version -->
+            <version>0.1-SNAPSHOT</version>
+        </dependency>
+
+        <dependency>
+            <groupId>my.test.jooq.clickhouse</groupId>
+            <artifactId>jooq-clickhouse</artifactId>
+            <version>1.0-SNAPSHOT</version>
+        </dependency>
+
+        <dependency>
+            <groupId>org.postgresql</groupId>
+            <artifactId>postgresql</artifactId>
+            <version>9.4.1211</version>
+        </dependency>
     </dependencies>
 
     <build>
@@ -330,27 +368,32 @@
                         <artifactId>mysql-connector-java</artifactId>
                         <version>${mysql.version}</version>
                     </dependency>
+                    <dependency>
+                        <groupId>my.test.jooq.clickhouse</groupId>
+                        <artifactId>jooq-clickhouse</artifactId>
+                        <version>1.0-SNAPSHOT</version>
+                    </dependency>
                 </dependencies>
                 <configuration>
                     <jdbc>
-                        <driver>${jdbc.driver}</driver>
-                        <url>${jdbc.url}</url>
-                        <user>${jdbc.user}</user>
-                        <password>${jdbc.password}</password>
+                        <driver>${clickhouse.driver}</driver>
+                        <url>${clickhouse.url}</url>
+                        <user>${clickhouse.user}</user>
+                        <password>${clickhouse.password}</password>
                     </jdbc>
                     <generator>
                         <name>org.jooq.util.DefaultGenerator</name>
                         <database>
-                            <name>org.jooq.util.mysql.MySQLDatabase</name>
+                            <name>my.test.jooq.clickhouse.ClickhouseJooqDatabase</name>
                             <includes>.*</includes>
                             <excludes></excludes>
-                            <inputSchema>${jdbc.database.name}</inputSchema>
+                            <inputSchema>${clickhouse.database.name}</inputSchema>
                         </database>
                         <generate>
                             <deprecated>false</deprecated>
                         </generate>
                         <target>
-                            <packageName>generated.jooq</packageName>
+                            <packageName>my.test.generated.jooq</packageName>
                             <directory>src/generated-sources/jooq</directory>
                         </target>
                     </generator>
@@ -390,23 +433,23 @@
                     <systemProperties>
                         <systemProperty>
                             <key>jdbc.driver</key>
-                            <value>${jdbc.driver}</value>
+                            <value>${clickhouse.driver}</value>
                         </systemProperty>
                         <systemProperty>
                             <key>jdbc.user</key>
-                            <value>${jdbc.user}</value>
+                            <value>${clickhouse.user}</value>
                         </systemProperty>
                         <systemProperty>
                             <key>jdbc.password</key>
-                            <value>${jdbc.password}</value>
+                            <value>${clickhouse.password}</value>
                         </systemProperty>
                         <systemProperty>
                             <key>jdbc.url</key>
-                            <value>${jdbc.url}</value>
+                            <value>${clickhouse.url}</value>
                         </systemProperty>
                         <systemProperty>
                             <key>jdbc.database.name</key>
-                            <value>${jdbc.database.name}</value>
+                            <value>${clickhouse.database.name}</value>
                         </systemProperty>
                     </systemProperties>
                 </configuration>

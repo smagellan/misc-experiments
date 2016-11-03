@@ -1,3 +1,5 @@
+package my.test;
+
 import java.beans.IntrospectionException;
 import java.beans.PropertyDescriptor;
 import java.lang.reflect.Method;
@@ -45,7 +47,7 @@ public class TypeErasureTest {
             System.err.println("cls: " + cls);
         }
 
-        //classes = getActualTypeArguments("string", TypeErasureTest.class);
+        //classes = getActualTypeArguments("string", my.test.TypeErasureTest.class);
         //for (Class cls:classes) {
         //    System.err.println("cls: " + cls);
         //}
