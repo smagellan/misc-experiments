@@ -63,6 +63,7 @@ public class JooqMain {
         DataSource ds = context.getBean("dataSource", DataSource.class);
         try (Connection conn = ds.getConnection()) {
             try (Statement stmt = conn.createStatement()) {
+                System.err.println(stmt.getUpdateCount());
                 stmt.executeUpdate("INSERT into test_table VALUES (1,2), (3,4)");
                 System.err.println(stmt.getUpdateCount());
                 System.err.println(stmt.getUpdateCount());
@@ -70,6 +71,33 @@ public class JooqMain {
                 System.err.println(stmt.getUpdateCount());
                 stmt.executeUpdate("DELETE FROM test_table WHERE c1=1");
                 System.err.println(stmt.getUpdateCount());
+                System.err.println(stmt.getResultSet());
+                stmt.executeUpdate("INSERT into test_table VALUES (1,2), (3,4)");
+                System.err.println(stmt.getUpdateCount());
+                System.err.println(stmt.getResultSet());
+                stmt.executeQuery("select * from test_table");
+                System.err.println(stmt.getUpdateCount());
+                System.err.println(stmt.getResultSet());
+                try {
+                    stmt.executeQuery("d");
+                } catch (SQLException ex) {
+                    System.err.println("post-exception: ");
+                    System.err.println(stmt.getUpdateCount());
+                    System.err.println(stmt.getResultSet());
+                }
+
+                //ResultSet rs1 = stmt.executeQuery("select * from test_table");
+                //ResultSet rs2 = stmt.executeQuery("select * from test_table");
+                //rs1.next(); rs1.getObject(1);
+                //rs2.next(); rs2.getObject(1);
+            }
+            try (Statement stmt1 = conn.createStatement(); Statement stmt2 = conn.createStatement()) {
+                ResultSet rs1 = stmt1.executeQuery("select * from test_table order by c1 desc");
+                ResultSet rs2 = stmt2.executeQuery("select * from test_table order by c1 asc");
+                rs1.next();
+                System.err.println(rs1.getObject(1));
+                rs2.next();
+                System.err.println(rs2.getObject(1));
             }
         }
     }

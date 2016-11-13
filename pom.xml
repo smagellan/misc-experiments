@@ -8,20 +8,25 @@
     <artifactId>experiments</artifactId>
     <version>1.0-SNAPSHOT</version>
 
+    <prerequisites>
+        <maven>3.0</maven>
+    </prerequisites>
+
     <properties>
-        <jmh.version>1.15</jmh.version>
+        <jmh.version>1.16</jmh.version>
         <project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
         <maven.compiler.source>1.8</maven.compiler.source>
         <maven.compiler.target>1.8</maven.compiler.target>
         <mysql.version>5.1.40</mysql.version>
-        <jooq.version>3.8.5</jooq.version>
+        <jooq.version>3.8.6</jooq.version>
         <mysql.driver>com.mysql.jdbc.Driver</mysql.driver>
         <clickhouse.driver>ru.yandex.clickhouse.ClickHouseDriver</clickhouse.driver>
-        <org.springframework.version>4.3.3.RELEASE</org.springframework.version>
+        <org.springframework.version>4.3.4.RELEASE</org.springframework.version>
 
         <slf4j.version>1.7.21</slf4j.version>
         <log4j.version>2.7</log4j.version>
         <netty.version>4.1.6.Final</netty.version>
+        <quartz.version>2.2.3</quartz.version>
     </properties>
 
     <profiles>
@@ -187,7 +192,7 @@
         <dependency>
             <groupId>net.bytebuddy</groupId>
             <artifactId>byte-buddy</artifactId>
-            <version>1.5.2</version>
+            <version>1.5.4</version>
         </dependency>
 
         <dependency>
@@ -332,8 +337,8 @@
         <dependency>
             <groupId>ru.yandex.clickhouse</groupId>
             <artifactId>clickhouse-jdbc</artifactId>
-            <!-- version>0.1.12</version -->
-            <version>0.1-SNAPSHOT</version>
+            <version>0.1.13</version>
+            <!-- version>0.1-SNAPSHOT</version -->
         </dependency>
 
         <dependency>
@@ -345,7 +350,19 @@
         <dependency>
             <groupId>org.postgresql</groupId>
             <artifactId>postgresql</artifactId>
-            <version>9.4.1211</version>
+            <version>9.4.1212</version>
+        </dependency>
+
+        <dependency>
+            <groupId>org.quartz-scheduler</groupId>
+            <artifactId>quartz</artifactId>
+            <version>${quartz.version}</version>
+        </dependency>
+
+        <dependency>
+            <groupId>org.quartz-scheduler</groupId>
+            <artifactId>quartz-jobs</artifactId>
+            <version>${quartz.version}</version>
         </dependency>
     </dependencies>
 
