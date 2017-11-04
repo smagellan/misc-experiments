@@ -15,9 +15,15 @@
     </bean>
 
     <bean id="dataSource" class="org.springframework.jdbc.datasource.DriverManagerDataSource">
-        <property name="url" value="jdbc:postgresql://localhost:5433/test_database"/>
+        <property name="url" value="jdbc:postgresql://localhost:5432/test_database"/>
         <property name="username" value="${postgres.username}"/>
         <property name="password" value="${postgres.password}"/>
+    </bean>
+
+    <bean id="dataSource2" class="org.springframework.jdbc.datasource.DriverManagerDataSource">
+        <property name="url" value="jdbc:mysql://localhost:3306/experimentsdb?zeroDateTimeBehavior=convertToNull"/>
+        <property name="username" value="testuser"/>
+        <property name="password" value="testpass"/>
     </bean>
 
     <bean class="org.springframework.beans.factory.config.PropertyPlaceholderConfigurer">

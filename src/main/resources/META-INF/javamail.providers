@@ -1,0 +1,2 @@
+#protocol=file; type=store; class=my.test.mail.FileStore; vendor=Me;
+protocol=file; type=transport; class=my.test.mail.FileTransport; vendor=Me;
