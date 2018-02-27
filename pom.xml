@@ -13,23 +13,23 @@
     </prerequisites>
 
     <properties>
-        <jmh.version>1.19</jmh.version>
+        <jmh.version>1.20</jmh.version>
         <project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
         <maven.compiler.source>1.8</maven.compiler.source>
         <maven.compiler.target>1.8</maven.compiler.target>
-        <mysql.version>5.1.42</mysql.version>
-        <jooq.version>3.10.1</jooq.version>
+        <mysql.version>5.1.45</mysql.version>
+        <jooq.version>3.10.5</jooq.version>
         <mysql.driver>com.mysql.jdbc.Driver</mysql.driver>
         <clickhouse.driver>ru.yandex.clickhouse.ClickHouseDriver</clickhouse.driver>
-        <org.springframework.version>5.0.1.RELEASE</org.springframework.version>
+        <org.springframework.version>5.0.4.RELEASE</org.springframework.version>
 
         <slf4j.version>1.7.25</slf4j.version>
-        <log4j.version>2.9.1</log4j.version>
-        <netty.version>4.1.16.Final</netty.version>
+        <log4j.version>2.10.0</log4j.version>
+        <netty.version>4.1.22.Final</netty.version>
         <quartz.version>2.3.0</quartz.version>
-        <jackson.version>2.9.2</jackson.version>
-        <bytebuddy.version>1.7.8</bytebuddy.version>
-        <org.eclipse.jetty>9.4.7.v20170914</org.eclipse.jetty>
+        <jackson.version>2.9.4</jackson.version>
+        <bytebuddy.version>1.7.10</bytebuddy.version>
+        <org.eclipse.jetty>9.4.8.v20171121</org.eclipse.jetty>
     </properties>
 
     <profiles>
@@ -119,7 +119,7 @@
         <dependency>
             <groupId>org.javassist</groupId>
             <artifactId>javassist</artifactId>
-            <version>3.21.0-GA</version>
+            <version>3.22.0-GA</version>
         </dependency>
 
         <dependency>
@@ -131,7 +131,7 @@
         <dependency>
             <groupId>org.apache.commons</groupId>
             <artifactId>commons-pool2</artifactId>
-            <version>2.4.3</version>
+            <version>2.5.0</version>
         </dependency>
 
         <dependency>
@@ -143,13 +143,13 @@
         <dependency>
             <groupId>com.google.guava</groupId>
             <artifactId>guava</artifactId>
-            <version>23.3-jre</version>
+            <version>24.0-jre</version>
         </dependency>
 
         <dependency>
             <groupId>it.unimi.dsi</groupId>
             <artifactId>fastutil</artifactId>
-            <version>8.1.0</version>
+            <version>8.1.1</version>
         </dependency>
 
         <!-- https://mvnrepository.com/artifact/it.unimi.dsi/dsiutils -->
@@ -207,7 +207,7 @@
         <dependency>
             <groupId>com.zaxxer</groupId>
             <artifactId>HikariCP</artifactId>
-            <version>2.7.2</version>
+            <version>2.7.8</version>
         </dependency>
 
         <!-- TODO: inspect Patricia -->
@@ -220,7 +220,7 @@
         <dependency>
             <groupId>org.apache.commons</groupId>
             <artifactId>commons-lang3</artifactId>
-            <version>3.6</version>
+            <version>3.7</version>
         </dependency>
 
         <dependency>
@@ -352,7 +352,7 @@
         <dependency>
             <groupId>ru.yandex.clickhouse</groupId>
             <artifactId>clickhouse-jdbc</artifactId>
-            <version>0.1.33</version>
+            <version>0.1.34</version>
             <!-- version>0.1-SNAPSHOT</version -->
         </dependency>
 
@@ -365,7 +365,7 @@
         <dependency>
             <groupId>org.postgresql</groupId>
             <artifactId>postgresql</artifactId>
-            <version>42.1.4.jre7</version>
+            <version>42.2.1.jre7</version>
         </dependency>
 
         <dependency>
@@ -383,25 +383,25 @@
         <dependency>
             <groupId>com.sun.mail</groupId>
             <artifactId>javax.mail</artifactId>
-            <version>1.6.0</version>
+            <version>1.6.1</version>
         </dependency>
 
         <dependency>
             <groupId>org.simplejavamail</groupId>
             <artifactId>simple-java-mail</artifactId>
-            <version>4.4.5</version>
+            <version>5.0.0</version>
         </dependency>
 
         <dependency>
             <groupId>com.icegreen</groupId>
             <artifactId>greenmail</artifactId>
-            <version>1.5.5</version>
+            <version>1.5.7</version>
         </dependency>
 
         <dependency>
             <groupId>com.squareup</groupId>
             <artifactId>javapoet</artifactId>
-            <version>1.9.0</version>
+            <version>1.10.0</version>
         </dependency>
 
         <dependency>
@@ -435,6 +435,13 @@
             <artifactId>javax.servlet-api</artifactId>
             <version>4.0.0</version>
         </dependency>
+
+        <dependency>
+            <groupId>org.hibernate</groupId>
+            <artifactId>hibernate</artifactId>
+            <version>3.0.1</version>
+        </dependency>
+
     </dependencies>
 
     <build>
@@ -476,6 +483,37 @@
                             <includes>.*</includes>
                             <excludes></excludes>
                             <inputSchema>${clickhouse.database.name}</inputSchema>
+
+                            <forcedTypes>
+                                <forcedType>
+
+                                    <!-- Specify the Java type of your custom type. This corresponds to the Binding's <U> type. -->
+                                    <userType>java.lang.Long</userType>
+
+                                    <!-- Associate that custom type with your binding. -->
+                                    <binding>org.jooq.impl.DefaultBinding</binding>
+
+                                    <!-- Add a Java regular expression matching fully-qualified columns. Use the pipe to separate several expressions.
+
+                                         If provided, both "expressions" and "types" must match. -->
+                                    <expression>.*UInt16.*</expression>
+
+                                    <!-- Add a Java regular expression matching data types to be forced to
+                                         have this type.
+
+                                         Data types may be reported by your database as:
+                                         - NUMBER              regexp suggestion: NUMBER
+                                         - NUMBER(5)           regexp suggestion: NUMBER\(5\)
+                                         - NUMBER(5, 2)        regexp suggestion: NUMBER\(5,\s*2\)
+                                         - any other form
+
+                                         It is thus recommended to use defensive regexes for types.
+
+                                         If provided, both "expressions" and "types" must match. -->
+                                    <types>.*UInt16.*</types>
+                                </forcedType>
+                            </forcedTypes>
+
                         </database>
                         <generate>
                             <deprecated>false</deprecated>
