@@ -1,4 +1,4 @@
-package my.test;
+package smagellan.test;
 
 import org.junit.After;
 import org.junit.AfterClass;
