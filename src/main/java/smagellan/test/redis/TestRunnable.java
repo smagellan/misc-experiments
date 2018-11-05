@@ -2,8 +2,6 @@ package smagellan.test.redis;
 
 import org.slf4j.LoggerFactory;
 
-import java.io.IOException;
-
 /**
  * Created by vladimir on 7/9/16.
  */
@@ -22,10 +20,5 @@ public class TestRunnable implements RedisRunnable {
             r.run();
         }
         LOGGER.info("ops took {} msec", System.currentTimeMillis() - startTime);
-    }
-
-    @Override
-    public void close() throws IOException {
-        r.close();
     }
 }

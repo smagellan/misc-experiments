@@ -1,8 +1,8 @@
 package smagellan.test.redis;
 
-import com.lambdaworks.redis.RedisClient;
-import com.lambdaworks.redis.RedisURI;
-import com.lambdaworks.redis.api.sync.RedisCommands;
+import io.lettuce.core.RedisClient;
+import io.lettuce.core.RedisURI;
+import io.lettuce.core.api.sync.RedisCommands;
 import org.slf4j.LoggerFactory;
 
 import java.io.IOException;
@@ -50,10 +50,5 @@ class LettuceRunnable implements RedisRunnable {
         String key = keyCache.get(rnd.nextInt(sz));
         String value = keyCache.get(rnd.nextInt(sz));
         connection.psetex(key, 10000, value );
-    }
-
-    @Override
-    public void close() throws IOException {
-        connection.close();
     }
 }

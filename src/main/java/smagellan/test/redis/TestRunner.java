@@ -51,7 +51,7 @@ public class TestRunner {
 
 
     public static List<String> keysCache(int limit) {
-        List<String> tmp = new ArrayList<>(IntStream.range(0, limit).boxed().map(e -> e.toString() ).collect(Collectors.toList()));
+        List<String> tmp = IntStream.range(0, limit).boxed().map(Object::toString).collect(Collectors.toList());
         return Collections.unmodifiableList(tmp);
     }
 }

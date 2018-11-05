@@ -88,9 +88,4 @@ class JedisRunnable implements  RedisRunnable {
         //String value = String.valueOf(rnd.nextInt());
         jedis.psetex(key, 1000L, value);
     }
-
-    @Override
-    public void close() throws IOException {
-
-    }
 }
