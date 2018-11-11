@@ -12,12 +12,7 @@ import org.slf4j.LoggerFactory;
 import java.util.UUID;
 
 public class MongoJackTest {
-    static {
-        System.setProperty("java.util.logging.manager", "org.apache.logging.log4j.jul.LogManager");
-    }
-
     private static final org.slf4j.Logger logger = LoggerFactory.getLogger(MongoJackTest.class);
-    private static final java.util.logging.Logger julLogger = java.util.logging.Logger.getLogger(MongoJackTest.class.getName());
 
     public static void main(String[] args) {
         try (MongoClient client = new MongoClient(new ServerAddress("localhost", 27017))) {
@@ -45,7 +40,6 @@ public class MongoJackTest {
         FindIterable<MongoJackEntity> iterable = coll.find();
         for (Object obj : iterable) {
             logger.info("obj: {}", obj);
-            julLogger.info("obj: " + obj);
         }
     }
 }
