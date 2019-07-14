@@ -6,10 +6,21 @@
             <!-- PatternLayout pattern="%d{HH:mm:ss.SSS} [%t] %-5level %logger{42} - %msg %n" /-->
             <PatternLayout pattern="%d{HH:mm:ss.SSS} [%t] %-5level %logger{42} - %msg %xThrowable{full,separator(|)} %n"/>
         </Console>
+        <RollingFile name="RollingFile" fileName="logs/app.log"
+                     filePattern="logs/$${date:yyyy-MM}/app-%d{yyyy-MM-dd}-%i.log.gz">
+            <PatternLayout pattern="%d{HH:mm:ss.SSS} [%t] %-5level %logger{42} - %msg %xThrowable{full,separator(|)} %n"/>
+            <Policies>
+                <TimeBasedTriggeringPolicy /><!-- Rotated everyday -->
+                <SizeBasedTriggeringPolicy size="100 MB"/> <!-- Or every 100 MB -->
+            </Policies>
+            <DefaultRolloverStrategy max="20" compressionLevel="9"/>
+        </RollingFile>
     </Appenders>
+
     <Loggers>
         <Root level="debug">
             <AppenderRef ref="CONSOLE"/>
+            <AppenderRef ref="RollingFile"/>
         </Root>
     </Loggers>
 </Configuration>
