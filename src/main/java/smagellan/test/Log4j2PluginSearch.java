@@ -20,16 +20,14 @@ public class Log4j2PluginSearch {
     private static void doTest(List<String> packages) {
         Stopwatch st = Stopwatch.createUnstarted();
         Map<String, PluginType<?>> s = new HashMap<>();
-        long total = 0;
         for (int i  = 0; i < N; ++i) {
             st.reset();
             st.start();
             PluginManager manager = new PluginManager("Converter");
             manager.collectPlugins(packages);
             s.putAll(manager.getPlugins());
-            total += st.elapsed(TimeUnit.MILLISECONDS);
         }
-        System.err.println("total: " + (total / (double)N));
+        System.err.println("total: " + (st.elapsed(TimeUnit.MILLISECONDS) / (double)N));
         System.err.println("plugins: " + s);
     }
 }
