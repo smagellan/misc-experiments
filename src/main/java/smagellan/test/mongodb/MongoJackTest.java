@@ -1,6 +1,7 @@
 package smagellan.test.mongodb;
 
 import com.mongodb.MongoClient;
+import com.mongodb.MongoClientOptions;
 import com.mongodb.ServerAddress;
 import com.mongodb.client.FindIterable;
 import com.mongodb.client.MongoCollection;
@@ -15,7 +16,8 @@ public class MongoJackTest {
     private static final org.slf4j.Logger logger = LoggerFactory.getLogger(MongoJackTest.class);
 
     public static void main(String[] args) {
-        try (MongoClient client = new MongoClient(new ServerAddress("localhost", 27017))) {
+        MongoClientOptions opts = new MongoClientOptions.Builder().applicationName("testApp").build();
+        try (MongoClient client = new MongoClient(new ServerAddress("localhost", 27017), opts)) {
             MongoDatabase db = client.getDatabase("mydb");
             MongoCollection<Document> collection = db.getCollection("mongojack-collection");
 
