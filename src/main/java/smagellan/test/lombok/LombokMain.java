@@ -25,7 +25,7 @@ public class LombokMain {
     private static SimpleModule createInstantiatorsModule() throws NoSuchMethodException, IllegalAccessException {
         SimpleModule m = new SimpleModule();
         SimpleValueInstantiators instantiators = new SimpleValueInstantiators();
-        instantiators.addValueInstantiator(Child.ChildBuilder.class, new MyValueInstantiator(Child.class, Child.ChildBuilder.class));
+        instantiators.addValueInstantiator(Child.ChildBuilder.class, new MyValueInstantiator(Child.class));
         m.setValueInstantiators(instantiators);
         return m;
     }
