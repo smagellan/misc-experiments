@@ -57,10 +57,4 @@ public class MethodHandleInstantiator extends ValueInstantiator {
     public boolean canCreateUsingDefault() {
         return true;
     }
-
-    public static void main(String[] args) throws ClassNotFoundException {
-        String clsName = Child.class.getName() + "$" + Child.class.getSimpleName() + "Builder";
-        System.err.println(clsName);
-        Class.forName(clsName);
-    }
 }
