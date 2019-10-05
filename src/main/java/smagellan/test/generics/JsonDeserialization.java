@@ -39,7 +39,7 @@ public class JsonDeserialization {
     private static void deserializationVer3() throws IOException {
         String jsonBody = "[{\"field\":23}, {\"field\":24}]";
         ObjectMapper mapper = new ObjectMapper();
-        TypeReference typeReference = new TypeReference<List<MyUserData>>() { };
+        TypeReference<List<MyUserData>> typeReference = new TypeReference<>() {};
         List<MyUserData> lst = mapper.readValue(jsonBody, typeReference);
         lst.forEach( el -> System.err.println("el class: " + el.getClass() + "; val: " + el));
     }
