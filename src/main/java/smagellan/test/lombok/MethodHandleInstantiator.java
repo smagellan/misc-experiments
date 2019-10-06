@@ -14,19 +14,19 @@ public class MethodHandleInstantiator extends ValueInstantiator {
         this.mh = methodHandle;
     }
 
-    public static ValueInstantiator instantiatorFor(Class<?> declaringClass, Class<?> returnClass) {
-        return instantiatorFor("builder", declaringClass, returnClass);
+    public static ValueInstantiator instantiatorFor(Class<?> entityClass, Class<?> builderClass) {
+        return instantiatorFor("builder", entityClass, builderClass);
     }
 
-    public static ValueInstantiator instantiatorFor(Class<?> declaringClass) {
-        return instantiatorFor(declaringClass, getBuilderClassForPojoClass(declaringClass));
+    public static ValueInstantiator instantiatorFor(Class<?> entityClass) {
+        return instantiatorFor(entityClass, getBuilderClassForEntityClass(entityClass));
     }
 
-    public static ValueInstantiator instantiatorFor(String methodName, Class<?> declaringClass, Class<?> returnClass) {
+    public static ValueInstantiator instantiatorFor(String methodName, Class<?> entityClass, Class<?> builderClass) {
         try {
             MethodHandles.Lookup publicLookup = MethodHandles.publicLookup();
-            MethodType mt = MethodType.methodType(returnClass);
-            MethodHandle mh = publicLookup.findStatic(declaringClass, methodName, mt);
+            MethodType mt = MethodType.methodType(builderClass);
+            MethodHandle mh = publicLookup.findStatic(entityClass, methodName, mt);
             return new MethodHandleInstantiator(mh);
         } catch (NoSuchMethodException | IllegalAccessException ex) {
             throw new IllegalArgumentException(ex);
@@ -34,9 +34,9 @@ public class MethodHandleInstantiator extends ValueInstantiator {
     }
 
 
-    public static Class<?> getBuilderClassForPojoClass(Class<?> declaringClass) {
+    public static Class<?> getBuilderClassForEntityClass(Class<?> entityClass) {
         try {
-            String builderClassName = declaringClass.getName() + "$" + declaringClass.getSimpleName() + "Builder";
+            String builderClassName = entityClass.getName() + "$" + entityClass.getSimpleName() + "Builder";
             return Class.forName(builderClassName);
         } catch (ClassNotFoundException ex) {
             throw new IllegalArgumentException(ex);

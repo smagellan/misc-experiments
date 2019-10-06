@@ -11,9 +11,7 @@ import java.io.IOException;
 @Slf4j
 public class LombokMain {
     public static void main(String[] args) throws IOException {
-        SimpleModule m = createInstantiatorsModule();
-
-        ObjectMapper mapper = new ObjectMapper().registerModule(m);
+        ObjectMapper mapper = createObjectMapper1();
         Child c = Child.builder().childName("c").parentName("p").build();
 
         String s = mapper.writeValueAsString(c);
@@ -22,12 +20,26 @@ public class LombokMain {
         log.info("equals: {}", cr.equals(c));
     }
 
+    private static ObjectMapper createObjectMapper1() {
+        SimpleModule m = createInstantiatorsModule();
+        return new ObjectMapper().registerModule(m);
+    }
+
     @NotNull
     private static SimpleModule createInstantiatorsModule() {
         SimpleModule m = new SimpleModule();
-        SimpleValueInstantiators instantiators = new SimpleValueInstantiators();
-        instantiators.addValueInstantiator(Child.ChildBuilder.class, MethodHandleInstantiator.instantiatorFor(Child.class));
+        SimpleValueInstantiators instantiators = builderInstantiatorsFor(Child.class);
         m.setValueInstantiators(instantiators);
         return m;
+    }
+
+    @NotNull
+    private static SimpleValueInstantiators builderInstantiatorsFor(Class<?>... classes) {
+        SimpleValueInstantiators instantiators = new SimpleValueInstantiators();
+        for (Class<?> cls : classes) {
+            Class<?> builderClass = MethodHandleInstantiator.getBuilderClassForEntityClass(cls);
+            instantiators.addValueInstantiator(builderClass, MethodHandleInstantiator.instantiatorFor(cls, builderClass));
+        }
+        return instantiators;
     }
 }
