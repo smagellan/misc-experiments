@@ -19,23 +19,23 @@ public class MongoJackTest {
         MongoClientOptions opts = new MongoClientOptions.Builder().applicationName("testApp").build();
         try (MongoClient client = new MongoClient(new ServerAddress("localhost", 27017), opts)) {
             MongoDatabase db = client.getDatabase("mydb");
-            MongoCollection<Document> collection = db.getCollection("mongojack-collection");
+            MongoCollection<MongoJackEntity> collection = db.getCollection("mongojack-collection", MongoJackEntity.class);
 
             //doInsert(collection);
             doFetch(collection);
         }
     }
 
-    private static void doInsert(MongoCollection<Document> collection) {
-        JacksonMongoCollection<MongoJackEntity> coll = JacksonMongoCollection.<MongoJackEntity>builder()
+    private static void doInsert(MongoCollection<MongoJackEntity> collection) {
+        JacksonMongoCollection<MongoJackEntity> coll = JacksonMongoCollection.builder()
                 .build(collection, MongoJackEntity.class);
 
         coll.insert(new MongoJackEntity().withName("name-" + UUID.randomUUID()),
                 new MongoJackEntity().withName("name-" + UUID.randomUUID()));
     }
 
-    private static void doFetch(MongoCollection<Document> collection) {
-        JacksonMongoCollection<MongoJackEntity> coll = JacksonMongoCollection.<MongoJackEntity>builder()
+    private static void doFetch(MongoCollection<MongoJackEntity> collection) {
+        JacksonMongoCollection<MongoJackEntity> coll = JacksonMongoCollection.builder()
                 .build(collection, MongoJackEntity.class);
 
 

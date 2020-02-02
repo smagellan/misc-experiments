@@ -62,8 +62,9 @@ public class IrisMain {
                 .layer(2, new OutputLayer.Builder(LossFunctions.LossFunction.NEGATIVELOGLIKELIHOOD)
                         .activation(Activation.SOFTMAX)
                         .nIn(3).nOut(CLASSES_COUNT).build())
-                .backprop(true)
-                .pretrain(false)
+                //backprop and pretrain are not available/migrated in beta6
+                //.backprop(true)
+                //.pretrain(false)
                 .build();
 
         MultiLayerNetwork model = new MultiLayerNetwork(configuration);
