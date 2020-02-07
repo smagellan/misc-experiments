@@ -551,10 +551,6 @@
     </dependencies>
 
     <build>
-        <!--
-        <sourceDirectory>target/generated-sources/delombok</sourceDirectory>
-        <testSourceDirectory>target/generated-test-sources/delombok</testSourceDirectory>
-        -->
         <plugins>
             <plugin>
                 <groupId>com.github.spotbugs</groupId>
@@ -588,6 +584,10 @@
                     </execution>
                 </executions>
             </plugin>
+            <!--
+            <sourceDirectory>target/generated-sources/delombok</sourceDirectory>
+            <testSourceDirectory>target/generated-test-sources/delombok</testSourceDirectory>
+            -->
             <!--
             <plugin>
                 <groupId>org.projectlombok</groupId>
