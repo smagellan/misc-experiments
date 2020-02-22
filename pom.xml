@@ -19,7 +19,7 @@
 
         <jmh.version>1.23</jmh.version>
         <mysql.version>8.0.19</mysql.version>
-        <jooq.version>3.13.0</jooq.version>
+        <jooq.version>3.13.1</jooq.version>
         <mysql.driver>com.mysql.jdbc.Driver</mysql.driver>
         <clickhouse.driver>ru.yandex.clickhouse.ClickHouseDriver</clickhouse.driver>
         <org.springframework.version>5.2.3.RELEASE</org.springframework.version>
@@ -29,7 +29,7 @@
         <netty.version>4.1.45.Final</netty.version>
         <quartz.version>2.3.2</quartz.version>
         <jackson.version>2.10.2</jackson.version>
-        <bytebuddy.version>1.10.7</bytebuddy.version>
+        <bytebuddy.version>1.10.8</bytebuddy.version>
         <org.eclipse.jetty>9.4.26.v20200117</org.eclipse.jetty>
         <junit.version>5.6.0</junit.version>
         <junit.platform.version>1.6.0</junit.platform.version>
@@ -533,7 +533,7 @@
         <dependency>
             <groupId>io.github.classgraph</groupId>
             <artifactId>classgraph</artifactId>
-            <version>4.8.63</version>
+            <version>4.8.65</version>
         </dependency>
 
         <dependency>
