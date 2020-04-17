@@ -22,17 +22,17 @@
         <jooq.version>3.13.1</jooq.version>
         <mysql.driver>com.mysql.jdbc.Driver</mysql.driver>
         <clickhouse.driver>ru.yandex.clickhouse.ClickHouseDriver</clickhouse.driver>
-        <org.springframework.version>5.2.4.RELEASE</org.springframework.version>
+        <org.springframework.version>5.2.5.RELEASE</org.springframework.version>
 
         <slf4j.version>1.7.30</slf4j.version>
         <log4j.version>2.13.1</log4j.version>
-        <netty.version>4.1.46.Final</netty.version>
+        <netty.version>4.1.48.Final</netty.version>
         <quartz.version>2.3.2</quartz.version>
-        <jackson.version>2.10.2</jackson.version>
-        <bytebuddy.version>1.10.8</bytebuddy.version>
-        <org.eclipse.jetty>9.4.27.v20200227</org.eclipse.jetty>
-        <junit.version>5.6.0</junit.version>
-        <junit.platform.version>1.6.0</junit.platform.version>
+        <jackson.version>2.10.3</jackson.version>
+        <bytebuddy.version>1.10.9</bytebuddy.version>
+        <org.eclipse.jetty>9.4.28.v20200408</org.eclipse.jetty>
+        <junit.version>5.6.2</junit.version>
+        <junit.platform.version>1.6.2</junit.platform.version>
         <dl4j.version>1.0.0-beta6</dl4j.version>
         <platform.classifier>linux-x86_64</platform.classifier>
     </properties>
@@ -43,7 +43,7 @@
             <plugin>
                 <groupId>com.github.spotbugs</groupId>
                 <artifactId>spotbugs-maven-plugin</artifactId>
-                <version>3.1.12.3-SNAPSHOT</version>
+                <version>4.0.0</version>
                 <configuration>
                 </configuration>
             </plugin>
@@ -123,7 +123,7 @@
         <dependency>
             <groupId>org.javassist</groupId>
             <artifactId>javassist</artifactId>
-            <version>3.26.0-GA</version>
+            <version>3.27.0-GA</version>
         </dependency>
 
         <dependency>
@@ -147,7 +147,7 @@
         <dependency>
             <groupId>com.google.guava</groupId>
             <artifactId>guava</artifactId>
-            <version>28.2-jre</version>
+            <version>29.0-jre</version>
         </dependency>
 
         <dependency>
@@ -160,7 +160,7 @@
         <dependency>
             <groupId>it.unimi.dsi</groupId>
             <artifactId>dsiutils</artifactId>
-            <version>2.6.2</version>
+            <version>2.6.5</version>
 
             <exclusions>
                 <exclusion>
@@ -235,7 +235,7 @@
         <dependency>
             <groupId>org.apache.commons</groupId>
             <artifactId>commons-lang3</artifactId>
-            <version>3.9</version>
+            <version>3.10</version>
         </dependency>
 
         <dependency>
@@ -373,7 +373,7 @@
         <dependency>
             <groupId>org.postgresql</groupId>
             <artifactId>postgresql</artifactId>
-            <version>42.2.10</version>
+            <version>42.2.12</version>
         </dependency>
 
         <dependency>
@@ -403,7 +403,7 @@
         <dependency>
             <groupId>com.icegreen</groupId>
             <artifactId>greenmail</artifactId>
-            <version>1.5.11</version>
+            <version>1.5.13</version>
             <exclusions>
                 <exclusion>
                     <groupId>junit</groupId>
@@ -446,7 +446,7 @@
         <dependency>
             <groupId>org.hibernate</groupId>
             <artifactId>hibernate-core</artifactId>
-            <version>5.4.12.Final</version>
+            <version>5.4.14.Final</version>
         </dependency>
 
         <dependency>
@@ -464,7 +464,7 @@
         <dependency>
             <groupId>org.mongodb</groupId>
             <artifactId>mongodb-driver</artifactId>
-            <version>3.12.1</version>
+            <version>3.12.3</version>
         </dependency>
 
         <dependency>
@@ -533,7 +533,7 @@
         <dependency>
             <groupId>io.github.classgraph</groupId>
             <artifactId>classgraph</artifactId>
-            <version>4.8.65</version>
+            <version>4.8.69</version>
         </dependency>
 
         <dependency>
@@ -555,7 +555,7 @@
             <plugin>
                 <groupId>com.github.spotbugs</groupId>
                 <artifactId>spotbugs-maven-plugin</artifactId>
-                <version>3.1.12</version>
+                <version>4.0.0</version>
                 <configuration>
                     <effort>Max</effort>
                     <threshold>Low</threshold>
