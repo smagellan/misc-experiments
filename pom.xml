@@ -30,7 +30,7 @@
         <quartz.version>2.3.2</quartz.version>
         <jackson.version>2.10.3</jackson.version>
         <bytebuddy.version>1.10.9</bytebuddy.version>
-        <org.eclipse.jetty>9.4.28.v20200408</org.eclipse.jetty>
+        <org.eclipse.jetty>9.4.31.v20200723</org.eclipse.jetty>
         <junit.version>5.6.2</junit.version>
         <junit.platform.version>1.6.2</junit.platform.version>
         <dl4j.version>1.0.0-beta6</dl4j.version>
