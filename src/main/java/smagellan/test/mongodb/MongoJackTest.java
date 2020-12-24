@@ -6,7 +6,6 @@ import com.mongodb.ServerAddress;
 import com.mongodb.client.FindIterable;
 import com.mongodb.client.MongoCollection;
 import com.mongodb.client.MongoDatabase;
-import org.bson.Document;
 import org.mongojack.JacksonMongoCollection;
 import org.slf4j.LoggerFactory;
 

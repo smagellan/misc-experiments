@@ -1,5 +1,10 @@
 package smagellan.test;
 
+import com.mongodb.MongoClient;
+import com.mongodb.MongoClientOptions;
+import com.mongodb.ServerAddress;
+import com.mongodb.client.MongoCollection;
+import com.mongodb.client.MongoDatabase;
 import io.grpc.ManagedChannel;
 import io.grpc.ManagedChannelBuilder;
 import io.opentelemetry.api.OpenTelemetry;
@@ -7,8 +12,14 @@ import io.opentelemetry.api.trace.Span;
 import io.opentelemetry.api.trace.Tracer;
 import io.opentelemetry.context.Scope;
 import io.opentelemetry.exporter.jaeger.JaegerGrpcSpanExporter;
+import io.opentelemetry.exporter.zipkin.ZipkinSpanExporter;
+import io.opentelemetry.opentracingshim.OpenTracingShim;
 import io.opentelemetry.sdk.OpenTelemetrySdk;
 import io.opentelemetry.sdk.trace.export.SimpleSpanProcessor;
+import io.opentelemetry.sdk.trace.export.SpanExporter;
+import io.opentracing.contrib.mongo.common.TracingCommandListener;
+import io.opentracing.contrib.mongo.common.providers.PrefixSpanNameProvider;
+import org.bson.Document;
 
 //based on https://github.com/open-telemetry/opentelemetry-java/blob/master/examples/jaeger/
 public class JaegerExample {
@@ -25,22 +36,29 @@ public class JaegerExample {
         this.port = port;
     }
 
-    private void setupJaegerExporter() {
+    private void setupExporter() {
+        // Set to process the spans by the Jaeger Exporter
+        OpenTelemetrySdk.getGlobalTracerManagement()
+                .addSpanProcessor(SimpleSpanProcessor.builder(zipkinExporter()).build());
+    }
+
+    public SpanExporter zipkinExporter() {
+        return ZipkinSpanExporter.builder()
+                        .setEndpoint("http://localhost:9411/api/v2/spans")
+                        .setServiceName("otel-zipkin-example")
+                        .build();
+    }
+
+    public SpanExporter jaegerExporter() {
         // Create a channel towards Jaeger end point
         ManagedChannel jaegerChannel =
                 ManagedChannelBuilder.forAddress(ip, port).usePlaintext().build();
         // Export traces to Jaeger
-        // Export traces to Jaeger
-        JaegerGrpcSpanExporter jaegerExporter =
-                JaegerGrpcSpanExporter.builder()
+        return JaegerGrpcSpanExporter.builder()
                         .setServiceName("otel-jaeger-example")
                         .setChannel(jaegerChannel)
                         .setDeadlineMs(30000)
                         .build();
-
-        // Set to process the spans by the Jaeger Exporter
-        OpenTelemetrySdk.getGlobalTracerManagement()
-                .addSpanProcessor(SimpleSpanProcessor.builder(jaegerExporter).build());
     }
 
     private void myWonderfulUseCase() {
@@ -55,7 +73,7 @@ public class JaegerExample {
 
     private void doWork() {
         try {
-            Thread.sleep(1000);
+            Thread.sleep(500);
         } catch (InterruptedException e) {
             // do the right thing here
         }
@@ -77,13 +95,14 @@ public class JaegerExample {
 
         // Start the example
         JaegerExample example = new JaegerExample(ip, port);
-        example.setupJaegerExporter();
+        example.setupExporter();
         // generate a few sample spans
         Span parentSpan = example.tracer.spanBuilder("parent_span").startSpan();
         try(Scope scope = parentSpan.makeCurrent()) {
             for (int i = 0; i < 10; i++) {
                 example.myWonderfulUseCase();
             }
+            doMongoWork();
         } finally {
             parentSpan.end();
         }
@@ -91,5 +110,22 @@ public class JaegerExample {
         example.shutdown();
 
         System.out.println("Bye");
+    }
+
+    private static void doMongoWork() {
+        TracingCommandListener listener = new TracingCommandListener
+                .Builder(OpenTracingShim.createTracerShim())
+                .withSpanNameProvider(new PrefixSpanNameProvider("mongodb:"))
+                .build();
+        MongoClientOptions opts = new MongoClientOptions.Builder()
+                .applicationName("testApp")
+                .addCommandListener(listener)
+                .build();
+        try (MongoClient client = new MongoClient(new ServerAddress("localhost", 27017), opts)) {
+            MongoDatabase db = client.getDatabase("mydb");
+            MongoCollection<Document> col =  db.getCollection("mongojack-collection");
+            col.estimatedDocumentCount();
+            col.countDocuments();
+        }
     }
 }
