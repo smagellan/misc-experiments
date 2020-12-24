@@ -3,6 +3,7 @@ package smagellan.test;
 import com.mongodb.MongoClient;
 import com.mongodb.MongoClientOptions;
 import com.mongodb.ServerAddress;
+import com.mongodb.client.FindIterable;
 import com.mongodb.client.MongoCollection;
 import com.mongodb.client.MongoDatabase;
 import io.grpc.ManagedChannel;
@@ -126,6 +127,10 @@ public class JaegerExample {
             MongoCollection<Document> col =  db.getCollection("mongojack-collection");
             col.estimatedDocumentCount();
             col.countDocuments();
+            FindIterable<Document> docs = col.find();
+            for (Document doc : docs) {
+
+            }
         }
     }
 }
