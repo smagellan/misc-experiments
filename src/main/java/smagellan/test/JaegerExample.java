@@ -129,7 +129,7 @@ public class JaegerExample {
             col.countDocuments();
             FindIterable<Document> docs = col.find();
             for (Document doc : docs) {
-
+                System.err.println(doc);
             }
         }
     }
