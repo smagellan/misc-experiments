@@ -9,13 +9,17 @@ import com.mongodb.client.MongoDatabase;
 import io.grpc.ManagedChannel;
 import io.grpc.ManagedChannelBuilder;
 import io.opentelemetry.api.OpenTelemetry;
+import io.opentelemetry.api.common.Attributes;
 import io.opentelemetry.api.trace.Span;
+import io.opentelemetry.api.trace.StatusCode;
 import io.opentelemetry.api.trace.Tracer;
+import io.opentelemetry.api.trace.attributes.SemanticAttributes;
 import io.opentelemetry.context.Scope;
 import io.opentelemetry.exporter.jaeger.JaegerGrpcSpanExporter;
 import io.opentelemetry.exporter.zipkin.ZipkinSpanExporter;
 import io.opentelemetry.opentracingshim.OpenTracingShim;
 import io.opentelemetry.sdk.OpenTelemetrySdk;
+import io.opentelemetry.sdk.trace.SdkTracerProvider;
 import io.opentelemetry.sdk.trace.export.SimpleSpanProcessor;
 import io.opentelemetry.sdk.trace.export.SpanExporter;
 import io.opentracing.contrib.mongo.common.TracingCommandListener;
@@ -28,19 +32,31 @@ public class JaegerExample {
     private final String ip; // = "jaeger";
     private final int port; // = 14250;
 
+    private final OpenTelemetry otelSdk = createOtelSdk();
+
     // OTel API
     private final Tracer tracer =
-            OpenTelemetry.getGlobalTracer("io.opentelemetry.example.JaegerExample");
+            otelSdk.getTracer("io.opentelemetry.example.JaegerExample");
 
     public JaegerExample(String ip, int port) {
         this.ip = ip;
         this.port = port;
     }
 
+    private OpenTelemetrySdk createOtelSdk() {
+        return
+                OpenTelemetrySdk.builder()
+                        .setTracerProvider(
+                                SdkTracerProvider.builder()
+                                        .addSpanProcessor(SimpleSpanProcessor.create(zipkinExporter()))
+                                        .build())
+                        .buildAndRegisterGlobal();
+    }
+
     private void setupExporter() {
         // Set to process the spans by the Jaeger Exporter
-        OpenTelemetrySdk.getGlobalTracerManagement()
-                .addSpanProcessor(SimpleSpanProcessor.builder(zipkinExporter()).build());
+        //OpenTelemetrySdk.getGlobalTracerManagement()
+        //        .addSpanProcessor(SimpleSpanProcessor.builder(jaegerExporter()).build());
     }
 
     public SpanExporter zipkinExporter() {
@@ -82,6 +98,7 @@ public class JaegerExample {
 
     // graceful shutdown
     public void shutdown() {
+        //openTelemetry.getTracerManagement().shutdown()
         OpenTelemetrySdk.getGlobalTracerManagement().shutdown();
     }
 
@@ -104,6 +121,9 @@ public class JaegerExample {
                 example.myWonderfulUseCase();
             }
             doMongoWork();
+            parentSpan.recordException(new RuntimeException("test exception"),
+                    Attributes.of(SemanticAttributes.EXCEPTION_ESCAPED, false));
+            parentSpan.setStatus(StatusCode.ERROR);
         } finally {
             parentSpan.end();
         }
