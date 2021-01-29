@@ -26,6 +26,8 @@ import io.opentracing.contrib.mongo.common.TracingCommandListener;
 import io.opentracing.contrib.mongo.common.providers.PrefixSpanNameProvider;
 import org.bson.Document;
 
+import java.util.concurrent.TimeUnit;
+
 //based on https://github.com/open-telemetry/opentelemetry-java/blob/master/examples/jaeger/
 public class JaegerExample {
     // Jaeger Endpoint URL and PORT
@@ -74,7 +76,7 @@ public class JaegerExample {
         return JaegerGrpcSpanExporter.builder()
                         .setServiceName("otel-jaeger-example")
                         .setChannel(jaegerChannel)
-                        .setDeadlineMs(30000)
+                        .setTimeout(30000, TimeUnit.MILLISECONDS)
                         .build();
     }
 

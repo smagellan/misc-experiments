@@ -98,13 +98,13 @@
         <dependency>
             <groupId>io.opentelemetry</groupId>
             <artifactId>opentelemetry-exporter-jaeger</artifactId>
-            <version>0.14.1</version>
+            <version>0.15.0</version>
         </dependency>
 
         <dependency>
             <groupId>io.opentelemetry</groupId>
             <artifactId>opentelemetry-exporter-zipkin</artifactId>
-            <version>0.14.1</version>
+            <version>0.15.0</version>
         </dependency>
 
         <dependency>
@@ -116,13 +116,13 @@
         <dependency>
             <groupId>io.opentelemetry</groupId>
             <artifactId>opentelemetry-sdk</artifactId>
-            <version>0.14.1</version>
+            <version>0.15.0</version>
         </dependency>
 
         <dependency>
             <groupId>io.opentelemetry</groupId>
             <artifactId>opentelemetry-api</artifactId>
-            <version>0.14.1</version>
+            <version>0.15.0</version>
         </dependency>
 
         <dependency>
@@ -216,7 +216,7 @@
         <dependency>
             <groupId>it.unimi.dsi</groupId>
             <artifactId>fastutil</artifactId>
-            <version>8.4.4</version>
+            <version>8.5.0</version>
         </dependency>
 
         <!-- https://mvnrepository.com/artifact/it.unimi.dsi/dsiutils -->
@@ -608,13 +608,13 @@
         <dependency>
             <groupId>io.github.classgraph</groupId>
             <artifactId>classgraph</artifactId>
-            <version>4.8.101</version>
+            <version>4.8.102</version>
         </dependency>
 
         <dependency>
             <groupId>org.projectlombok</groupId>
             <artifactId>lombok</artifactId>
-            <version>1.18.16</version>
+            <version>1.18.18</version>
             <scope>provided</scope>
         </dependency>
 
