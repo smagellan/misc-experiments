@@ -43,7 +43,7 @@
             <plugin>
                 <groupId>com.github.spotbugs</groupId>
                 <artifactId>spotbugs-maven-plugin</artifactId>
-                <version>4.1.4</version>
+                <version>4.2.0</version>
                 <configuration>
                 </configuration>
             </plugin>
@@ -628,9 +628,10 @@
     <build>
         <plugins>
             <plugin>
+                <!-- to run: mvn spotbugs:check -->
                 <groupId>com.github.spotbugs</groupId>
                 <artifactId>spotbugs-maven-plugin</artifactId>
-                <version>4.1.4</version>
+                <version>4.2.0</version>
                 <configuration>
                     <effort>Max</effort>
                     <threshold>Low</threshold>
@@ -650,7 +651,7 @@
             <plugin>
                 <groupId>org.owasp</groupId>
                 <artifactId>dependency-check-maven</artifactId>
-                <version>6.0.2</version>
+                <version>6.1.0</version>
                 <executions>
                     <execution>
                         <goals>
