@@ -1,6 +1,7 @@
 package smagellan.test;
 
 import io.netty.bootstrap.Bootstrap;
+import io.netty.bootstrap.ServerBootstrap;
 import io.netty.buffer.PooledByteBufAllocator;
 import io.netty.channel.ChannelFuture;
 import io.netty.channel.ChannelOption;
@@ -12,7 +13,7 @@ import io.netty.handler.codec.base64.Base64Decoder;
 /**
  * Created by vladimir on 7/5/16.
  */
-public class Main {
+public class NettyMain {
     public static void main(String[] args) throws Exception{
         int workerThreads = 2;
         String host = "localhost";
