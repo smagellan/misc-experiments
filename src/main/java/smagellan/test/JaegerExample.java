@@ -13,7 +13,9 @@ import io.opentelemetry.api.common.Attributes;
 import io.opentelemetry.api.trace.Span;
 import io.opentelemetry.api.trace.StatusCode;
 import io.opentelemetry.api.trace.Tracer;
-import io.opentelemetry.api.trace.attributes.SemanticAttributes;
+import io.opentelemetry.sdk.resources.Resource;
+import io.opentelemetry.semconv.resource.attributes.ResourceAttributes;
+import io.opentelemetry.semconv.trace.attributes.SemanticAttributes;
 import io.opentelemetry.context.Scope;
 import io.opentelemetry.exporter.jaeger.JaegerGrpcSpanExporter;
 import io.opentelemetry.exporter.zipkin.ZipkinSpanExporter;
@@ -34,7 +36,9 @@ public class JaegerExample {
     private final String ip; // = "jaeger";
     private final int port; // = 14250;
 
+    private final SdkTracerProvider tracerProvider = createTracerProvider();
     private final OpenTelemetry otelSdk = createOtelSdk();
+
 
     // OTel API
     private final Tracer tracer =
@@ -45,13 +49,19 @@ public class JaegerExample {
         this.port = port;
     }
 
+    private SdkTracerProvider createTracerProvider() {
+        Resource serviceNameResource =
+                Resource.create(Attributes.of(ResourceAttributes.SERVICE_NAME, "otel-example"));
+        return SdkTracerProvider.builder()
+                .addSpanProcessor(SimpleSpanProcessor.create(zipkinExporter()))
+                .setResource(Resource.getDefault().merge(serviceNameResource))
+                .build();
+    }
+
     private OpenTelemetrySdk createOtelSdk() {
         return
                 OpenTelemetrySdk.builder()
-                        .setTracerProvider(
-                                SdkTracerProvider.builder()
-                                        .addSpanProcessor(SimpleSpanProcessor.create(zipkinExporter()))
-                                        .build())
+                        .setTracerProvider(tracerProvider)
                         .buildAndRegisterGlobal();
     }
 
@@ -64,7 +74,6 @@ public class JaegerExample {
     public SpanExporter zipkinExporter() {
         return ZipkinSpanExporter.builder()
                         .setEndpoint("http://localhost:9411/api/v2/spans")
-                        .setServiceName("otel-zipkin-example")
                         .build();
     }
 
@@ -74,7 +83,6 @@ public class JaegerExample {
                 ManagedChannelBuilder.forAddress(ip, port).usePlaintext().build();
         // Export traces to Jaeger
         return JaegerGrpcSpanExporter.builder()
-                        .setServiceName("otel-jaeger-example")
                         .setChannel(jaegerChannel)
                         .setTimeout(30000, TimeUnit.MILLISECONDS)
                         .build();
@@ -101,7 +109,7 @@ public class JaegerExample {
     // graceful shutdown
     public void shutdown() {
         //openTelemetry.getTracerManagement().shutdown()
-        OpenTelemetrySdk.getGlobalTracerManagement().shutdown();
+        tracerProvider.shutdown();
     }
 
     public static void main(String[] args) {
