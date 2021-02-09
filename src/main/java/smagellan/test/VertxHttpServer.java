@@ -40,7 +40,7 @@ public class VertxHttpServer {
         server.listen(8080);
     }
 
-    public static void simpleHttpHanlder(HttpServerRequest request) {
+    public static void simpleHttpHandler(HttpServerRequest request) {
         // This handler gets called for each request that arrives on the server
         HttpServerResponse response = request.response();
         response.putHeader("content-type", "text/plain");
