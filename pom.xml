@@ -186,7 +186,9 @@
         <dependency>
             <groupId>io.netty</groupId>
             <artifactId>netty-tcnative</artifactId>
-            <version>2.0.36.Final</version>
+            <!-- vanilla version requires libssl1.0.0 -->
+            <version>2.0.37.Final-SNAPSHOT</version>
+            <classifier>${platform.classifier}</classifier>
         </dependency>
 
         <dependency>

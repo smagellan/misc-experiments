@@ -4,12 +4,12 @@ import io.vertx.core.AsyncResult;
 import io.vertx.core.Vertx;
 import io.vertx.core.VertxOptions;
 import io.vertx.core.buffer.Buffer;
-import io.vertx.core.http.HttpServer;
-import io.vertx.core.http.HttpServerOptions;
-import io.vertx.core.http.HttpServerRequest;
-import io.vertx.core.http.HttpServerResponse;
+import io.vertx.core.http.*;
 import io.vertx.core.impl.VertxFactory;
 import io.vertx.core.json.JsonObject;
+import io.vertx.core.net.JdkSSLEngineOptions;
+import io.vertx.core.net.OpenSSLEngineOptions;
+import io.vertx.core.net.PemKeyCertOptions;
 import io.vertx.ext.web.common.template.TemplateEngine;
 import io.vertx.ext.web.templ.rocker.RockerTemplateEngine;
 import org.slf4j.LoggerFactory;
@@ -22,9 +22,18 @@ public class VertxHttpServer {
                 .setPreferNativeTransport(true);
         Vertx vertx = new VertxFactory(options).vertx();
         HttpServerOptions httpOptions = new HttpServerOptions()
+                .setInitialSettings(new Http2Settings())
                 .setTcpFastOpen(true)
                 .setTcpQuickAck(true)
                 .setTcpCork(true);
+
+        httpOptions.setSsl(true);
+        httpOptions.setUseAlpn(true);
+        httpOptions.setSslEngineOptions(new OpenSSLEngineOptions());
+        //httpOptions.setSslEngineOptions(new JdkSSLEngineOptions());
+        httpOptions.addEnabledCipherSuite("TLS_ECDHE_RSA_WITH_AES_128_GCM_SHA256");
+        httpOptions.setPemKeyCertOptions(new PemKeyCertOptions().setKeyPath("tls/server-key.pem").setCertPath("tls/server-cert.pem"));
+
         HttpServer server = vertx.createHttpServer(httpOptions);
 
         server.requestHandler(VertxHttpServer::rockerHttpHandler);
