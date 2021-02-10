@@ -19,7 +19,8 @@ public class VertxHttpServer {
                 .setPreferNativeTransport(true);
         Vertx vertx = new VertxFactory(options).vertx();
         DeploymentOptions deploymentOptions = new DeploymentOptions()
-                .setInstances(Runtime.getRuntime().availableProcessors());
+                .setInstances(1);
+                //.setInstances(Runtime.getRuntime().availableProcessors());
         vertx.deployVerticle(() -> new ServerVerticle(false),
                 deploymentOptions, r -> logger.info("start succeeded: {}", r.succeeded()));
     }
@@ -66,14 +67,9 @@ class ServerVerticle extends AbstractVerticle {
         });
     }
 
-
-
     public static void simpleHttpHandler(HttpServerRequest request) {
-        // This handler gets called for each request that arrives on the server
         HttpServerResponse response = request.response();
-        response.putHeader("content-type", "text/plain");
-
-        // Write to the response and end it
+        response.putHeader("Content-Type", "text/plain");
         response.end("Hello World!");
     }
 
@@ -87,10 +83,10 @@ class ServerVerticle extends AbstractVerticle {
         HttpServerResponse response = request.response();
         response.putHeader("content-type", "text/plain");
 
-        engine.render(context, "TestRockerTemplate2.rocker.html", r -> renderHandler(response, r));
+        engine.render(context, "TestRockerTemplate2.rocker.html", r -> afterRender(response, r));
     }
 
-    public static void renderHandler(HttpServerResponse response, AsyncResult<Buffer> result) {
+    public static void afterRender(HttpServerResponse response, AsyncResult<Buffer> result) {
         if (result.failed()) {
             logger.error("failed to render doc", result.cause());
             response.end();
