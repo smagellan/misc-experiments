@@ -1,13 +1,10 @@
 package smagellan.test;
 
-import io.vertx.core.AsyncResult;
-import io.vertx.core.Vertx;
-import io.vertx.core.VertxOptions;
+import io.vertx.core.*;
 import io.vertx.core.buffer.Buffer;
 import io.vertx.core.http.*;
 import io.vertx.core.impl.VertxFactory;
 import io.vertx.core.json.JsonObject;
-import io.vertx.core.net.JdkSSLEngineOptions;
 import io.vertx.core.net.OpenSSLEngineOptions;
 import io.vertx.core.net.PemKeyCertOptions;
 import io.vertx.ext.web.common.template.TemplateEngine;
@@ -21,24 +18,55 @@ public class VertxHttpServer {
         VertxOptions options = new VertxOptions()
                 .setPreferNativeTransport(true);
         Vertx vertx = new VertxFactory(options).vertx();
+        DeploymentOptions deploymentOptions = new DeploymentOptions()
+                .setInstances(Runtime.getRuntime().availableProcessors());
+        vertx.deployVerticle(() -> new ServerVerticle(false),
+                deploymentOptions, r -> logger.info("start succeeded: {}", r.succeeded()));
+    }
+}
+
+class ServerVerticle extends AbstractVerticle {
+    private static final org.slf4j.Logger logger = LoggerFactory.getLogger(ServerVerticle.class);
+    private final boolean useHttps;
+
+    ServerVerticle(boolean useHttps) {
+        this.useHttps = useHttps;
+    }
+
+
+    @Override
+    public void start(Promise<Void> startFuture) {
         HttpServerOptions httpOptions = new HttpServerOptions()
                 .setInitialSettings(new Http2Settings())
                 .setTcpFastOpen(true)
                 .setTcpQuickAck(true)
                 .setTcpCork(true);
 
-        httpOptions.setSsl(true);
-        httpOptions.setUseAlpn(true);
-        httpOptions.setSslEngineOptions(new OpenSSLEngineOptions());
-        //httpOptions.setSslEngineOptions(new JdkSSLEngineOptions());
-        httpOptions.addEnabledCipherSuite("TLS_ECDHE_RSA_WITH_AES_128_GCM_SHA256");
-        httpOptions.setPemKeyCertOptions(new PemKeyCertOptions().setKeyPath("tls/server-key.pem").setCertPath("tls/server-cert.pem"));
+        if (useHttps) {
+            PemKeyCertOptions permKeyOptions = new PemKeyCertOptions()
+                    .setKeyPath("tls/server-key.pem")
+                    .setCertPath("tls/server-cert.pem");
+            httpOptions = httpOptions
+                    .setSsl(true)
+                    .setUseAlpn(true)
+                    .setSslEngineOptions(new OpenSSLEngineOptions())
+                     //httpOptions.setSslEngineOptions(new JdkSSLEngineOptions());
+                    .addEnabledCipherSuite("TLS_ECDHE_RSA_WITH_AES_128_GCM_SHA256")
+                    .setPemKeyCertOptions(permKeyOptions);
+        }
+        HttpServer server = getVertx().createHttpServer(httpOptions);
 
-        HttpServer server = vertx.createHttpServer(httpOptions);
-
-        server.requestHandler(VertxHttpServer::rockerHttpHandler);
-        server.listen(8080);
+        server.requestHandler(ServerVerticle::rockerHttpHandler);
+        server.listen(8080, ar -> {
+            if (ar.succeeded()) {
+                startFuture.complete(null);
+            } else {
+                startFuture.fail(ar.cause());
+            }
+        });
     }
+
+
 
     public static void simpleHttpHandler(HttpServerRequest request) {
         // This handler gets called for each request that arrives on the server
