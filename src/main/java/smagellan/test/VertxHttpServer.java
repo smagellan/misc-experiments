@@ -3,6 +3,7 @@ package smagellan.test;
 import io.vertx.core.*;
 import io.vertx.core.buffer.Buffer;
 import io.vertx.core.http.*;
+import io.vertx.core.impl.MyVertxFactory;
 import io.vertx.core.impl.VertxFactory;
 import io.vertx.core.json.JsonObject;
 import io.vertx.core.net.OpenSSLEngineOptions;
@@ -21,16 +22,57 @@ public class VertxHttpServer {
         DeploymentOptions deploymentOptions = new DeploymentOptions()
                 .setInstances(1);
                 //.setInstances(Runtime.getRuntime().availableProcessors());
-        vertx.deployVerticle(() -> new ServerVerticle(false),
-                deploymentOptions, r -> logger.info("start succeeded: {}", r.succeeded()));
+        vertx.deployVerticle(() -> new ServerVerticle(8080, false),
+                deploymentOptions, r -> logger.info("server start succeeded: {}", r.succeeded()));
+
+        vertx.deployVerticle(() -> new ClientVerticle(8080), deploymentOptions,
+                r -> logger.info("client start succeeded: {}", r.succeeded()));
+    }
+}
+
+class ClientVerticle extends AbstractVerticle {
+    private static final org.slf4j.Logger logger = LoggerFactory.getLogger(ClientVerticle.class);
+
+    private final int port;
+
+    public ClientVerticle(int port) {
+        this.port = port;
+    }
+
+    @Override
+    public void start(Promise<Void> startFuture) {
+        startFuture.complete(null);
+        getVertx().setTimer(5000, this::doHttpRequest);
+    }
+
+    private void doHttpRequest(Long timerId) {
+        HttpClient client = getVertx().createHttpClient(new HttpClientOptions().setKeepAlive(true));
+        client.request(HttpMethod.GET, port, "localhost", "http://localhost:" + port, r1 -> {
+            logger.info("http succeeded: {}", r1.succeeded(), r1.cause());
+            if (r1.succeeded()) {
+                r1.result().send("", r2 -> {
+                    logger.info("http response succeeded: {}", r2.succeeded(), r2.cause());
+                    if (r2.succeeded()) {
+                        logger.info("response: {}", r2.result().bodyHandler(body -> {
+                            logger.info("body: {}", body);
+                            client.close();
+                        }));
+                    }
+                });
+            }
+        });
     }
 }
 
 class ServerVerticle extends AbstractVerticle {
     private static final org.slf4j.Logger logger = LoggerFactory.getLogger(ServerVerticle.class);
-    private final boolean useHttps;
+    private static final TemplateEngine engine = RockerTemplateEngine.create();
 
-    ServerVerticle(boolean useHttps) {
+    private final boolean useHttps;
+    private final int port;
+
+    ServerVerticle(int port, boolean useHttps) {
+        this.port = port;
         this.useHttps = useHttps;
     }
 
@@ -58,7 +100,7 @@ class ServerVerticle extends AbstractVerticle {
         HttpServer server = getVertx().createHttpServer(httpOptions);
 
         server.requestHandler(ServerVerticle::rockerHttpHandler);
-        server.listen(8080, ar -> {
+        server.listen(port, ar -> {
             if (ar.succeeded()) {
                 startFuture.complete(null);
             } else {
@@ -74,15 +116,13 @@ class ServerVerticle extends AbstractVerticle {
     }
 
     public static void rockerHttpHandler(HttpServerRequest request) {
-        TemplateEngine engine = RockerTemplateEngine.create();
         final JsonObject context = new JsonObject()
                 .put("foo", "badger")
                 .put("bar", "fox")
                 .put("context", new JsonObject().put("path", "/TestRockerTemplate2.rocker.html"));
 
         HttpServerResponse response = request.response();
-        response.putHeader("content-type", "text/plain");
-
+        response.putHeader("Content-Type", "text/plain");
         engine.render(context, "TestRockerTemplate2.rocker.html", r -> afterRender(response, r));
     }
 

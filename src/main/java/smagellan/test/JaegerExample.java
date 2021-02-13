@@ -51,7 +51,10 @@ public class JaegerExample {
 
     private SdkTracerProvider createTracerProvider() {
         Resource serviceNameResource =
-                Resource.create(Attributes.of(ResourceAttributes.SERVICE_NAME, "otel-example"));
+                Resource.create(Attributes.of(
+                        ResourceAttributes.SERVICE_NAME, "otel-example",
+                        ResourceAttributes.HOST_NAME, "unknown-hostname"
+                ));
         return SdkTracerProvider.builder()
                 .addSpanProcessor(SimpleSpanProcessor.create(zipkinExporter()))
                 .setResource(Resource.getDefault().merge(serviceNameResource))
