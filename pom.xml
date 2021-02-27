@@ -19,18 +19,18 @@
 
         <jmh.version>1.27</jmh.version>
         <mysql.version>8.0.23</mysql.version>
-        <jooq.version>3.14.7</jooq.version>
+        <jooq.version>3.14.8</jooq.version>
         <mysql.driver>com.mysql.jdbc.Driver</mysql.driver>
         <clickhouse.driver>ru.yandex.clickhouse.ClickHouseDriver</clickhouse.driver>
-        <org.springframework.version>5.3.3</org.springframework.version>
+        <org.springframework.version>5.3.4</org.springframework.version>
 
         <slf4j.version>1.7.30</slf4j.version>
         <log4j.version>2.14.0</log4j.version>
         <netty.version>4.1.59.Final</netty.version>
         <quartz.version>2.3.2</quartz.version>
         <jackson.version>2.12.1</jackson.version>
-        <bytebuddy.version>1.10.20</bytebuddy.version>
-        <org.eclipse.jetty>11.0.0</org.eclipse.jetty>
+        <bytebuddy.version>1.10.21</bytebuddy.version>
+        <org.eclipse.jetty>11.0.1</org.eclipse.jetty>
         <junit.version>5.7.1</junit.version>
         <junit.platform.version>1.7.1</junit.platform.version>
         <dl4j.version>1.0.0-beta7</dl4j.version>
@@ -99,37 +99,43 @@
         <dependency>
             <groupId>io.opentelemetry</groupId>
             <artifactId>opentelemetry-exporter-jaeger</artifactId>
-            <version>0.16.0</version>
+            <version>1.0.0</version>
         </dependency>
 
         <dependency>
             <groupId>io.opentelemetry</groupId>
             <artifactId>opentelemetry-exporter-zipkin</artifactId>
-            <version>0.16.0</version>
+            <version>1.0.0</version>
         </dependency>
 
         <dependency>
             <groupId>io.opentelemetry</groupId>
             <artifactId>opentelemetry-sdk-extension-logging</artifactId>
-            <version>0.16.0-alpha</version>
+            <version>1.0.0-alpha</version>
         </dependency>
 
         <dependency>
             <groupId>io.opentelemetry</groupId>
             <artifactId>opentelemetry-sdk</artifactId>
-            <version>0.16.0</version>
+            <version>1.0.0</version>
         </dependency>
 
         <dependency>
             <groupId>io.opentelemetry</groupId>
             <artifactId>opentelemetry-api</artifactId>
-            <version>0.16.0</version>
+            <version>1.0.0</version>
         </dependency>
 
         <dependency>
             <groupId>io.opentelemetry</groupId>
             <artifactId>opentelemetry-opentracing-shim</artifactId>
-            <version>0.16.0-alpha</version>
+            <version>1.0.0-alpha</version>
+        </dependency>
+
+        <dependency>
+            <groupId>io.opentelemetry</groupId>
+            <artifactId>opentelemetry-semconv</artifactId>
+            <version>1.0.0-alpha</version>
         </dependency>
 
         <!-- <dependency>
@@ -150,13 +156,13 @@
         <dependency>
             <groupId>io.grpc</groupId>
             <artifactId>grpc-protobuf</artifactId>
-            <version>1.35.0</version>
+            <version>1.36.0</version>
         </dependency>
 
         <dependency>
             <groupId>io.grpc</groupId>
             <artifactId>grpc-netty</artifactId>
-            <version>1.35.0</version>
+            <version>1.36.0</version>
         </dependency>
 
         <dependency>
@@ -361,7 +367,7 @@
         <dependency>
             <groupId>com.zaxxer</groupId>
             <artifactId>HikariCP</artifactId>
-            <version>4.0.1</version>
+            <version>4.0.2</version>
         </dependency>
 
 
@@ -507,13 +513,13 @@
         <dependency>
             <groupId>ru.yandex.clickhouse</groupId>
             <artifactId>clickhouse-jdbc</artifactId>
-            <version>0.2.5</version>
+            <version>0.2.6</version>
         </dependency>
 
         <dependency>
             <groupId>org.postgresql</groupId>
             <artifactId>postgresql</artifactId>
-            <version>42.2.18</version>
+            <version>42.2.19</version>
         </dependency>
 
         <dependency>
@@ -537,7 +543,7 @@
         <dependency>
             <groupId>org.simplejavamail</groupId>
             <artifactId>simple-java-mail</artifactId>
-            <version>6.4.4</version>
+            <version>6.5.0</version>
         </dependency>
 
         <dependency>
@@ -586,7 +592,7 @@
         <dependency>
             <groupId>org.hibernate</groupId>
             <artifactId>hibernate-core</artifactId>
-            <version>5.4.27.SP1</version>
+            <version>5.4.28.Final</version>
         </dependency>
 
         <dependency>
@@ -616,7 +622,7 @@
         <dependency>
             <groupId>org.mongodb</groupId>
             <artifactId>mongodb-driver</artifactId>
-            <version>3.12.7</version>
+            <version>3.12.8</version>
         </dependency>
 
         <dependency>
