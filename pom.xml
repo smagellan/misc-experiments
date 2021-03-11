@@ -17,7 +17,7 @@
         <maven.compiler.source>14</maven.compiler.source>
         <maven.compiler.target>14</maven.compiler.target>
 
-        <jmh.version>1.27</jmh.version>
+        <jmh.version>1.28</jmh.version>
         <mysql.version>8.0.23</mysql.version>
         <jooq.version>3.14.8</jooq.version>
         <mysql.driver>com.mysql.jdbc.Driver</mysql.driver>
@@ -26,16 +26,17 @@
 
         <slf4j.version>1.7.30</slf4j.version>
         <log4j.version>2.14.0</log4j.version>
-        <netty.version>4.1.59.Final</netty.version>
+        <netty.version>4.1.60.Final</netty.version>
         <quartz.version>2.3.2</quartz.version>
-        <jackson.version>2.12.1</jackson.version>
-        <bytebuddy.version>1.10.21</bytebuddy.version>
+        <jackson.version>2.12.2</jackson.version>
+        <bytebuddy.version>1.10.22</bytebuddy.version>
         <org.eclipse.jetty>11.0.1</org.eclipse.jetty>
         <junit.version>5.7.1</junit.version>
         <junit.platform.version>1.7.1</junit.platform.version>
         <dl4j.version>1.0.0-beta7</dl4j.version>
         <lombok.version>1.18.18</lombok.version>
         <platform.classifier>linux-x86_64</platform.classifier>
+        <spotbugs-maven-plugin.version>4.2.0</spotbugs-maven-plugin.version>
     </properties>
 
     <reporting>
@@ -44,7 +45,7 @@
             <plugin>
                 <groupId>com.github.spotbugs</groupId>
                 <artifactId>spotbugs-maven-plugin</artifactId>
-                <version>4.2.0</version>
+                <version>${spotbugs-maven-plugin.version}</version>
                 <configuration>
                 </configuration>
             </plugin>
@@ -99,43 +100,43 @@
         <dependency>
             <groupId>io.opentelemetry</groupId>
             <artifactId>opentelemetry-exporter-jaeger</artifactId>
-            <version>1.0.0</version>
+            <version>1.0.1</version>
         </dependency>
 
         <dependency>
             <groupId>io.opentelemetry</groupId>
             <artifactId>opentelemetry-exporter-zipkin</artifactId>
-            <version>1.0.0</version>
+            <version>1.0.1</version>
         </dependency>
 
         <dependency>
             <groupId>io.opentelemetry</groupId>
             <artifactId>opentelemetry-sdk-extension-logging</artifactId>
-            <version>1.0.0-alpha</version>
+            <version>1.0.1-alpha</version>
         </dependency>
 
         <dependency>
             <groupId>io.opentelemetry</groupId>
             <artifactId>opentelemetry-sdk</artifactId>
-            <version>1.0.0</version>
+            <version>1.0.1</version>
         </dependency>
 
         <dependency>
             <groupId>io.opentelemetry</groupId>
             <artifactId>opentelemetry-api</artifactId>
-            <version>1.0.0</version>
+            <version>1.0.1</version>
         </dependency>
 
         <dependency>
             <groupId>io.opentelemetry</groupId>
             <artifactId>opentelemetry-opentracing-shim</artifactId>
-            <version>1.0.0-alpha</version>
+            <version>1.0.1-alpha</version>
         </dependency>
 
         <dependency>
             <groupId>io.opentelemetry</groupId>
             <artifactId>opentelemetry-semconv</artifactId>
-            <version>1.0.0-alpha</version>
+            <version>1.0.1-alpha</version>
         </dependency>
 
         <!-- <dependency>
@@ -367,7 +368,7 @@
         <dependency>
             <groupId>com.zaxxer</groupId>
             <artifactId>HikariCP</artifactId>
-            <version>4.0.2</version>
+            <version>4.0.3</version>
         </dependency>
 
 
@@ -381,7 +382,7 @@
         <dependency>
             <groupId>org.apache.commons</groupId>
             <artifactId>commons-lang3</artifactId>
-            <version>3.11</version>
+            <version>3.12.0</version>
         </dependency>
 
         <dependency>
@@ -592,7 +593,7 @@
         <dependency>
             <groupId>org.hibernate</groupId>
             <artifactId>hibernate-core</artifactId>
-            <version>5.4.28.Final</version>
+            <version>5.4.29.Final</version>
         </dependency>
 
         <dependency>
@@ -729,7 +730,7 @@
                 <!-- to run: mvn spotbugs:check -->
                 <groupId>com.github.spotbugs</groupId>
                 <artifactId>spotbugs-maven-plugin</artifactId>
-                <version>4.2.0</version>
+                <version>${spotbugs-maven-plugin.version}</version>
                 <configuration>
                     <effort>Max</effort>
                     <threshold>Low</threshold>
@@ -740,16 +741,25 @@
                         <plugin>
                             <groupId>com.h3xstream.findsecbugs</groupId>
                             <artifactId>findsecbugs-plugin</artifactId>
-                            <version>1.10.1</version>
+                            <version>1.11.0</version>
                         </plugin>
                     </plugins>
                 </configuration>
+                <dependencies>
+                    <!-- overwrite dependency on spotbugs if you want to specify the version of spotbugs -->
+                    <dependency>
+                        <groupId>com.github.spotbugs</groupId>
+                        <artifactId>spotbugs</artifactId>
+                        <version>4.2.2</version>
+                    </dependency>
+                </dependencies>
             </plugin>
 
             <plugin>
+                <!-- mvn verify or mvn org.owasp:dependency-check-maven:check-->
                 <groupId>org.owasp</groupId>
                 <artifactId>dependency-check-maven</artifactId>
-                <version>6.1.0</version>
+                <version>6.1.2</version>
                 <executions>
                     <execution>
                         <goals>
