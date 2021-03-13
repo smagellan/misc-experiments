@@ -25,7 +25,7 @@
         <org.springframework.version>5.3.4</org.springframework.version>
 
         <slf4j.version>1.7.30</slf4j.version>
-        <log4j.version>2.14.0</log4j.version>
+        <log4j.version>2.14.1</log4j.version>
         <netty.version>4.1.60.Final</netty.version>
         <quartz.version>2.3.2</quartz.version>
         <jackson.version>2.12.2</jackson.version>
@@ -37,6 +37,7 @@
         <lombok.version>1.18.18</lombok.version>
         <platform.classifier>linux-x86_64</platform.classifier>
         <spotbugs-maven-plugin.version>4.2.0</spotbugs-maven-plugin.version>
+        <vertx.version>4.0.3</vertx.version>
     </properties>
 
     <reporting>
@@ -209,55 +210,55 @@
         <dependency>
             <groupId>io.vertx</groupId>
             <artifactId>vertx-core</artifactId>
-            <version>4.0.2</version>
+            <version>${vertx.version}</version>
         </dependency>
 
         <dependency>
             <groupId>io.vertx</groupId>
             <artifactId>vertx-web</artifactId>
-            <version>4.0.2</version>
+            <version>${vertx.version}</version>
         </dependency>
 
         <dependency>
             <groupId>io.vertx</groupId>
             <artifactId>vertx-auth-jwt</artifactId>
-            <version>4.0.2</version>
+            <version>${vertx.version}</version>
         </dependency>
 
         <dependency>
             <groupId>io.vertx</groupId>
             <artifactId>vertx-auth-oauth2</artifactId>
-            <version>4.0.2</version>
+            <version>${vertx.version}</version>
         </dependency>
 
         <dependency>
             <groupId>io.vertx</groupId>
             <artifactId>vertx-auth-webauthn</artifactId>
-            <version>4.0.2</version>
+            <version>${vertx.version}</version>
         </dependency>
 
         <dependency>
             <groupId>io.vertx</groupId>
             <artifactId>vertx-web-templ-rocker</artifactId>
-            <version>4.0.2</version>
+            <version>${vertx.version}</version>
         </dependency>
 
         <dependency>
             <groupId>io.vertx</groupId>
             <artifactId>vertx-maven-service-factory</artifactId>
-            <version>4.0.2</version>
+            <version>${vertx.version}</version>
         </dependency>
 
         <dependency>
             <groupId>io.vertx</groupId>
             <artifactId>vertx-opentracing</artifactId>
-            <version>4.0.2</version>
+            <version>${vertx.version}</version>
         </dependency>
 
         <dependency>
             <groupId>io.vertx</groupId>
             <artifactId>vertx-service-discovery</artifactId>
-            <version>4.0.2</version>
+            <version>${vertx.version}</version>
         </dependency>
 
         <dependency>
