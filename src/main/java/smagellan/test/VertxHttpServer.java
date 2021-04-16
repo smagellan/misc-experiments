@@ -4,7 +4,7 @@ import io.vertx.core.*;
 import io.vertx.core.buffer.Buffer;
 import io.vertx.core.http.*;
 import io.vertx.core.impl.MyVertxFactory;
-import io.vertx.core.impl.VertxFactory;
+//import io.vertx.core.impl.VertxFactory;
 import io.vertx.core.json.JsonObject;
 import io.vertx.core.net.OpenSSLEngineOptions;
 import io.vertx.core.net.PemKeyCertOptions;
@@ -18,7 +18,7 @@ public class VertxHttpServer {
     public static void main(String[] args) {
         VertxOptions options = new VertxOptions()
                 .setPreferNativeTransport(true);
-        Vertx vertx = new VertxFactory(options).vertx();
+        Vertx vertx = new MyVertxFactory(options).vertx();
         DeploymentOptions deploymentOptions = new DeploymentOptions()
                 .setInstances(1);
                 //.setInstances(Runtime.getRuntime().availableProcessors());

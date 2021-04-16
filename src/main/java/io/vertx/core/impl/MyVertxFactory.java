@@ -14,7 +14,9 @@ package io.vertx.core.impl;
 import io.vertx.core.*;
 import io.vertx.core.file.impl.FileResolver;
 import io.vertx.core.net.impl.transport.Transport;
+import io.vertx.core.spi.ExecutorServiceFactory;
 import io.vertx.core.spi.VertxMetricsFactory;
+import io.vertx.core.spi.VertxThreadFactory;
 import io.vertx.core.spi.VertxTracerFactory;
 import io.vertx.core.spi.cluster.ClusterManager;
 import io.vertx.core.spi.cluster.NodeSelector;
@@ -75,13 +77,13 @@ public class MyVertxFactory {
     }
 
     public Vertx vertx() {
-        VertxImpl vertx = new VertxImpl(options, null, null, createMetrics(), createTracer(), createTransport(), createFileResolver());
+        VertxImpl vertx = new VertxImpl(options, null, null, createMetrics(), createTracer(), createTransport(), createFileResolver(), VertxThreadFactory.INSTANCE, ExecutorServiceFactory.INSTANCE);
         vertx.init();
         return vertx;
     }
 
     public void clusteredVertx(Handler<AsyncResult<Vertx>> handler) {
-        VertxImpl vertx = new VertxImpl(options, createClusterManager(), createNodeSelector(), createMetrics(), createTracer(), createTransport(), createFileResolver());
+        VertxImpl vertx = new VertxImpl(options, createClusterManager(), createNodeSelector(), createMetrics(), createTracer(), createTransport(), createFileResolver(), VertxThreadFactory.INSTANCE, ExecutorServiceFactory.INSTANCE);
         vertx.initClustered(options, handler);
     }
 

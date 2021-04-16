@@ -9,7 +9,7 @@
     <version>1.0-SNAPSHOT</version>
 
     <prerequisites>
-        <maven>3.2.5</maven>
+        <maven>3.3.3</maven>
     </prerequisites>
 
     <properties>
@@ -17,26 +17,26 @@
         <maven.compiler.source>14</maven.compiler.source>
         <maven.compiler.target>14</maven.compiler.target>
 
-        <jmh.version>1.28</jmh.version>
+        <jmh.version>1.29</jmh.version>
         <mysql.version>8.0.23</mysql.version>
         <jooq.version>3.14.8</jooq.version>
         <mysql.driver>com.mysql.jdbc.Driver</mysql.driver>
         <clickhouse.driver>ru.yandex.clickhouse.ClickHouseDriver</clickhouse.driver>
-        <org.springframework.version>5.3.5</org.springframework.version>
+        <org.springframework.version>5.3.6</org.springframework.version>
 
         <slf4j.version>1.7.30</slf4j.version>
         <log4j.version>2.14.1</log4j.version>
-        <netty.version>4.1.60.Final</netty.version>
+        <netty.version>4.1.62.Final</netty.version>
         <quartz.version>2.3.2</quartz.version>
-        <jackson.version>2.12.2</jackson.version>
+        <jackson.version>2.12.3</jackson.version>
         <bytebuddy.version>1.10.22</bytebuddy.version>
-        <org.eclipse.jetty>11.0.1</org.eclipse.jetty>
+        <org.eclipse.jetty>11.0.2</org.eclipse.jetty>
         <junit.version>5.7.1</junit.version>
         <junit.platform.version>1.7.1</junit.platform.version>
         <dl4j.version>1.0.0-beta7</dl4j.version>
         <lombok.version>1.18.18</lombok.version>
         <platform.classifier>linux-x86_64</platform.classifier>
-        <spotbugs-maven-plugin.version>4.2.0</spotbugs-maven-plugin.version>
+        <spotbugs-maven-plugin.version>4.2.2</spotbugs-maven-plugin.version>
         <vertx.version>4.0.3</vertx.version>
     </properties>
 
@@ -101,43 +101,43 @@
         <dependency>
             <groupId>io.opentelemetry</groupId>
             <artifactId>opentelemetry-exporter-jaeger</artifactId>
-            <version>1.0.1</version>
+            <version>1.1.0</version>
         </dependency>
 
         <dependency>
             <groupId>io.opentelemetry</groupId>
             <artifactId>opentelemetry-exporter-zipkin</artifactId>
-            <version>1.0.1</version>
+            <version>1.1.0</version>
         </dependency>
 
         <dependency>
             <groupId>io.opentelemetry</groupId>
             <artifactId>opentelemetry-sdk-extension-logging</artifactId>
-            <version>1.0.1-alpha</version>
+            <version>1.1.0-alpha</version>
         </dependency>
 
         <dependency>
             <groupId>io.opentelemetry</groupId>
             <artifactId>opentelemetry-sdk</artifactId>
-            <version>1.0.1</version>
+            <version>1.1.0</version>
         </dependency>
 
         <dependency>
             <groupId>io.opentelemetry</groupId>
             <artifactId>opentelemetry-api</artifactId>
-            <version>1.0.1</version>
+            <version>1.1.0</version>
         </dependency>
 
         <dependency>
             <groupId>io.opentelemetry</groupId>
             <artifactId>opentelemetry-opentracing-shim</artifactId>
-            <version>1.0.1-alpha</version>
+            <version>1.1.0-alpha</version>
         </dependency>
 
         <dependency>
             <groupId>io.opentelemetry</groupId>
             <artifactId>opentelemetry-semconv</artifactId>
-            <version>1.0.1-alpha</version>
+            <version>1.1.0-alpha</version>
         </dependency>
 
         <!-- <dependency>
@@ -158,13 +158,13 @@
         <dependency>
             <groupId>io.grpc</groupId>
             <artifactId>grpc-protobuf</artifactId>
-            <version>1.36.0</version>
+            <version>1.37.0</version>
         </dependency>
 
         <dependency>
             <groupId>io.grpc</groupId>
             <artifactId>grpc-netty</artifactId>
-            <version>1.36.0</version>
+            <version>1.37.0</version>
         </dependency>
 
         <dependency>
@@ -203,7 +203,7 @@
         <dependency>
             <groupId>io.netty.incubator</groupId>
             <artifactId>netty-incubator-transport-native-io_uring</artifactId>
-            <version>0.0.4.Final</version>
+            <version>0.0.5.Final</version>
             <classifier>${platform.classifier}</classifier>
         </dependency>
 
@@ -277,7 +277,7 @@
         <dependency>
             <groupId>io.lettuce</groupId>
             <artifactId>lettuce-core</artifactId>
-            <version>6.0.2.RELEASE</version>
+            <version>6.1.1.RELEASE</version>
         </dependency>
 
         <dependency>
@@ -301,7 +301,7 @@
         <dependency>
             <groupId>it.unimi.dsi</groupId>
             <artifactId>fastutil</artifactId>
-            <version>8.5.2</version>
+            <version>8.5.4</version>
         </dependency>
 
         <!-- https://mvnrepository.com/artifact/it.unimi.dsi/dsiutils -->
@@ -515,7 +515,7 @@
         <dependency>
             <groupId>ru.yandex.clickhouse</groupId>
             <artifactId>clickhouse-jdbc</artifactId>
-            <version>0.2.6</version>
+            <version>0.3.0</version>
         </dependency>
 
         <dependency>
@@ -545,13 +545,13 @@
         <dependency>
             <groupId>org.simplejavamail</groupId>
             <artifactId>simple-java-mail</artifactId>
-            <version>6.5.0</version>
+            <version>6.5.2</version>
         </dependency>
 
         <dependency>
             <groupId>com.icegreen</groupId>
             <artifactId>greenmail</artifactId>
-            <version>1.6.2</version>
+            <version>1.6.3</version>
             <exclusions>
                 <exclusion>
                     <groupId>junit</groupId>
@@ -594,7 +594,7 @@
         <dependency>
             <groupId>org.hibernate</groupId>
             <artifactId>hibernate-core</artifactId>
-            <version>5.4.29.Final</version>
+            <version>5.4.30.Final</version>
         </dependency>
 
         <dependency>
@@ -693,7 +693,7 @@
         <dependency>
             <groupId>io.github.classgraph</groupId>
             <artifactId>classgraph</artifactId>
-            <version>4.8.103</version>
+            <version>4.8.104</version>
         </dependency>
 
         <!--<dependency>
@@ -751,7 +751,7 @@
                     <dependency>
                         <groupId>com.github.spotbugs</groupId>
                         <artifactId>spotbugs</artifactId>
-                        <version>4.2.2</version>
+                        <version>4.2.3</version>
                     </dependency>
                 </dependencies>
             </plugin>
@@ -760,7 +760,7 @@
                 <!-- mvn verify or mvn org.owasp:dependency-check-maven:check-->
                 <groupId>org.owasp</groupId>
                 <artifactId>dependency-check-maven</artifactId>
-                <version>6.1.2</version>
+                <version>6.1.5</version>
                 <executions>
                     <execution>
                         <goals>
