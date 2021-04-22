@@ -16,6 +16,7 @@ public class VertxHttpServer {
     private static final org.slf4j.Logger logger = LoggerFactory.getLogger(VertxHttpServer.class);
 
     public static void main(String[] args) {
+        System.err.println("ours pid: " + ProcessHandle.current().pid());
         VertxOptions options = new VertxOptions()
                 .setPreferNativeTransport(true);
         Vertx vertx = new MyVertxFactory(options).vertx();
@@ -25,8 +26,8 @@ public class VertxHttpServer {
         vertx.deployVerticle(() -> new ServerVerticle(8080, false),
                 deploymentOptions, r -> logger.info("server start succeeded: {}", r.succeeded()));
 
-        vertx.deployVerticle(() -> new ClientVerticle(8080), deploymentOptions,
-                r -> logger.info("client start succeeded: {}", r.succeeded()));
+        //vertx.deployVerticle(() -> new ClientVerticle(8080), deploymentOptions,
+        //        r -> logger.info("client start succeeded: {}", r.succeeded()));
     }
 }
 

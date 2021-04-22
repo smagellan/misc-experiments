@@ -18,25 +18,25 @@
         <maven.compiler.target>14</maven.compiler.target>
 
         <jmh.version>1.29</jmh.version>
-        <mysql.version>8.0.23</mysql.version>
-        <jooq.version>3.14.8</jooq.version>
+        <mysql.version>8.0.24</mysql.version>
+        <jooq.version>3.14.9</jooq.version>
         <mysql.driver>com.mysql.jdbc.Driver</mysql.driver>
         <clickhouse.driver>ru.yandex.clickhouse.ClickHouseDriver</clickhouse.driver>
         <org.springframework.version>5.3.6</org.springframework.version>
 
         <slf4j.version>1.7.30</slf4j.version>
         <log4j.version>2.14.1</log4j.version>
-        <netty.version>4.1.62.Final</netty.version>
+        <netty.version>4.1.63.Final</netty.version>
         <quartz.version>2.3.2</quartz.version>
         <jackson.version>2.12.3</jackson.version>
-        <bytebuddy.version>1.10.22</bytebuddy.version>
+        <bytebuddy.version>1.11.0</bytebuddy.version>
         <org.eclipse.jetty>11.0.2</org.eclipse.jetty>
         <junit.version>5.7.1</junit.version>
         <junit.platform.version>1.7.1</junit.platform.version>
         <dl4j.version>1.0.0-beta7</dl4j.version>
         <lombok.version>1.18.18</lombok.version>
         <platform.classifier>linux-x86_64</platform.classifier>
-        <spotbugs-maven-plugin.version>4.2.2</spotbugs-maven-plugin.version>
+        <spotbugs-maven-plugin.version>4.2.3</spotbugs-maven-plugin.version>
         <vertx.version>4.0.3</vertx.version>
     </properties>
 
@@ -289,7 +289,7 @@
         <dependency>
             <groupId>redis.clients</groupId>
             <artifactId>jedis</artifactId>
-            <version>3.5.2</version>
+            <version>3.6.0</version>
         </dependency>
 
         <dependency>
@@ -521,7 +521,7 @@
         <dependency>
             <groupId>org.postgresql</groupId>
             <artifactId>postgresql</artifactId>
-            <version>42.2.19</version>
+            <version>42.2.20</version>
         </dependency>
 
         <dependency>
