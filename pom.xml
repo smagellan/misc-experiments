@@ -17,12 +17,12 @@
         <maven.compiler.source>14</maven.compiler.source>
         <maven.compiler.target>14</maven.compiler.target>
 
-        <jmh.version>1.29</jmh.version>
-        <mysql.version>8.0.24</mysql.version>
+        <jmh.version>1.31</jmh.version>
+        <mysql.version>8.0.25</mysql.version>
         <jooq.version>3.14.9</jooq.version>
         <mysql.driver>com.mysql.jdbc.Driver</mysql.driver>
         <clickhouse.driver>ru.yandex.clickhouse.ClickHouseDriver</clickhouse.driver>
-        <org.springframework.version>5.3.6</org.springframework.version>
+        <org.springframework.version>5.3.7</org.springframework.version>
 
         <slf4j.version>1.7.30</slf4j.version>
         <log4j.version>2.14.1</log4j.version>
@@ -38,6 +38,9 @@
         <platform.classifier>linux-x86_64</platform.classifier>
         <spotbugs-maven-plugin.version>4.2.3</spotbugs-maven-plugin.version>
         <vertx.version>4.0.3</vertx.version>
+        <grpc.version>1.37.1</grpc.version>
+        <opentelemetry.version>1.2.0</opentelemetry.version>
+        <spring-integration.version>5.4.6</spring-integration.version>
     </properties>
 
     <reporting>
@@ -101,43 +104,43 @@
         <dependency>
             <groupId>io.opentelemetry</groupId>
             <artifactId>opentelemetry-exporter-jaeger</artifactId>
-            <version>1.1.0</version>
+            <version>${opentelemetry.version}</version>
         </dependency>
 
         <dependency>
             <groupId>io.opentelemetry</groupId>
             <artifactId>opentelemetry-exporter-zipkin</artifactId>
-            <version>1.1.0</version>
-        </dependency>
-
-        <dependency>
-            <groupId>io.opentelemetry</groupId>
-            <artifactId>opentelemetry-sdk-extension-logging</artifactId>
-            <version>1.1.0-alpha</version>
+            <version>${opentelemetry.version}</version>
         </dependency>
 
         <dependency>
             <groupId>io.opentelemetry</groupId>
             <artifactId>opentelemetry-sdk</artifactId>
-            <version>1.1.0</version>
+            <version>${opentelemetry.version}</version>
         </dependency>
 
         <dependency>
             <groupId>io.opentelemetry</groupId>
             <artifactId>opentelemetry-api</artifactId>
-            <version>1.1.0</version>
+            <version>${opentelemetry.version}</version>
+        </dependency>
+
+        <dependency>
+            <groupId>io.opentelemetry</groupId>
+            <artifactId>opentelemetry-sdk-extension-logging</artifactId>
+            <version>${opentelemetry.version}-alpha</version>
         </dependency>
 
         <dependency>
             <groupId>io.opentelemetry</groupId>
             <artifactId>opentelemetry-opentracing-shim</artifactId>
-            <version>1.1.0-alpha</version>
+            <version>${opentelemetry.version}-alpha</version>
         </dependency>
 
         <dependency>
             <groupId>io.opentelemetry</groupId>
             <artifactId>opentelemetry-semconv</artifactId>
-            <version>1.1.0-alpha</version>
+            <version>${opentelemetry.version}-alpha</version>
         </dependency>
 
         <!-- <dependency>
@@ -158,13 +161,13 @@
         <dependency>
             <groupId>io.grpc</groupId>
             <artifactId>grpc-protobuf</artifactId>
-            <version>1.37.0</version>
+            <version>${grpc.version}</version>
         </dependency>
 
         <dependency>
             <groupId>io.grpc</groupId>
             <artifactId>grpc-netty</artifactId>
-            <version>1.37.0</version>
+            <version>${grpc.version}</version>
         </dependency>
 
         <dependency>
@@ -271,13 +274,13 @@
         <dependency>
             <groupId>org.javassist</groupId>
             <artifactId>javassist</artifactId>
-            <version>3.27.0-GA</version>
+            <version>3.28.0-GA</version>
         </dependency>
 
         <dependency>
             <groupId>io.lettuce</groupId>
             <artifactId>lettuce-core</artifactId>
-            <version>6.1.1.RELEASE</version>
+            <version>6.1.2.RELEASE</version>
         </dependency>
 
         <dependency>
@@ -507,6 +510,18 @@
         </dependency>
 
         <dependency>
+            <groupId>org.springframework.integration</groupId>
+            <artifactId>spring-integration-core</artifactId>
+            <version>${spring-integration.version}</version>
+        </dependency>
+
+        <dependency>
+            <groupId>org.springframework.integration</groupId>
+            <artifactId>spring-integration-file</artifactId>
+            <version>${spring-integration.version}</version>
+        </dependency>
+
+        <dependency>
             <groupId>mysql</groupId>
             <artifactId>mysql-connector-java</artifactId>
             <version>${mysql.version}</version>
@@ -515,7 +530,7 @@
         <dependency>
             <groupId>ru.yandex.clickhouse</groupId>
             <artifactId>clickhouse-jdbc</artifactId>
-            <version>0.3.0</version>
+            <version>0.3.1</version>
         </dependency>
 
         <dependency>
@@ -545,7 +560,7 @@
         <dependency>
             <groupId>org.simplejavamail</groupId>
             <artifactId>simple-java-mail</artifactId>
-            <version>6.5.2</version>
+            <version>6.5.3</version>
         </dependency>
 
         <dependency>
@@ -594,7 +609,7 @@
         <dependency>
             <groupId>org.hibernate</groupId>
             <artifactId>hibernate-core</artifactId>
-            <version>5.4.30.Final</version>
+            <version>5.4.31.Final</version>
         </dependency>
 
         <dependency>
@@ -693,7 +708,7 @@
         <dependency>
             <groupId>io.github.classgraph</groupId>
             <artifactId>classgraph</artifactId>
-            <version>4.8.104</version>
+            <version>4.8.105</version>
         </dependency>
 
         <!--<dependency>
@@ -760,12 +775,15 @@
                 <!-- mvn verify or mvn org.owasp:dependency-check-maven:check-->
                 <groupId>org.owasp</groupId>
                 <artifactId>dependency-check-maven</artifactId>
-                <version>6.1.5</version>
+                <version>6.1.6</version>
                 <executions>
                     <execution>
                         <goals>
                             <goal>check</goal>
                         </goals>
+                        <configuration>
+                            <assemblyAnalyzerEnabled>false</assemblyAnalyzerEnabled>
+                        </configuration>
                     </execution>
                 </executions>
             </plugin>

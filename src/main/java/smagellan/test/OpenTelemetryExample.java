@@ -31,7 +31,7 @@ import org.bson.Document;
 import java.util.concurrent.TimeUnit;
 
 //based on https://github.com/open-telemetry/opentelemetry-java/blob/master/examples/jaeger/
-public class JaegerExample {
+public class OpenTelemetryExample {
     // Jaeger Endpoint URL and PORT
     private final String ip; // = "jaeger";
     private final int port; // = 14250;
@@ -44,7 +44,7 @@ public class JaegerExample {
     private final Tracer tracer =
             otelSdk.getTracer("io.opentelemetry.example.JaegerExample");
 
-    public JaegerExample(String ip, int port) {
+    public OpenTelemetryExample(String ip, int port) {
         this.ip = ip;
         this.port = port;
     }
@@ -125,7 +125,7 @@ public class JaegerExample {
         int port = Integer.parseInt(args[1]);
 
         // Start the example
-        JaegerExample example = new JaegerExample(ip, port);
+        OpenTelemetryExample example = new OpenTelemetryExample(ip, port);
         example.setupExporter();
         // generate a few sample spans
         Span parentSpan = example.tracer.spanBuilder("parent_span").startSpan();

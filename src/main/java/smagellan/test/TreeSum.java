@@ -56,7 +56,7 @@ public class TreeSum {
     public static class Node {
         private final int data;
         private final String name;
-        List<Node> children;
+        private List<Node> children;
 
         public Node(String name, int data) {
             this.name = name;
