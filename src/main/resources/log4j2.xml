@@ -20,7 +20,7 @@
     </Appenders>
 
     <Loggers>
-        <logger name="org.springframework.integration" level="DEBUG" >
+        <logger name="org.springframework.integration" level="INFO" >
             <AppenderRef ref="CONSOLE"/>
         </logger>
         <Root level="INFO">
