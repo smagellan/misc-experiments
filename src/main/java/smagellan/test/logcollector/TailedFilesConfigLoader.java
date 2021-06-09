@@ -24,12 +24,10 @@ class TailedFilesConfigLoader implements BeanDefinitionRegistryPostProcessor {
     private static final org.slf4j.Logger logger = LoggerFactory.getLogger(TailedFilesConfigLoader.class);
 
     private final List<String> filesList;
-    private final List<String> rolledFilesDirs;
     public static final String TAIL_FROM_FILE_START_OPTIONS = "-F -n 2147483647";
 
     public TailedFilesConfigLoader() {
         this.filesList = Arrays.asList("/tmp/aa-test3", "/tmp/aa-test4");
-        this.rolledFilesDirs = Arrays.asList("/tmp/mon-dir1", "/tmp/mon-dir2");
     }
 
     @Override

@@ -6,8 +6,8 @@ import org.springframework.messaging.MessageChannel;
 import org.springframework.messaging.support.GenericMessage;
 import java.util.List;
 
-public class SpringIntegrationFileTailTest {
-    private static final org.slf4j.Logger logger = LoggerFactory.getLogger(SpringIntegrationFileTailTest.class);
+public class LogCollectorMain {
+    private static final org.slf4j.Logger logger = LoggerFactory.getLogger(LogCollectorMain.class);
 
     public static void main(String[] args) throws Throwable {
         AnnotationConfigApplicationContext cfg = new AnnotationConfigApplicationContext();
@@ -19,6 +19,7 @@ public class SpringIntegrationFileTailTest {
             List<String> fileTailers = cfg.getBean(Constants.FILE_TAILER_IDS, List.class);
             logger.info("starting file tailers");
             for (String tailerId : fileTailers) {
+                logger.info("starting {}", tailerId);
                 controlBusChannel.send(new GenericMessage<>("@" + tailerId + ".start()"));
             }
 

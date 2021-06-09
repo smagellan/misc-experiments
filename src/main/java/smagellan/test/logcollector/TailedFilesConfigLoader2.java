@@ -22,12 +22,10 @@ public class TailedFilesConfigLoader2 implements BeanDefinitionRegistryPostProce
 
 
     private final List<String> filesList;
-    private final List<String> rolledFilesDirs;
     public static final String TAIL_FROM_FILE_START_OPTIONS = "-F -n 2147483647";
 
     public TailedFilesConfigLoader2() {
         this.filesList = Arrays.asList("/tmp/aa-test3", "/tmp/aa-test4");
-        this.rolledFilesDirs = Arrays.asList("/tmp/mon-dir1", "/tmp/mon-dir2");
     }
 
     @Override
