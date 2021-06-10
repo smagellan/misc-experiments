@@ -4,17 +4,23 @@ import org.springframework.core.task.SimpleAsyncTaskExecutor;
 import org.springframework.core.task.TaskExecutor;
 import org.springframework.integration.endpoint.MessageProducerSupport;
 import org.springframework.integration.file.FileHeaders;
-import org.springframework.messaging.Message;
 
 import java.io.File;
+import java.nio.file.Path;
 import java.util.*;
+import java.util.stream.Collectors;
 
 public class InitialNonImportedRolledLogsMessageSource extends MessageProducerSupport {
-    private TaskExecutor taskExecutor = new SimpleAsyncTaskExecutor(InitialNonImportedRolledLogsMessageSource.class.getSimpleName() + "-");
-    private Map<File, Collection<File>> initialNonRolledFiles;
+    private final TaskExecutor taskExecutor = new SimpleAsyncTaskExecutor(InitialNonImportedRolledLogsMessageSource.class.getSimpleName() + "-");
+    private final Map<LogFileInfo, Collection<File>> initialNonRolledFiles;
+    private final Map<File, Collection<File>> liveFileToRolledNonImportedFiles;
 
-    public InitialNonImportedRolledLogsMessageSource(Map<File, Collection<File>> initialNonRolledFiles) {
+    public InitialNonImportedRolledLogsMessageSource(Map<LogFileInfo, Collection<File>> initialNonRolledFiles) {
+        Objects.requireNonNull(initialNonRolledFiles);
         this.initialNonRolledFiles = initialNonRolledFiles;
+        this.liveFileToRolledNonImportedFiles = initialNonRolledFiles.entrySet()
+                .stream()
+                .collect(Collectors.toMap(e -> e.getKey().liveLogFile(), Map.Entry::getValue));
     }
 
     @Override
@@ -22,19 +28,23 @@ public class InitialNonImportedRolledLogsMessageSource extends MessageProducerSu
         taskExecutor.execute(this::runExec);
     }
 
-    public Map<File, Collection<File>> getExistingNonRolledFiles() {
-        return initialNonRolledFiles;
+    public Map<File, Collection<File>> getExistingLiveLogsToNonRolledFiles() {
+        return liveFileToRolledNonImportedFiles;
     }
 
     private void runExec() {
-        for (Map.Entry<File, Collection<File>> fileEntry : initialNonRolledFiles.entrySet()) {
-            if (fileEntry.getValue() != null && !fileEntry.getValue().isEmpty()) {
-                Message<?> message = getMessageBuilderFactory()
-                        .withPayload(fileEntry.getValue())
-                        .setHeader(FileHeaders.FILENAME, fileEntry.getKey().getName())
-                        .setHeader(FileHeaders.ORIGINAL_FILE, fileEntry.getKey())
-                        .build();
-                sendMessage(message);
+        for (Map.Entry<LogFileInfo, Collection<File>> fileEntry : initialNonRolledFiles.entrySet()) {
+            Collection<File> rolledLogFiles = fileEntry.getValue();
+            if (rolledLogFiles != null && !rolledLogFiles.isEmpty()) {
+                Collection<Path> rolledPaths = rolledLogFiles
+                        .stream()
+                        .map(File::toPath)
+                        .collect(Collectors.toList());
+                RolledFileMessage msg = new RolledFileMessage(rolledPaths, Map.of(
+                        FileHeaders.FILENAME, fileEntry.getKey().liveLogFile(),
+                        FileHeaders.ORIGINAL_FILE, fileEntry.getKey())
+                );
+                sendMessage(msg);
             }
         }
     }

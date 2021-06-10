@@ -33,9 +33,14 @@ public class TailedFilesConfigLoader3 {
     private final IntegrationFlowContext ctx;
 
     @Autowired
-    public TailedFilesConfigLoader3(LogCollectorConfig collectorConfig, InitialNonImportedRolledLogsMessageSource initialRolledNonImportedLogs, IntegrationFlowContext ctx) {
+    public TailedFilesConfigLoader3(LogCollectorConfig collectorConfig,
+                                    InitialNonImportedRolledLogsMessageSource initialRolledNonImportedLogs,
+                                    IntegrationFlowContext ctx) {
         this.ctx = ctx;
-        this.filesList = collectorConfig.liveFileToRolledFile().keySet();
+        this.filesList = collectorConfig.liveFileToRolledFile()
+                .stream()
+                .map(LogFileInfo::liveLogFile)
+                .collect(Collectors.toList());
         this.initialRolledNonImportedLogs = initialRolledNonImportedLogs;
         this.tailFlowsIds = Collections.unmodifiableList(buildFileTailerIds());
     }
@@ -62,7 +67,7 @@ public class TailedFilesConfigLoader3 {
     @PostConstruct
     private void registerTailedLogsFlows() {
         logger.info("registering log tailers");
-        Map<File, Collection<File>> nonRolledFiles = this.initialRolledNonImportedLogs.getExistingNonRolledFiles();
+        Map<File, Collection<File>> nonRolledFiles = this.initialRolledNonImportedLogs.getExistingLiveLogsToNonRolledFiles();
         Iterator<String> tailerIds = tailFlowsIds.iterator();
         for (File file : filesList) {
             String registrationId = tailerIds.next();

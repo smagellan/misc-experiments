@@ -23,6 +23,7 @@ import java.io.File;
 import java.io.FilenameFilter;
 import java.time.Duration;
 import java.util.*;
+import java.util.stream.Collectors;
 
 @Configuration
 @Import(TailedFilesConfigLoader3.class)
@@ -44,9 +45,9 @@ class IntegrationConfig {
 
     @Bean
     public LogCollectorConfig collectorConfig() {
-        Map<File, File> liveFileToRolledFile = Map.of(
-                new File("/tmp/aa-test3"), new File("/tmp/mon-dir1"),
-                new File("/tmp/aa-test4"), new File("/tmp/mon-dir2")
+        Collection<LogFileInfo> liveFileToRolledFile = List.of(
+                new LogFileInfo(new File("/tmp/aa-test3"), new File("/tmp/mon-dir1")),
+                new LogFileInfo(new File("/tmp/aa-test4"), new File("/tmp/mon-dir2"))
         );
         return new LogCollectorConfig(liveFileToRolledFile);
     }
@@ -57,10 +58,15 @@ class IntegrationConfig {
         return new FluxMessageChannel();
     }
 
+    @Bean
+    public LogIngestor logIngestor() {
+        return new LogIngestor();
+    }
+
     @Autowired
     @Bean
-    public LiveLogsImportingHandler liveLogsImportingHandler(RolledLogsTracker logsTracker) {
-        return new LiveLogsImportingHandler(Constants.ROLLED_LOGS_IMPORT_CHANNEL, logsTracker);
+    public LiveLogsImportingHandler liveLogsImportingHandler(RolledLogsTracker logsTracker, LogIngestor logIngestor) {
+        return new LiveLogsImportingHandler(Constants.ROLLED_LOGS_IMPORT_CHANNEL, logsTracker, logIngestor);
     }
 
     @Autowired
@@ -82,20 +88,22 @@ class IntegrationConfig {
     @Bean
     public InitialNonImportedRolledLogsMessageSource initialRolledNonImportedLogs(LogCollectorConfig collectorConfig, RolledLogsTracker logsTracker) {
         FilenameFilter filter = (dir, name) -> true;
-        Map<File, Collection<File>> liveFileToRolledFile = buildExistingRolledNonImportedFilesMap(logsTracker, collectorConfig.liveFileToRolledFile().values(), filter);
+        Map<LogFileInfo, Collection<File>> liveFileToRolledFile = buildExistingRolledNonImportedFilesMap(logsTracker, collectorConfig.liveFileToRolledFile(), filter);
         InitialNonImportedRolledLogsMessageSource ret = new InitialNonImportedRolledLogsMessageSource(liveFileToRolledFile);
         ret.setOutputChannelName(Constants.ROLLED_LOGS_IMPORT_CHANNEL);
         return ret;
     }
 
     @NotNull
-    private Map<File, Collection<File>> buildExistingRolledNonImportedFilesMap(RolledLogsTracker logsTracker, Collection<File> rolledFilesDirectories, FilenameFilter filter) {
-        Map<File, Collection<File>> liveFileToRolledFile = new HashMap<>();
-        for (File  file : rolledFilesDirectories) {
-            File[] files = file.listFiles(filter);
+    private Map<LogFileInfo, Collection<File>> buildExistingRolledNonImportedFilesMap(RolledLogsTracker logsTracker,
+                                                                                      Collection<LogFileInfo> rolledFilesDirectories,
+                                                                                      FilenameFilter filter) {
+        Map<LogFileInfo, Collection<File>> liveFileToRolledFile = new HashMap<>();
+        for (LogFileInfo fileInfo : rolledFilesDirectories) {
+            File[] files = fileInfo.rolledLogsDir().listFiles(filter);
             if (files != null) {
                 Set<File> dirFiles = logsTracker.retainNonImportedFiles(Arrays.asList(files));
-                liveFileToRolledFile.put(file, Collections.unmodifiableCollection(dirFiles));
+                liveFileToRolledFile.put(fileInfo, Collections.unmodifiableCollection(dirFiles));
             }
         }
         liveFileToRolledFile = Collections.unmodifiableMap(liveFileToRolledFile);
@@ -115,8 +123,8 @@ class IntegrationConfig {
 
     @Autowired
     @Bean
-    public RolledLogsImportingHandler rolledLogsImportingHandler(RolledLogsTracker logsTracker) {
-        return new RolledLogsImportingHandler(logsTracker);
+    public RolledLogsImportingHandler rolledLogsImportingHandler(RolledLogsTracker logsTracker, LogIngestor logIngestor) {
+        return new RolledLogsImportingHandler(logsTracker, logIngestor);
     }
 
     @Autowired
@@ -135,7 +143,11 @@ class IntegrationConfig {
     @Autowired
     @Bean
     public DirectoryWatcher directoryWatcher(LogCollectorConfig collectorConfig) {
-        DirectoryWatcher watcher = new DirectoryWatcher(collectorConfig.liveFileToRolledFile().values(), (dir, name) -> true);
+        Collection<File> rolledLogsDirs = collectorConfig.liveFileToRolledFile()
+                .stream()
+                .map(LogFileInfo::rolledLogsDir)
+                .collect(Collectors.toList());
+        DirectoryWatcher watcher = new DirectoryWatcher(rolledLogsDirs, (dir, name) -> true);
         watcher.setOutputChannelName(Constants.TAILED_AND_ROLLED_FILES_CHANNEL);
         return watcher;
     }

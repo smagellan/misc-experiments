@@ -1,16 +1,15 @@
 package smagellan.test.logcollector;
 
-import java.io.File;
-import java.util.Map;
+import java.util.Collection;
 
 public class LogCollectorConfig {
-    private final Map<File, File> liveFileToRolledFile;
+    private final Collection<LogFileInfo> liveFileToRolledFile;
 
-    public LogCollectorConfig(Map<File, File> liveFileToRolledFile) {
+    public LogCollectorConfig(Collection<LogFileInfo> liveFileToRolledFile) {
         this.liveFileToRolledFile = liveFileToRolledFile;
     }
 
-    public Map<File, File> liveFileToRolledFile() {
+    public Collection<LogFileInfo> liveFileToRolledFile() {
         return liveFileToRolledFile;
     }
 }
