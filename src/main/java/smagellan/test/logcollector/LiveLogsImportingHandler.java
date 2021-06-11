@@ -28,12 +28,12 @@ public class LiveLogsImportingHandler extends AbstractMessageHandler {
         MessageLogger.logMessage(message);
         GroupedLogEvents groupedEvents = (GroupedLogEvents) message.getPayload();
         try {
+            logIngestor.ingestLogLines(groupedEvents.tailedLines());
             Collection<File> paths = groupedEvents
                     .rolledFiles()
                     .stream()
                     .map(p -> p.toAbsolutePath().toFile())
                     .collect(Collectors.toList());
-            logIngestor.ingestLogLines(groupedEvents.tailedLines());
             logsTracker.markImported(paths);
         } catch (Exception ex) {
             sendErroneousRolledLogFiles(groupedEvents.rolledFiles());
@@ -44,6 +44,9 @@ public class LiveLogsImportingHandler extends AbstractMessageHandler {
 
     private void sendErroneousRolledLogFiles(Collection<Path> rolledLogs) {
         MessageChannel chan = getChannelResolver().resolveDestination(rolledLogsImportingChannelName);
-        chan.send(new RolledFileMessage(rolledLogs));
+        Message<?> message = getMessageBuilderFactory()
+                .withPayload(new RolledFiles(rolledLogs))
+                .build();
+        chan.send(message);
     }
 }

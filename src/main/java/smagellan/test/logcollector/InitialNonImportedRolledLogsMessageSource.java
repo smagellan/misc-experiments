@@ -4,6 +4,7 @@ import org.springframework.core.task.SimpleAsyncTaskExecutor;
 import org.springframework.core.task.TaskExecutor;
 import org.springframework.integration.endpoint.MessageProducerSupport;
 import org.springframework.integration.file.FileHeaders;
+import org.springframework.messaging.Message;
 
 import java.io.File;
 import java.nio.file.Path;
@@ -40,11 +41,12 @@ public class InitialNonImportedRolledLogsMessageSource extends MessageProducerSu
                         .stream()
                         .map(File::toPath)
                         .collect(Collectors.toList());
-                RolledFileMessage msg = new RolledFileMessage(rolledPaths, Map.of(
-                        FileHeaders.FILENAME, fileEntry.getKey().liveLogFile(),
-                        FileHeaders.ORIGINAL_FILE, fileEntry.getKey())
-                );
-                sendMessage(msg);
+                Message<?> message = getMessageBuilderFactory()
+                        .withPayload(new RolledFiles(rolledPaths))
+                        .setHeader(FileHeaders.FILENAME, fileEntry.getKey().liveLogFile())
+                        .setHeader(FileHeaders.ORIGINAL_FILE, fileEntry.getKey())
+                        .build();
+                sendMessage(message);
             }
         }
     }

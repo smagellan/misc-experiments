@@ -34,8 +34,8 @@ public class RolledLogsImportingHandler extends AbstractMessageHandler {
     @Override
     protected void handleMessageInternal(Message<?> message) {
         logger.info("handleMessageInternal: {}", message);
-        RolledFileMessage rolledMsg = (RolledFileMessage) message;
-        List<File> rolledFiles = rolledMsg.getPayload()
+        List<File> rolledFiles = ((RolledFiles)message.getPayload())
+                .rolledFiles()
                 .stream()
                 .map(Path::toFile)
                 .collect(Collectors.toList());

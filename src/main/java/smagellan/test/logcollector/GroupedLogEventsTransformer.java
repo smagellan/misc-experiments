@@ -25,9 +25,9 @@ class GroupedLogEventsTransformer implements GenericTransformer<Message<List<Mes
         List<Path> rolledFiles = new ArrayList<>();
         for (Message<?> msg : source.getPayload()) {
             Object payload = msg.getPayload();
-            if (msg instanceof RolledFileMessage) {
-                RolledFileMessage rollMsg = (RolledFileMessage) msg;
-                rolledFiles.addAll(rollMsg.getPayload());
+            if (msg instanceof RolledFiles) {
+                RolledFiles rollMsg = (RolledFiles) msg.getPayload();
+                rolledFiles.addAll(rollMsg.rolledFiles());
             } else if (payload instanceof String) {
                 File file = msg.getHeaders().get(FileHeaders.ORIGINAL_FILE, File.class);
                 if (file != null) {

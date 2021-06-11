@@ -3,6 +3,7 @@ package smagellan.test.logcollector;
 import com.sun.nio.file.SensitivityWatchEventModifier;
 import org.slf4j.LoggerFactory;
 import org.springframework.integration.endpoint.MessageProducerSupport;
+import org.springframework.messaging.Message;
 import org.springframework.messaging.MessageChannel;
 
 import java.io.File;
@@ -48,7 +49,10 @@ class DirectoryWatcher extends MessageProducerSupport implements Runnable {
                             .filter(path -> filter.accept(path.toAbsolutePath().getParent().toFile(), path.getFileName().toString()))
                             .collect(Collectors.toList());
                     logger.info("publishing files events for {}", contexts);
-                    channel.send(new RolledFileMessage(contexts));
+                    Message<?> message = getMessageBuilderFactory()
+                            .withPayload(new RolledFiles(contexts))
+                            .build();
+                    channel.send(message);
                 }
                 key.reset();
             }
