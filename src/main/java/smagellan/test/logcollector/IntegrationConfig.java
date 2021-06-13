@@ -21,6 +21,7 @@ import reactor.core.publisher.Flux;
 
 import java.io.File;
 import java.io.FilenameFilter;
+import java.io.IOException;
 import java.time.Duration;
 import java.util.*;
 import java.util.stream.Collectors;
@@ -49,7 +50,7 @@ class IntegrationConfig {
                 new LogFileInfo(new File("/tmp/aa-test3"), new File("/tmp/mon-dir1"), Map.of("app-name", "app1")),
                 new LogFileInfo(new File("/tmp/aa-test4"), new File("/tmp/mon-dir2"), Map.of("app-name", "app2"))
         );
-        return new LogCollectorConfig(liveFileToRolledFile);
+        return new LogCollectorConfig(liveFileToRolledFile, new File("/tmp/tracked-logs.properties"));
     }
 
     @Bean
@@ -87,7 +88,7 @@ class IntegrationConfig {
 
     @Autowired
     @Bean
-    public InitialNonImportedRolledLogsMessageSource initialRolledNonImportedLogs(LogCollectorConfig collectorConfig, RolledLogsTracker logsTracker) {
+    public InitialNonImportedRolledLogsMessageSource initialRolledNonImportedLogs(LogCollectorConfig collectorConfig, RolledLogsTracker logsTracker) throws IOException {
         FilenameFilter filter = (dir, name) -> true;
         Map<LogFileInfo, Collection<File>> liveFileToRolledFile = buildExistingRolledNonImportedFilesMap(logsTracker, collectorConfig.logFilesInfo(), filter);
         InitialNonImportedRolledLogsMessageSource ret = new InitialNonImportedRolledLogsMessageSource(collectorConfig, liveFileToRolledFile);
@@ -98,7 +99,7 @@ class IntegrationConfig {
     @NotNull
     private Map<LogFileInfo, Collection<File>> buildExistingRolledNonImportedFilesMap(RolledLogsTracker logsTracker,
                                                                                       Collection<LogFileInfo> rolledFilesDirectories,
-                                                                                      FilenameFilter filter) {
+                                                                                      FilenameFilter filter) throws IOException {
         Map<LogFileInfo, Collection<File>> liveFileToRolledFile = new HashMap<>();
         for (LogFileInfo fileInfo : rolledFilesDirectories) {
             File[] files = fileInfo.rolledLogsDir().listFiles(filter);
@@ -111,9 +112,10 @@ class IntegrationConfig {
         return liveFileToRolledFile;
     }
 
+    @Autowired
     @Bean
-    public RolledLogsTracker rolledLogsTracker() {
-        return new RolledLogsTracker();
+    public RolledLogsTracker rolledLogsTracker(LogCollectorConfig config) throws IOException {
+        return new RolledLogsTracker(config);
     }
 
     @Qualifier(Constants.ROLLED_LOGS_IMPORT_CHANNEL)
