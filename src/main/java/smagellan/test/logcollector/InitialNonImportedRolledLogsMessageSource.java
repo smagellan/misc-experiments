@@ -1,5 +1,7 @@
 package smagellan.test.logcollector;
 
+import org.apache.commons.lang3.tuple.ImmutablePair;
+import org.apache.commons.lang3.tuple.Pair;
 import org.springframework.core.task.SimpleAsyncTaskExecutor;
 import org.springframework.core.task.TaskExecutor;
 import org.springframework.integration.endpoint.MessageProducerSupport;
@@ -15,9 +17,11 @@ public class InitialNonImportedRolledLogsMessageSource extends MessageProducerSu
     private final TaskExecutor taskExecutor = new SimpleAsyncTaskExecutor(InitialNonImportedRolledLogsMessageSource.class.getSimpleName() + "-");
     private final Map<LogFileInfo, Collection<File>> initialNonRolledFiles;
     private final Map<File, Collection<File>> liveFileToRolledNonImportedFiles;
+    private final LogCollectorConfig config;
 
-    public InitialNonImportedRolledLogsMessageSource(Map<LogFileInfo, Collection<File>> initialNonRolledFiles) {
+    public InitialNonImportedRolledLogsMessageSource(LogCollectorConfig config, Map<LogFileInfo, Collection<File>> initialNonRolledFiles) {
         Objects.requireNonNull(initialNonRolledFiles);
+        this.config = config;
         this.initialNonRolledFiles = initialNonRolledFiles;
         this.liveFileToRolledNonImportedFiles = initialNonRolledFiles.entrySet()
                 .stream()
@@ -37,9 +41,10 @@ public class InitialNonImportedRolledLogsMessageSource extends MessageProducerSu
         for (Map.Entry<LogFileInfo, Collection<File>> fileEntry : initialNonRolledFiles.entrySet()) {
             Collection<File> rolledLogFiles = fileEntry.getValue();
             if (rolledLogFiles != null && !rolledLogFiles.isEmpty()) {
-                Collection<Path> rolledPaths = rolledLogFiles
+                Collection<Pair<LogFileInfo, Path>> rolledPaths = rolledLogFiles
                         .stream()
                         .map(File::toPath)
+                        .map(p -> ImmutablePair.of(fileEntry.getKey(), p))
                         .collect(Collectors.toList());
                 Message<?> message = getMessageBuilderFactory()
                         .withPayload(new RolledFiles(rolledPaths))

@@ -1,5 +1,7 @@
 package smagellan.test.logcollector;
 
+import org.apache.commons.lang3.tuple.ImmutablePair;
+import org.apache.commons.lang3.tuple.Pair;
 import org.jetbrains.annotations.NotNull;
 import org.slf4j.LoggerFactory;
 import org.springframework.integration.handler.AbstractMessageHandler;
@@ -8,7 +10,6 @@ import org.springframework.scheduling.annotation.Scheduled;
 
 import java.io.File;
 import java.io.IOException;
-import java.nio.file.Path;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Queue;
@@ -20,8 +21,8 @@ public class RolledLogsImportingHandler extends AbstractMessageHandler {
 
     private final LogIngestor logIngestor;
     private final RolledLogsTracker logsTracker;
-    private final Queue<File> files2Import;
-    private final Queue<File> errorFilesQueue;
+    private final Queue<Pair<LogFileInfo, File>> files2Import;
+    private final Queue<Pair<LogFileInfo, File>> errorFilesQueue;
 
 
     public RolledLogsImportingHandler(RolledLogsTracker logsTracker, LogIngestor logIngestor) {
@@ -34,10 +35,10 @@ public class RolledLogsImportingHandler extends AbstractMessageHandler {
     @Override
     protected void handleMessageInternal(Message<?> message) {
         logger.info("handleMessageInternal: {}", message);
-        List<File> rolledFiles = ((RolledFiles)message.getPayload())
+        List<Pair<LogFileInfo, File>> rolledFiles = ((RolledFiles)message.getPayload())
                 .rolledFiles()
                 .stream()
-                .map(Path::toFile)
+                .map(e -> ImmutablePair.of(e.getLeft(), e.getRight().toFile()))
                 .collect(Collectors.toList());
         files2Import.addAll(rolledFiles);
     }
@@ -49,8 +50,8 @@ public class RolledLogsImportingHandler extends AbstractMessageHandler {
         processQueue(errorFilesQueue, 1);
     }
 
-    private void processQueue(Queue<File> queue, int filesPerBatch) {
-        List<File> batch = accumulateBatch(queue, filesPerBatch);
+    private void processQueue(Queue<Pair<LogFileInfo, File>> queue, int filesPerBatch) {
+        List<Pair<LogFileInfo, File>> batch = accumulateBatch(queue, filesPerBatch);
         if (!batch.isEmpty()) {
             try {
                 logIngestor.ingestFiles(batch);
@@ -62,9 +63,9 @@ public class RolledLogsImportingHandler extends AbstractMessageHandler {
     }
 
     @NotNull
-    private List<File> accumulateBatch(Queue<File> queue, int filesPerBatch) {
-        List<File> batch = new ArrayList<>(filesPerBatch);
-        File tmp;
+    private List<Pair<LogFileInfo, File>> accumulateBatch(Queue<Pair<LogFileInfo, File>> queue, int filesPerBatch) {
+        List<Pair<LogFileInfo, File>> batch = new ArrayList<>(filesPerBatch);
+        Pair<LogFileInfo, File> tmp;
         for (int i = 0; i < filesPerBatch && (tmp = queue.poll()) != null; ++i) {
             batch.add(tmp);
         }

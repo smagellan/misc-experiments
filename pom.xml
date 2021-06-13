@@ -30,7 +30,7 @@
         <quartz.version>2.3.2</quartz.version>
         <jackson.version>2.12.3</jackson.version>
         <bytebuddy.version>1.11.2</bytebuddy.version>
-        <org.eclipse.jetty>11.0.4</org.eclipse.jetty>
+        <org.eclipse.jetty>11.0.5</org.eclipse.jetty>
         <junit.version>5.7.2</junit.version>
         <junit.platform.version>1.7.2</junit.platform.version>
         <dl4j.version>1.0.0-M1</dl4j.version>
@@ -597,7 +597,7 @@
         <dependency>
             <groupId>org.simplejavamail</groupId>
             <artifactId>simple-java-mail</artifactId>
-            <version>6.6.0</version>
+            <version>6.6.1</version>
         </dependency>
 
         <dependency>

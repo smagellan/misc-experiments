@@ -13,7 +13,6 @@ import org.springframework.integration.dsl.context.IntegrationFlowContext;
 import org.springframework.integration.file.dsl.Files;
 import org.springframework.integration.file.dsl.TailAdapterSpec;
 
-import javax.annotation.PostConstruct;
 import java.io.File;
 import java.util.*;
 import java.util.stream.Collectors;
@@ -37,7 +36,7 @@ public class TailedFilesConfigLoader3 {
                                     InitialNonImportedRolledLogsMessageSource initialRolledNonImportedLogs,
                                     IntegrationFlowContext ctx) {
         this.ctx = ctx;
-        this.filesList = collectorConfig.liveFileToRolledFile()
+        this.filesList = collectorConfig.logFilesInfo()
                 .stream()
                 .map(LogFileInfo::liveLogFile)
                 .collect(Collectors.toList());
@@ -64,30 +63,35 @@ public class TailedFilesConfigLoader3 {
         return tailFlowsIds;
     }
 
-    @PostConstruct
-    private void registerTailedLogsFlows() {
+    @Autowired
+    @Bean
+    public List<IntegrationFlowContext.IntegrationFlowRegistration> tailedRegistrationFlows(LogCollectorConfig conf) {
         logger.info("registering log tailers");
         Map<File, Collection<File>> nonRolledFiles = this.initialRolledNonImportedLogs.getExistingLiveLogsToNonRolledFiles();
         Iterator<String> tailerIds = tailFlowsIds.iterator();
+        List<IntegrationFlowContext.IntegrationFlowRegistration> ret = new ArrayList<>(filesList.size());
         for (File file : filesList) {
             String registrationId = tailerIds.next();
             logger.info("{} -> {}", registrationId, file);
             boolean trackSinceBeginning = nonRolledFiles.get(file) != null && !nonRolledFiles.get(file).isEmpty();
-            ctx.registration(convertingTailedFileFlow(file, trackSinceBeginning, Constants.TAILED_AND_ROLLED_FILES_CHANNEL))
+            IntegrationFlowContext.IntegrationFlowRegistration registration =
+                    ctx.registration(convertingTailedFileFlow(file, trackSinceBeginning, conf.logInfoByLiveFile(file), Constants.TAILED_AND_ROLLED_FILES_CHANNEL))
                     .id(registrationId)
                     .autoStartup(false)
                     .register();
+            ret.add(registration);
         }
+        return ret;
     }
 
-    private IntegrationFlow convertingTailedFileFlow(File file, boolean trackSinceBeginning, String outputChannelName) {
+    private IntegrationFlow convertingTailedFileFlow(File file, boolean trackSinceBeginning, LogFileInfo fileInfo, String outputChannelName) {
         TailAdapterSpec spec = Files.tailAdapter(file);
         if (trackSinceBeginning) {
             spec = spec.nativeOptions(TAIL_FROM_FILE_START_OPTIONS);
         }
         return IntegrationFlows
                 .from(spec)
-                .transform(new LogLineTransformer())
+                .transform(new LogLineTransformer(fileInfo))
                 .channel(outputChannelName)
                 .get();
     }

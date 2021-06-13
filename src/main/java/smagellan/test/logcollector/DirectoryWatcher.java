@@ -1,6 +1,8 @@
 package smagellan.test.logcollector;
 
 import com.sun.nio.file.SensitivityWatchEventModifier;
+import org.apache.commons.lang3.tuple.ImmutablePair;
+import org.apache.commons.lang3.tuple.Pair;
 import org.slf4j.LoggerFactory;
 import org.springframework.integration.endpoint.MessageProducerSupport;
 import org.springframework.messaging.Message;
@@ -20,14 +22,16 @@ class DirectoryWatcher extends MessageProducerSupport implements Runnable {
 
     private final Collection<File> dirs2Watch;
     private final FilenameFilter filter;
+    private final LogCollectorConfig config;
 
     private Thread watcherThread;
     private WatchService svc;
     private List<WatchKey> dirsWatchKeys;
 
     //TODO: maybe switch to org.springframework.integration.file.filters.FileListFilter
-    DirectoryWatcher(Collection<File> dirs2Watch, FilenameFilter filter) {
+    DirectoryWatcher(Collection<File> dirs2Watch, LogCollectorConfig config, FilenameFilter filter) {
         this.dirs2Watch = dirs2Watch;
+        this.config = config;
         this.filter = filter;
     }
 
@@ -42,11 +46,12 @@ class DirectoryWatcher extends MessageProducerSupport implements Runnable {
                 if (channel == null) {
                     logger.info("output channel is null, events are discarded");
                 } else {
-                    List<Path> contexts = events
+                    List<Pair<LogFileInfo, Path>> contexts = events
                             .stream()
                             .map(WatchEvent::context)
                             .map(obj -> (Path) obj)
                             .filter(path -> filter.accept(path.toAbsolutePath().getParent().toFile(), path.getFileName().toString()))
+                            .map(path -> ImmutablePair.of(config.logInfoByLivePath(path), path))
                             .collect(Collectors.toList());
                     logger.info("publishing files events for {}", contexts);
                     Message<?> message = getMessageBuilderFactory()

@@ -1,5 +1,6 @@
 package smagellan.test.logcollector;
 
+import org.apache.commons.lang3.tuple.Pair;
 import org.slf4j.LoggerFactory;
 import org.springframework.messaging.Message;
 import reactor.core.publisher.Flux;
@@ -18,15 +19,15 @@ public class MessageLogger {
             GroupedLogEvents evts = (GroupedLogEvents) payload;
             int idx = 0;
             logger.info("GroupedLogEvents tailed files:");
-            for (Map.Entry<Path, Collection<String>> path : evts.tailedLines().asMap().entrySet()) {
+            for (Map.Entry<Path, Collection<Map<String, String>>> path : evts.tailedLines().asMap().entrySet()) {
                 ++idx;
                 logger.info("el{}: {}({} lines)", idx, path.getKey(), path.getValue().size());
             }
             logger.info("GroupedLogEvents rolled files:");
             idx = 0;
-            for (Path path : evts.rolledFiles()) {
+            for (Pair<LogFileInfo, Path> pathInfo : evts.rolledFiles()) {
                 ++idx;
-                logger.info("el{}: {}", idx, path);
+                logger.info("el{}: {}", idx, pathInfo);
             }
         } else if (payload instanceof Collection) {
             logger.info("payload list:");

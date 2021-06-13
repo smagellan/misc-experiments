@@ -1,5 +1,7 @@
 package smagellan.test.logcollector;
 
+import org.apache.commons.lang3.tuple.ImmutablePair;
+import org.apache.commons.lang3.tuple.Pair;
 import org.slf4j.LoggerFactory;
 import org.springframework.integration.handler.AbstractMessageHandler;
 import org.springframework.messaging.Message;
@@ -13,11 +15,13 @@ import java.util.stream.Collectors;
 public class LiveLogsImportingHandler extends AbstractMessageHandler {
     private static final org.slf4j.Logger logger = LoggerFactory.getLogger(LiveLogsImportingHandler.class);
 
+    private final LogCollectorConfig config;
     private final RolledLogsTracker logsTracker;
     private final String rolledLogsImportingChannelName;
     private final LogIngestor logIngestor;
 
-    public LiveLogsImportingHandler(String rolledLogsImportingChannelName, RolledLogsTracker logsTracker, LogIngestor logIngestor) {
+    public LiveLogsImportingHandler(LogCollectorConfig config, String rolledLogsImportingChannelName, RolledLogsTracker logsTracker, LogIngestor logIngestor) {
+        this.config = config;
         this.rolledLogsImportingChannelName = rolledLogsImportingChannelName;
         this.logsTracker = logsTracker;
         this.logIngestor = logIngestor;
@@ -27,25 +31,29 @@ public class LiveLogsImportingHandler extends AbstractMessageHandler {
     protected void handleMessageInternal(Message<?> message) {
         MessageLogger.logMessage(message);
         GroupedLogEvents groupedEvents = (GroupedLogEvents) message.getPayload();
+        Collection<Pair<LogFileInfo, File>> paths = groupedEvents
+                .rolledFiles()
+                .stream()
+                .map(f -> ImmutablePair.of(f.getLeft(), f.getRight().toFile()))
+                .collect(Collectors.toList());
         try {
             logIngestor.ingestLogLines(groupedEvents.tailedLines());
-            Collection<File> paths = groupedEvents
-                    .rolledFiles()
-                    .stream()
-                    .map(p -> p.toAbsolutePath().toFile())
-                    .collect(Collectors.toList());
             logsTracker.markImported(paths);
         } catch (Exception ex) {
-            sendErroneousRolledLogFiles(groupedEvents.rolledFiles());
+            sendErroneousRolledLogFiles(paths);
             logger.error("can't ingest live lines, will attempt to import rolled files {} later", groupedEvents.rolledFiles(), ex);
             //throw new MessageDeliveryException(message, ex);
         }
     }
 
-    private void sendErroneousRolledLogFiles(Collection<Path> rolledLogs) {
+    private void sendErroneousRolledLogFiles(Collection<Pair<LogFileInfo, File>> rolledLogs) {
         MessageChannel chan = getChannelResolver().resolveDestination(rolledLogsImportingChannelName);
+        Collection<Pair<LogFileInfo, Path>> rolledPaths = rolledLogs
+                .stream()
+                .map(e -> ImmutablePair.of(e.getLeft(), e.getRight().toPath()))
+                .collect(Collectors.toList());
         Message<?> message = getMessageBuilderFactory()
-                .withPayload(new RolledFiles(rolledLogs))
+                .withPayload(new RolledFiles(rolledPaths))
                 .build();
         chan.send(message);
     }

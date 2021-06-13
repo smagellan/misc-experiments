@@ -15,14 +15,7 @@ public class LogCollectorMain {
             cfg.register(IntegrationConfig.class);
             cfg.registerShutdownHook();
             cfg.refresh();
-            MessageChannel controlBusChannel = cfg.getBean(Constants.CONTROL_BUS + ".input", MessageChannel.class);
-            List<String> fileTailers = cfg.getBean(Constants.FILE_TAILER_IDS, List.class);
-            logger.info("starting file tailers");
-            for (String tailerId : fileTailers) {
-                logger.info("starting {}", tailerId);
-                controlBusChannel.send(new GenericMessage<>("@" + tailerId + ".start()"));
-            }
-
+            startFileTailers(cfg);
             logger.info("waiting");
             Thread.sleep(60_000);
             logger.info("closing spring context");
@@ -30,6 +23,16 @@ public class LogCollectorMain {
         } catch (Throwable t) {
             logger.error("error creating spring context", t);
             cfg.close();
+        }
+    }
+
+    private static void startFileTailers(AnnotationConfigApplicationContext cfg) {
+        MessageChannel controlBusChannel = cfg.getBean(Constants.CONTROL_BUS + ".input", MessageChannel.class);
+        List<String> fileTailers = cfg.getBean(Constants.FILE_TAILER_IDS, List.class);
+        logger.info("starting file tailers");
+        for (String tailerId : fileTailers) {
+            logger.info("starting {}", tailerId);
+            controlBusChannel.send(new GenericMessage<>("@" + tailerId + ".start()"));
         }
     }
 }

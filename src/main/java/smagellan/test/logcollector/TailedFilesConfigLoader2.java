@@ -55,7 +55,7 @@ public class TailedFilesConfigLoader2 implements BeanDefinitionRegistryPostProce
         }
         return IntegrationFlows
                 .from(spec)
-                .transform(new LogLineTransformer())
+                .transform(new LogLineTransformer(null))
                 .channel(outputChannelName)
                 .get();
     }
