@@ -19,7 +19,7 @@
 
         <jmh.version>1.32</jmh.version>
         <mysql.version>8.0.25</mysql.version>
-        <jooq.version>3.14.11</jooq.version>
+        <jooq.version>3.15.0</jooq.version>
         <mysql.driver>com.mysql.jdbc.Driver</mysql.driver>
         <clickhouse.driver>ru.yandex.clickhouse.ClickHouseDriver</clickhouse.driver>
         <org.springframework.version>5.3.8</org.springframework.version>
@@ -28,19 +28,19 @@
         <log4j.version>2.14.1</log4j.version>
         <netty.version>4.1.65.Final</netty.version>
         <quartz.version>2.3.2</quartz.version>
-        <jackson.version>2.12.3</jackson.version>
-        <bytebuddy.version>1.11.2</bytebuddy.version>
-        <org.eclipse.jetty>11.0.5</org.eclipse.jetty>
+        <jackson.version>2.12.4</jackson.version>
+        <bytebuddy.version>1.11.6</bytebuddy.version>
+        <org.eclipse.jetty>11.0.6</org.eclipse.jetty>
         <junit.version>5.7.2</junit.version>
         <junit.platform.version>1.7.2</junit.platform.version>
         <dl4j.version>1.0.0-M1</dl4j.version>
-        <lombok.version>1.18.18</lombok.version>
+        <lombok.version>1.18.20</lombok.version>
         <platform.classifier>linux-x86_64</platform.classifier>
         <spotbugs-maven-plugin.version>4.2.3</spotbugs-maven-plugin.version>
-        <vertx.version>4.1.0</vertx.version>
-        <grpc.version>1.38.0</grpc.version>
-        <opentelemetry.version>1.3.0</opentelemetry.version>
-        <spring-integration.version>5.5.0</spring-integration.version>
+        <vertx.version>4.1.1</vertx.version>
+        <grpc.version>1.39.0</grpc.version>
+        <opentelemetry.version>1.4.0</opentelemetry.version>
+        <spring-integration.version>5.5.1</spring-integration.version>
     </properties>
 
     <reporting>
@@ -156,8 +156,6 @@
             <version>0.1.5</version>
         </dependency>
 
-
-
         <dependency>
             <groupId>io.grpc</groupId>
             <artifactId>grpc-protobuf</artifactId>
@@ -206,7 +204,7 @@
         <dependency>
             <groupId>io.netty.incubator</groupId>
             <artifactId>netty-incubator-transport-native-io_uring</artifactId>
-            <version>0.0.5.Final</version>
+            <version>0.0.8.Final</version>
             <classifier>${platform.classifier}</classifier>
         </dependency>
 
@@ -280,7 +278,7 @@
         <dependency>
             <groupId>io.lettuce</groupId>
             <artifactId>lettuce-core</artifactId>
-            <version>6.1.2.RELEASE</version>
+            <version>6.1.3.RELEASE</version>
             <exclusions>
                 <exclusion>
                     <groupId>io.projectreactor</groupId>
@@ -298,7 +296,7 @@
         <dependency>
             <groupId>redis.clients</groupId>
             <artifactId>jedis</artifactId>
-            <version>3.6.0</version>
+            <version>3.6.1</version>
         </dependency>
 
         <dependency>
@@ -313,7 +311,6 @@
             <version>8.5.4</version>
         </dependency>
 
-        <!-- https://mvnrepository.com/artifact/it.unimi.dsi/dsiutils -->
         <dependency>
             <groupId>it.unimi.dsi</groupId>
             <artifactId>dsiutils</artifactId>
@@ -332,7 +329,6 @@
 
         </dependency>
 
-        <!-- https://mvnrepository.com/artifact/org.apache.directory.mavibot/mavibot -->
         <dependency>
             <groupId>org.apache.directory.mavibot</groupId>
             <artifactId>mavibot</artifactId>
@@ -573,7 +569,7 @@
         <dependency>
             <groupId>org.postgresql</groupId>
             <artifactId>postgresql</artifactId>
-            <version>42.2.20</version>
+            <version>42.2.23</version>
         </dependency>
 
         <dependency>
@@ -646,7 +642,7 @@
         <dependency>
             <groupId>org.hibernate</groupId>
             <artifactId>hibernate-core</artifactId>
-            <version>5.5.0.Final</version>
+            <version>5.5.3.Final</version>
         </dependency>
 
         <dependency>
@@ -750,9 +746,15 @@
         </dependency>
 
         <dependency>
+            <groupId>one.util</groupId>
+            <artifactId>streamex</artifactId>
+            <version>0.7.3</version>
+        </dependency>
+
+        <dependency>
             <groupId>io.github.classgraph</groupId>
             <artifactId>classgraph</artifactId>
-            <version>4.8.108</version>
+            <version>4.8.110</version>
         </dependency>
 
         <!--<dependency>
@@ -816,7 +818,7 @@
                     <dependency>
                         <groupId>com.github.spotbugs</groupId>
                         <artifactId>spotbugs</artifactId>
-                        <version>4.2.3</version>
+                        <version>4.3.0</version>
                     </dependency>
                 </dependencies>
             </plugin>
@@ -825,7 +827,7 @@
                 <!-- mvn verify or mvn org.owasp:dependency-check-maven:check-->
                 <groupId>org.owasp</groupId>
                 <artifactId>dependency-check-maven</artifactId>
-                <version>6.2.1</version>
+                <version>6.2.2</version>
                 <executions>
                     <execution>
                         <goals>
@@ -845,7 +847,7 @@
             <plugin>
                 <groupId>org.projectlombok</groupId>
                 <artifactId>lombok-maven-plugin</artifactId>
-                <version>1.18.10.0</version>
+                <version>1.18.20.0</version>
                 <executions>
                     <execution>
                         <id>delombok</id>

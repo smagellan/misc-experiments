@@ -4,7 +4,7 @@
     <Appenders>
         <Console name="CONSOLE" target="SYSTEM_OUT">
             <!-- PatternLayout pattern="%d{HH:mm:ss.SSS} [%t] %-5level %logger{42} - %msg %xThrowable{full,separator(|)} %n"/ -->
-            <PatternLayout pattern="%d{HH:mm:ss.SSS} [%t] %-5level %logger{42} - %msg %xThrowable %n"/>
+            <PatternLayout pattern="%d{DEFAULT} [%t] %-5level %logger{42} - %msg %xThrowable %n"/>
         </Console>
         <!--
         <RollingFile name="RollingFile" fileName="logs/app.log"
