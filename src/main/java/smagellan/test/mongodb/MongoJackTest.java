@@ -6,6 +6,7 @@ import com.mongodb.ServerAddress;
 import com.mongodb.client.FindIterable;
 import com.mongodb.client.MongoCollection;
 import com.mongodb.client.MongoDatabase;
+import org.bson.UuidRepresentation;
 import org.mongojack.JacksonMongoCollection;
 import org.slf4j.LoggerFactory;
 
@@ -27,7 +28,7 @@ public class MongoJackTest {
 
     private static void doInsert(MongoCollection<MongoJackEntity> collection) {
         JacksonMongoCollection<MongoJackEntity> coll = JacksonMongoCollection.builder()
-                .build(collection, MongoJackEntity.class);
+                .build(collection, MongoJackEntity.class, UuidRepresentation.JAVA_LEGACY);
 
         coll.insert(new MongoJackEntity().withName("name-" + UUID.randomUUID()),
                 new MongoJackEntity().withName("name-" + UUID.randomUUID()));
@@ -35,7 +36,7 @@ public class MongoJackTest {
 
     private static void doFetch(MongoCollection<MongoJackEntity> collection) {
         JacksonMongoCollection<MongoJackEntity> coll = JacksonMongoCollection.builder()
-                .build(collection, MongoJackEntity.class);
+                .build(collection, MongoJackEntity.class, UuidRepresentation.JAVA_LEGACY);
 
 
         FindIterable<MongoJackEntity> iterable = coll.find();

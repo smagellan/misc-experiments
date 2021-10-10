@@ -648,7 +648,7 @@
         <dependency>
             <groupId>org.mongojack</groupId>
             <artifactId>mongojack</artifactId>
-            <version>3.0.3</version>
+            <version>4.2.1</version>
             <exclusions>
                 <exclusion>
                     <groupId>org.mongodb</groupId>

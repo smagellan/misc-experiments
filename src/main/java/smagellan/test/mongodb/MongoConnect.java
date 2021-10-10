@@ -21,7 +21,8 @@ public class MongoConnect {
                 .addServerMonitorListener(new TracingServerMonitorListener())
                 .heartbeatFrequency(10_000)
                 .build();
-        MongoCredential credential = MongoCredential.createCredential("mongouser", "admin", "someothersecret".toCharArray());
+        //MongoCredential credential = MongoCredential.createCredential("mongouser", "admin", "someothersecret".toCharArray());
+        MongoCredential credential = MongoCredential.createCredential("mongoadmin", "admin", "secret".toCharArray());
         try (MongoClient client = new MongoClient(new ServerAddress("localhost", 27217), credential,  opts)) {
             MongoIterable<String>  namesIterable = client.listDatabaseNames();
             List<String> dbNames = pull(namesIterable);
