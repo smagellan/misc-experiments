@@ -18,19 +18,19 @@
         <maven.compiler.target>14</maven.compiler.target>
 
         <jmh.version>1.33</jmh.version>
-        <mysql.version>8.0.26</mysql.version>
+        <mysql.version>8.0.27</mysql.version>
         <jooq.version>3.15.3</jooq.version>
         <mysql.driver>com.mysql.jdbc.Driver</mysql.driver>
         <clickhouse.driver>ru.yandex.clickhouse.ClickHouseDriver</clickhouse.driver>
-        <org.springframework.version>5.3.10</org.springframework.version>
+        <org.springframework.version>5.3.12</org.springframework.version>
 
         <slf4j.version>1.7.32</slf4j.version>
         <log4j.version>2.14.1</log4j.version>
-        <netty.version>4.1.68.Final</netty.version>
+        <netty.version>4.1.69.Final</netty.version>
         <quartz.version>2.3.2</quartz.version>
         <jackson.version>2.13.0</jackson.version>
-        <bytebuddy.version>1.11.19</bytebuddy.version>
-        <org.eclipse.jetty>11.0.6</org.eclipse.jetty>
+        <bytebuddy.version>1.11.21</bytebuddy.version>
+        <org.eclipse.jetty>11.0.7</org.eclipse.jetty>
         <junit.version>5.8.1</junit.version>
         <junit.platform.version>1.8.1</junit.platform.version>
         <dl4j.version>1.0.0-M1.1</dl4j.version>
@@ -40,7 +40,7 @@
         <vertx.version>4.1.5</vertx.version>
         <grpc.version>1.41.0</grpc.version>
         <opentelemetry.version>1.7.0</opentelemetry.version>
-        <spring-integration.version>5.5.4</spring-integration.version>
+        <spring-integration.version>5.5.5</spring-integration.version>
     </properties>
 
     <reporting>
@@ -204,7 +204,7 @@
         <dependency>
             <groupId>io.netty.incubator</groupId>
             <artifactId>netty-incubator-transport-native-io_uring</artifactId>
-            <version>0.0.8.Final</version>
+            <version>0.0.9.Final</version>
             <classifier>${platform.classifier}</classifier>
         </dependency>
 
@@ -545,7 +545,7 @@
         <dependency>
             <groupId>io.reactivex.rxjava3</groupId>
             <artifactId>rxjava</artifactId>
-            <version>3.1.1</version>
+            <version>3.1.2</version>
         </dependency>
 
         <dependency>
@@ -569,10 +569,10 @@
         <dependency>
             <groupId>org.postgresql</groupId>
             <artifactId>postgresql</artifactId>
-            <version>42.2.24</version>
+            <version>42.3.0</version>
         </dependency>
 
-        <dependency>
+        <!--dependency>
             <groupId>org.quartz-scheduler</groupId>
             <artifactId>quartz</artifactId>
             <version>${quartz.version}</version>
@@ -582,7 +582,7 @@
             <groupId>org.quartz-scheduler</groupId>
             <artifactId>quartz-jobs</artifactId>
             <version>${quartz.version}</version>
-        </dependency>
+        </dependency-->
 
         <dependency>
             <groupId>com.sun.mail</groupId>
@@ -642,7 +642,7 @@
         <dependency>
             <groupId>org.hibernate</groupId>
             <artifactId>hibernate-core</artifactId>
-            <version>5.5.7.Final</version>
+            <version>5.6.0.Final</version>
         </dependency>
 
         <dependency>
@@ -762,7 +762,7 @@
         <dependency>
             <groupId>io.github.classgraph</groupId>
             <artifactId>classgraph</artifactId>
-            <version>4.8.125</version>
+            <version>4.8.128</version>
         </dependency>
 
         <!--<dependency>
@@ -826,7 +826,7 @@
                     <dependency>
                         <groupId>com.github.spotbugs</groupId>
                         <artifactId>spotbugs</artifactId>
-                        <version>spotbugs-maven-plugin.version</version>
+                        <version>4.4.2</version>
                     </dependency>
                 </dependencies>
             </plugin>
@@ -836,7 +836,7 @@
                 <groupId>org.owasp</groupId>
                 <artifactId>dependency-check-maven</artifactId>
                 <!-- fails for 6.3.2: https://github.com/jeremylong/DependencyCheck/issues/3707 -->
-                <version>6.3.2</version>
+                <version>6.4.1</version>
                 <executions>
                     <execution>
                         <goals>
@@ -848,6 +848,28 @@
                     </execution>
                 </executions>
             </plugin>
+
+            <!--plugin>
+                <groupId>org.apache.maven.plugins</groupId>
+                <artifactId>maven-enforcer-plugin</artifactId>
+                <version>3.0.0</version>
+                <executions>
+                    <execution>
+                        <id>enforce</id>
+                        <configuration>
+                            <rules>
+                                <dependencyConvergence>
+                                    <uniqueVersions>false</uniqueVersions>
+                                </dependencyConvergence>
+                            </rules>
+                        </configuration>
+                        <goals>
+                            <goal>enforce</goal>
+                        </goals>
+                    </execution>
+                </executions>
+            </plugin-->
+
             <!--
             <sourceDirectory>target/generated-sources/delombok</sourceDirectory>
             <testSourceDirectory>target/generated-test-sources/delombok</testSourceDirectory>
