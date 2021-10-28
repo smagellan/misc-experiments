@@ -16,7 +16,9 @@ public class MongoJackTest {
     private static final org.slf4j.Logger logger = LoggerFactory.getLogger(MongoJackTest.class);
 
     public static void main(String[] args) {
-        MongoClientOptions opts = new MongoClientOptions.Builder().applicationName("testApp").build();
+        MongoClientOptions opts = new MongoClientOptions.Builder()
+                .applicationName("testApp")
+                .build();
         try (MongoClient client = new MongoClient(new ServerAddress("localhost", 27017), opts)) {
             MongoDatabase db = client.getDatabase("mydb");
             MongoCollection<MongoJackEntity> collection = db.getCollection("mongojack-collection", MongoJackEntity.class);

@@ -19,7 +19,7 @@ public class ClassgraphTest {
                      new ClassGraph()
                              .verbose()                   // Log to stderr
                              .enableAllInfo()             // Scan classes, methods, fields, annotations
-                             .whitelistPackages("smagellan.test")      // Scan com.xyz and subpackages (omit to scan all packages)
+                             .acceptPackages("smagellan.test")      // Scan com.xyz and subpackages (omit to scan all packages)
                              .scan()) {                   // Start the scan
             try (ResourceList lst = scanResult.getAllResources()) {
                 logger.info("duplicate paths: {}", lst.classFilesOnly().findDuplicatePaths());

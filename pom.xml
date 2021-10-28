@@ -19,7 +19,7 @@
 
         <jmh.version>1.33</jmh.version>
         <mysql.version>8.0.27</mysql.version>
-        <jooq.version>3.15.3</jooq.version>
+        <jooq.version>3.15.4</jooq.version>
         <mysql.driver>com.mysql.jdbc.Driver</mysql.driver>
         <clickhouse.driver>ru.yandex.clickhouse.ClickHouseDriver</clickhouse.driver>
         <org.springframework.version>5.3.12</org.springframework.version>
@@ -205,6 +205,13 @@
             <groupId>io.netty.incubator</groupId>
             <artifactId>netty-incubator-transport-native-io_uring</artifactId>
             <version>0.0.9.Final</version>
+            <classifier>${platform.classifier}</classifier>
+        </dependency>
+
+        <dependency>
+            <groupId>io.netty.incubator</groupId>
+            <artifactId>netty-incubator-codec-quic</artifactId>
+            <version>0.0.19.Final</version>
             <classifier>${platform.classifier}</classifier>
         </dependency>
 
@@ -762,7 +769,7 @@
         <dependency>
             <groupId>io.github.classgraph</groupId>
             <artifactId>classgraph</artifactId>
-            <version>4.8.128</version>
+            <version>4.8.129</version>
         </dependency>
 
         <!--<dependency>
