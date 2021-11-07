@@ -8,6 +8,7 @@ import io.github.classgraph.ClassGraph;
 import io.github.classgraph.Resource;
 import io.github.classgraph.ResourceList;
 import io.github.classgraph.ScanResult;
+import org.checkerframework.checker.nullness.qual.Nullable;
 import org.slf4j.LoggerFactory;
 
 public class ClassgraphTest {
@@ -29,13 +30,14 @@ public class ClassgraphTest {
     }
 
     public static ListMultimap<String, Resource> duplicateBaseNames(ResourceList lst) {
-        ListMultimap<String, Resource> tmp = MultimapBuilder.hashKeys().arrayListValues().build();
+        MultimapBuilder.ListMultimapBuilder<@Nullable Object, @Nullable Object> bldr = MultimapBuilder.hashKeys().arrayListValues();
+        ListMultimap<String, Resource> tmp = bldr.build();
         for (var entry : lst.asMap().entrySet()) {
             String[] tokens = entry.getKey().split("/");
             String newKey = tokens.length > 0 ? tokens[tokens.length - 1] : entry.getKey();
             tmp.putAll(newKey, entry.getValue());
         }
-        ListMultimap<String, Resource> result = MultimapBuilder.hashKeys().arrayListValues().build();
+        ListMultimap<String, Resource> result = bldr.build();
         for (var entry : tmp.asMap().entrySet()) {
             var values = entry.getValue();
             if (values.size() >= 2) {

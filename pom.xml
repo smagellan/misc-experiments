@@ -9,7 +9,7 @@
     <version>1.0-SNAPSHOT</version>
 
     <prerequisites>
-        <maven>3.3.3</maven>
+        <maven>3.3.9</maven>
     </prerequisites>
 
     <properties>
@@ -26,20 +26,20 @@
 
         <slf4j.version>1.7.32</slf4j.version>
         <log4j.version>2.14.1</log4j.version>
-        <netty.version>4.1.69.Final</netty.version>
+        <netty.version>4.1.70.Final</netty.version>
         <quartz.version>2.3.2</quartz.version>
         <jackson.version>2.13.0</jackson.version>
-        <bytebuddy.version>1.11.21</bytebuddy.version>
+        <bytebuddy.version>1.12.0</bytebuddy.version>
         <org.eclipse.jetty>11.0.7</org.eclipse.jetty>
         <junit.version>5.8.1</junit.version>
         <junit.platform.version>1.8.1</junit.platform.version>
         <dl4j.version>1.0.0-M1.1</dl4j.version>
         <lombok.version>1.18.20</lombok.version>
         <platform.classifier>linux-x86_64</platform.classifier>
-        <spotbugs-maven-plugin.version>4.4.1</spotbugs-maven-plugin.version>
-        <vertx.version>4.1.5</vertx.version>
-        <grpc.version>1.41.0</grpc.version>
-        <opentelemetry.version>1.7.0</opentelemetry.version>
+        <spotbugs-maven-plugin.version>4.4.2.2</spotbugs-maven-plugin.version>
+        <vertx.version>4.2.1</vertx.version>
+        <grpc.version>1.42.0</grpc.version>
+        <opentelemetry.version>1.7.1</opentelemetry.version>
         <spring-integration.version>5.5.5</spring-integration.version>
     </properties>
 
@@ -204,14 +204,14 @@
         <dependency>
             <groupId>io.netty.incubator</groupId>
             <artifactId>netty-incubator-transport-native-io_uring</artifactId>
-            <version>0.0.9.Final</version>
+            <version>0.0.10.Final</version>
             <classifier>${platform.classifier}</classifier>
         </dependency>
 
         <dependency>
             <groupId>io.netty.incubator</groupId>
             <artifactId>netty-incubator-codec-quic</artifactId>
-            <version>0.0.19.Final</version>
+            <version>0.0.20.Final</version>
             <classifier>${platform.classifier}</classifier>
         </dependency>
 
@@ -576,7 +576,7 @@
         <dependency>
             <groupId>org.postgresql</groupId>
             <artifactId>postgresql</artifactId>
-            <version>42.3.0</version>
+            <version>42.3.1</version>
         </dependency>
 
         <!--dependency>
@@ -649,13 +649,13 @@
         <dependency>
             <groupId>org.hibernate</groupId>
             <artifactId>hibernate-core</artifactId>
-            <version>5.6.0.Final</version>
+            <version>5.6.1.Final</version>
         </dependency>
 
         <dependency>
             <groupId>org.mongojack</groupId>
             <artifactId>mongojack</artifactId>
-            <version>4.2.1</version>
+            <version>4.3.0</version>
             <exclusions>
                 <exclusion>
                     <groupId>org.mongodb</groupId>

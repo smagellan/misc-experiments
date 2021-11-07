@@ -36,17 +36,20 @@ public class OpenTelemetryExample {
     private final String ip; // = "jaeger";
     private final int port; // = 14250;
 
-    private final SdkTracerProvider tracerProvider = createTracerProvider();
-    private final OpenTelemetry otelSdk = createOtelSdk();
-
+    private final SdkTracerProvider tracerProvider;
+    private final OpenTelemetry otelSdk;
 
     // OTel API
-    private final Tracer tracer =
-            otelSdk.getTracer("io.opentelemetry.example.JaegerExample");
+    private final Tracer tracer;
+    private final io.opentracing.Tracer tracerShim;
 
     public OpenTelemetryExample(String ip, int port) {
         this.ip = ip;
         this.port = port;
+        this.tracerProvider = createTracerProvider();
+        this.otelSdk = createOtelSdk();
+        this.tracer = otelSdk.getTracer("io.opentelemetry.example.JaegerExample");
+        this.tracerShim = OpenTracingShim.createTracerShim(tracer);
     }
 
     private SdkTracerProvider createTracerProvider() {
@@ -92,13 +95,15 @@ public class OpenTelemetryExample {
     }
 
     private void myWonderfulUseCase() {
-        // Generate a span
         Span span = this.tracer.spanBuilder("Start my wonderful use case").startSpan();
-        span.addEvent("Event 0");
-        // execute my use case - here we simulate a wait
-        doWork();
-        span.addEvent("Event 1");
-        span.end();
+        try {
+            span.addEvent("Event 0");
+            // execute my use case - here we simulate a wait
+            doWork();
+            span.addEvent("Event 1");
+        } finally {
+            span.end();
+        }
     }
 
     private void doWork() {
@@ -111,12 +116,12 @@ public class OpenTelemetryExample {
 
     // graceful shutdown
     public void shutdown() {
-        //openTelemetry.getTracerManagement().shutdown()
-        tracerProvider.shutdown();
+        tracerShim.close();
+        boolean success = tracerProvider.shutdown().join(10L, TimeUnit.SECONDS).isSuccess();
+        System.err.println("SdkTracerProvider.shutdown() success: " + success);
     }
 
     public static void main(String[] args) {
-        // Parsing the input
         if (args.length < 2) {
             System.out.println("Missing [hostname] [port]");
             System.exit(1);
@@ -133,22 +138,21 @@ public class OpenTelemetryExample {
             for (int i = 0; i < 10; i++) {
                 example.myWonderfulUseCase();
             }
-            doMongoWork();
+            example.doMongoWork();
             parentSpan.recordException(new RuntimeException("test exception"),
                     Attributes.of(SemanticAttributes.EXCEPTION_ESCAPED, false));
             parentSpan.setStatus(StatusCode.ERROR);
         } finally {
             parentSpan.end();
         }
-        // Shutdown example
         example.shutdown();
 
         System.out.println("Bye");
     }
 
-    private static void doMongoWork() {
+    private void doMongoWork() {
         TracingCommandListener listener = new TracingCommandListener
-                .Builder(OpenTracingShim.createTracerShim())
+                .Builder(tracerShim)
                 .withSpanNameProvider(new PrefixSpanNameProvider("mongodb:"))
                 .build();
         MongoClientOptions opts = new MongoClientOptions.Builder()
