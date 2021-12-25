@@ -22,7 +22,7 @@ public class JedisBuilder implements RedisTestBuilder {
         JedisPoolConfig conf = new JedisPoolConfig();
         conf.setMaxTotal(maxThreads * 8);
         pool = new JedisPool(conf, "localhost");
-        JedisCluster cl = new JedisCluster(HostAndPort.parseString(""));
+        JedisCluster cl = new JedisCluster(new HostAndPort("localhost", 0));
     }
 
     public JedisRunnable build() {
