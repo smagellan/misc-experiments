@@ -25,7 +25,7 @@
         <org.springframework.version>5.3.14</org.springframework.version>
 
         <slf4j.version>1.7.32</slf4j.version>
-        <log4j.version>2.17.0</log4j.version>
+        <log4j.version>2.17.1</log4j.version>
         <netty.version>4.1.72.Final</netty.version>
         <quartz.version>2.3.2</quartz.version>
         <jackson.version>2.13.1</jackson.version>
@@ -303,7 +303,7 @@
         <dependency>
             <groupId>redis.clients</groupId>
             <artifactId>jedis</artifactId>
-            <version>4.0.0</version>
+            <version>4.0.1</version>
         </dependency>
 
         <dependency>
@@ -570,7 +570,7 @@
         <dependency>
             <groupId>ru.yandex.clickhouse</groupId>
             <artifactId>clickhouse-jdbc</artifactId>
-            <version>0.3.1-patch</version>
+            <version>0.3.2</version>
         </dependency>
 
         <dependency>
@@ -600,7 +600,7 @@
         <dependency>
             <groupId>org.simplejavamail</groupId>
             <artifactId>simple-java-mail</artifactId>
-            <version>6.7.0</version>
+            <version>6.7.5</version>
         </dependency>
 
         <dependency>
