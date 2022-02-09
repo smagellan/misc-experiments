@@ -19,18 +19,18 @@
 
         <jmh.version>1.34</jmh.version>
         <mysql.version>8.0.28</mysql.version>
-        <jooq.version>3.16.3</jooq.version>
+        <jooq.version>3.16.4</jooq.version>
         <mysql.driver>com.mysql.jdbc.Driver</mysql.driver>
         <clickhouse.driver>ru.yandex.clickhouse.ClickHouseDriver</clickhouse.driver>
         <org.springframework.version>5.3.15</org.springframework.version>
 
         <slf4j.version>1.7.35</slf4j.version>
         <log4j.version>2.17.1</log4j.version>
-        <netty.version>4.1.73.Final</netty.version>
+        <netty.version>4.1.74.Final</netty.version>
         <quartz.version>2.3.2</quartz.version>
         <jackson.version>2.13.1</jackson.version>
         <bytebuddy.version>1.12.7</bytebuddy.version>
-        <org.eclipse.jetty>11.0.7</org.eclipse.jetty>
+        <org.eclipse.jetty>11.0.8</org.eclipse.jetty>
         <junit.version>5.8.2</junit.version>
         <junit.platform.version>1.8.2</junit.platform.version>
         <dl4j.version>1.0.0-M1.1</dl4j.version>
@@ -39,13 +39,14 @@
         <spotbugs-maven-plugin.version>4.5.3.0</spotbugs-maven-plugin.version>
         <vertx.version>4.2.4</vertx.version>
         <grpc.version>1.44.0</grpc.version>
-        <opentelemetry.version>1.10.1</opentelemetry.version>
+        <opentelemetry.version>1.11.0</opentelemetry.version>
         <spring-integration.version>5.5.8</spring-integration.version>
     </properties>
 
     <reporting>
         <plugins>
             <!-- org.apache.maven.doxia.siterenderer.DocumentContent -->
+            <!-- https://mvnrepository.com/artifact/com.github.spotbugs/spotbugs-maven-plugin -->
             <plugin>
                 <groupId>com.github.spotbugs</groupId>
                 <artifactId>spotbugs-maven-plugin</artifactId>
@@ -303,7 +304,7 @@
         <dependency>
             <groupId>redis.clients</groupId>
             <artifactId>jedis</artifactId>
-            <version>4.1.0</version>
+            <version>4.1.1</version>
         </dependency>
 
         <dependency>
@@ -315,7 +316,7 @@
         <dependency>
             <groupId>it.unimi.dsi</groupId>
             <artifactId>fastutil</artifactId>
-            <version>8.5.6</version>
+            <version>8.5.7</version>
         </dependency>
 
         <dependency>
@@ -558,7 +559,7 @@
         <dependency>
             <groupId>com.typesafe</groupId>
             <artifactId>config</artifactId>
-            <version>1.4.1</version>
+            <version>1.4.2</version>
         </dependency>
 
         <dependency>
@@ -576,7 +577,7 @@
         <dependency>
             <groupId>org.postgresql</groupId>
             <artifactId>postgresql</artifactId>
-            <version>42.3.1</version>
+            <version>42.3.2</version>
         </dependency>
 
         <!--dependency>
@@ -592,6 +593,12 @@
         </dependency-->
 
         <dependency>
+            <groupId>de.bwaldvogel</groupId>
+            <artifactId>mongo-java-server</artifactId>
+            <version>1.39.0</version>
+        </dependency>
+
+        <dependency>
             <groupId>com.sun.mail</groupId>
             <artifactId>javax.mail</artifactId>
             <version>1.6.2</version>
@@ -600,7 +607,7 @@
         <dependency>
             <groupId>org.simplejavamail</groupId>
             <artifactId>simple-java-mail</artifactId>
-            <version>7.0.2</version>
+            <version>7.1.0</version>
         </dependency>
 
         <dependency>
@@ -794,6 +801,7 @@
 
     <build>
         <plugins>
+            <!-- https://mvnrepository.com/artifact/com.fizzed/rocker-maven-plugin -->
             <plugin>
                 <groupId>com.fizzed</groupId>
                 <artifactId>rocker-maven-plugin</artifactId>
@@ -821,6 +829,7 @@
                     <includeFilterFile>${session.executionRootDirectory}/spotbugs-security-include.xml</includeFilterFile>
                     <excludeFilterFile>${session.executionRootDirectory}/spotbugs-security-exclude.xml</excludeFilterFile>
                     <plugins>
+                        <!-- https://mvnrepository.com/artifact/com.h3xstream.findsecbugs/findsecbugs-plugin -->
                         <plugin>
                             <groupId>com.h3xstream.findsecbugs</groupId>
                             <artifactId>findsecbugs-plugin</artifactId>
@@ -840,6 +849,7 @@
 
             <plugin>
                 <!-- mvn verify or mvn org.owasp:dependency-check-maven:check-->
+                <!-- https://mvnrepository.com/artifact/org.owasp/dependency-check-maven -->
                 <groupId>org.owasp</groupId>
                 <artifactId>dependency-check-maven</artifactId>
                 <!-- fails for 6.3.2: https://github.com/jeremylong/DependencyCheck/issues/3707 -->

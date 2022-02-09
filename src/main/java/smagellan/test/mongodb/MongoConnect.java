@@ -6,9 +6,15 @@ import com.mongodb.client.MongoCursor;
 import com.mongodb.client.MongoDatabase;
 import com.mongodb.client.MongoIterable;
 import com.mongodb.event.*;
+import de.bwaldvogel.mongo.MongoBackend;
+import de.bwaldvogel.mongo.MongoServer;
+import de.bwaldvogel.mongo.ServerVersion;
+import de.bwaldvogel.mongo.backend.memory.MemoryBackend;
 import org.bson.Document;
 import org.jetbrains.annotations.NotNull;
 import org.slf4j.LoggerFactory;
+
+import java.net.InetSocketAddress;
 import java.util.List;
 
 public class MongoConnect {
@@ -22,18 +28,33 @@ public class MongoConnect {
                 .heartbeatFrequency(10_000)
                 .build();
         //MongoCredential credential = MongoCredential.createCredential("mongouser", "admin", "someothersecret".toCharArray());
-        MongoCredential credential = MongoCredential.createCredential("mongoadmin", "admin", "secret".toCharArray());
-        try (MongoClient client = new MongoClient(new ServerAddress("localhost", 27217), credential,  opts)) {
-            MongoIterable<String>  namesIterable = client.listDatabaseNames();
-            List<String> dbNames = pull(namesIterable);
-            logger.info("listDatabaseNames: {}", dbNames);
-            for (String dbName : dbNames) {
-                MongoDatabase db = client.getDatabase(dbName);
-                traceUsers(db);
-                List<String> collectionNames = pull(db.listCollectionNames());
-                logger.info("listCollectionNames({}): {}", dbName, collectionNames);
+        //MongoCredential credential = MongoCredential.createCredential("mongoadmin", "admin", "secret".toCharArray());
+        //MongoCredential credential = MongoCredential.createPlainCredential("mongoadmin", "admin", "secret".toCharArray());
+        MongoCredential credential = null;
+
+        MongoServer srv = null;
+        try {
+            MongoBackend backend = new MemoryBackend()
+                    .version(ServerVersion.MONGO_3_6);
+            srv = new MongoServer(backend);
+            InetSocketAddress serverAddress = srv.bind();
+            logger.info("server status: {}", backend.getServerStatus());
+            try (MongoClient client = new MongoClient(new ServerAddress("localhost", serverAddress.getPort()), credential, opts)) {
+                MongoIterable<String> namesIterable = client.listDatabaseNames();
+                List<String> dbNames = pull(namesIterable);
+                logger.info("listDatabaseNames: {}", dbNames);
+                for (String dbName : dbNames) {
+                    MongoDatabase db = client.getDatabase(dbName);
+                    traceUsers(db);
+                    List<String> collectionNames = pull(db.listCollectionNames());
+                    logger.info("listCollectionNames({}): {}", dbName, collectionNames);
+                }
+                Thread.sleep(30 * 1000);
             }
-            Thread.sleep(30 * 1000);
+        } finally {
+            if (srv != null) {
+                srv.shutdown();
+            }
         }
     }
 
