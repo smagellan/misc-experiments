@@ -29,7 +29,7 @@
         <netty.version>4.1.74.Final</netty.version>
         <quartz.version>2.3.2</quartz.version>
         <jackson.version>2.13.1</jackson.version>
-        <bytebuddy.version>1.12.7</bytebuddy.version>
+        <bytebuddy.version>1.12.8</bytebuddy.version>
         <org.eclipse.jetty>11.0.8</org.eclipse.jetty>
         <junit.version>5.8.2</junit.version>
         <junit.platform.version>1.8.2</junit.platform.version>
@@ -65,11 +65,11 @@
             <version>${slf4j.version}</version>
         </dependency>
         <!-- Binding for Log4J -->
-        <dependency>
+        <!-- dependency>
             <groupId>org.apache.logging.log4j</groupId>
             <artifactId>log4j-slf4j-impl</artifactId>
             <version>${log4j.version}</version>
-        </dependency>
+        </dependency -->
         <!-- Log4j API and Core implementation required for binding -->
         <dependency>
             <groupId>org.apache.logging.log4j</groupId>
@@ -316,7 +316,7 @@
         <dependency>
             <groupId>it.unimi.dsi</groupId>
             <artifactId>fastutil</artifactId>
-            <version>8.5.7</version>
+            <version>8.5.8</version>
         </dependency>
 
         <dependency>
@@ -459,6 +459,27 @@
             <version>${jooq.version}</version>
         </dependency>
 
+        <dependency>
+            <groupId>org.springframework.boot</groupId>
+            <artifactId>spring-boot-starter-test</artifactId>
+            <scope>test</scope>
+            <version>2.6.3</version>
+        </dependency>
+
+        <dependency>
+            <groupId>org.springframework.boot</groupId>
+            <artifactId>spring-boot-starter-web</artifactId>
+            <scope>test</scope>
+            <version>2.6.3</version>
+        </dependency>
+
+        <dependency>
+            <groupId>com.h2database</groupId>
+            <artifactId>h2</artifactId>
+            <version>2.1.210</version>
+            <scope>test</scope>
+        </dependency>
+
         <!--
             Core utilities used by other modules.
             Define this if you use Spring Utility APIs (org.springframework.core.*/org.springframework.util.*)
@@ -527,6 +548,18 @@
 
         <dependency>
             <groupId>org.springframework</groupId>
+            <artifactId>spring-webmvc</artifactId>
+            <version>${org.springframework.version}</version>
+        </dependency>
+
+        <dependency>
+            <groupId>org.springframework</groupId>
+            <artifactId>spring-webflux</artifactId>
+            <version>${org.springframework.version}</version>
+        </dependency>
+
+        <dependency>
+            <groupId>org.springframework</groupId>
             <artifactId>spring-test</artifactId>
             <version>${org.springframework.version}</version>
             <scope>test</scope>
@@ -577,7 +610,7 @@
         <dependency>
             <groupId>org.postgresql</groupId>
             <artifactId>postgresql</artifactId>
-            <version>42.3.2</version>
+            <version>42.3.3</version>
         </dependency>
 
         <!--dependency>
@@ -694,7 +727,7 @@
             <groupId>org.mongodb</groupId>
             <artifactId>mongodb-driver-legacy</artifactId>
             <!--version>3.12.10</version-->
-            <version>4.4.1</version>
+            <version>4.5.0</version>
         </dependency>
 
         <dependency>
@@ -725,6 +758,20 @@
             <groupId>org.junit.platform</groupId>
             <artifactId>junit-platform-runner</artifactId>
             <version>${junit.platform.version}</version>
+            <scope>test</scope>
+        </dependency>
+
+        <dependency>
+            <groupId>org.mockito</groupId>
+            <artifactId>mockito-junit-jupiter</artifactId>
+            <version>4.3.1</version>
+            <scope>test</scope>
+        </dependency>
+
+        <dependency>
+            <groupId>org.moditect.jfrunit</groupId>
+            <artifactId>jfrunit-core</artifactId>
+            <version>1.0.0.Alpha2</version>
             <scope>test</scope>
         </dependency>
 
@@ -776,7 +823,7 @@
         <dependency>
             <groupId>io.github.classgraph</groupId>
             <artifactId>classgraph</artifactId>
-            <version>4.8.138</version>
+            <version>4.8.139</version>
         </dependency>
 
         <!--<dependency>
