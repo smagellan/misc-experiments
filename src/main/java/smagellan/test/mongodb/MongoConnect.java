@@ -1,17 +1,13 @@
 package smagellan.test.mongodb;
 
-import com.google.common.collect.ImmutableList;
 import com.mongodb.*;
-import com.mongodb.client.MongoCursor;
 import com.mongodb.client.MongoDatabase;
 import com.mongodb.client.MongoIterable;
-import com.mongodb.event.*;
 import de.bwaldvogel.mongo.MongoBackend;
 import de.bwaldvogel.mongo.MongoServer;
 import de.bwaldvogel.mongo.ServerVersion;
 import de.bwaldvogel.mongo.backend.memory.MemoryBackend;
 import org.bson.Document;
-import org.jetbrains.annotations.NotNull;
 import org.slf4j.LoggerFactory;
 
 import java.net.InetSocketAddress;
@@ -41,12 +37,12 @@ public class MongoConnect {
             logger.info("server status: {}", backend.getServerStatus());
             try (MongoClient client = new MongoClient(new ServerAddress("localhost", serverAddress.getPort()), credential, opts)) {
                 MongoIterable<String> namesIterable = client.listDatabaseNames();
-                List<String> dbNames = pull(namesIterable);
+                List<String> dbNames = MongoUtils.pull(namesIterable);
                 logger.info("listDatabaseNames: {}", dbNames);
                 for (String dbName : dbNames) {
                     MongoDatabase db = client.getDatabase(dbName);
                     traceUsers(db);
-                    List<String> collectionNames = pull(db.listCollectionNames());
+                    List<String> collectionNames = MongoUtils.pull(db.listCollectionNames());
                     logger.info("listCollectionNames({}): {}", dbName, collectionNames);
                 }
                 Thread.sleep(30 * 1000);
@@ -66,13 +62,6 @@ public class MongoConnect {
         logger.info("users of {}", db.getName());
         for (Object u : users) {
             logger.info("user: {}", u);
-        }
-    }
-
-    @NotNull
-    private static <T> List<T> pull(MongoIterable<T> namesIterable) {
-        try (MongoCursor<T>  iter = namesIterable.iterator()) {
-            return ImmutableList.copyOf(iter);
         }
     }
 }

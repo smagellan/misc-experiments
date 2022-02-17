@@ -1,5 +1,10 @@
 package smagellan.test;
 
+import com.mongodb.BasicDBObject;
+import com.mongodb.MongoClient;
+import com.mongodb.client.FindIterable;
+import com.mongodb.client.MongoCollection;
+import org.bson.Document;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 import org.moditect.jfrunit.EnableEvent;
@@ -22,9 +27,13 @@ import org.springframework.test.web.reactive.server.WebTestClient;
 import org.springframework.test.web.servlet.MockMvc;
 import org.springframework.test.web.servlet.setup.MockMvcBuilders;
 import org.springframework.web.context.WebApplicationContext;
+import smagellan.test.mongodb.MongoUtils;
 
 import java.nio.charset.StandardCharsets;
+import java.util.List;
 import java.util.stream.Collectors;
+
+import static org.junit.jupiter.api.Assertions.assertEquals;
 
 @SpringJUnitWebConfig(value = TestConfiguration.class, initializers = ConfigurationWarningsApplicationContextInitializer.class)
 @RecordApplicationEvents
@@ -41,6 +50,9 @@ public class EmployeeRestControllerIntegrationTestJunit5 {
 
     @Autowired
     ApplicationEvents applicationEvents;
+
+    @Autowired
+    MongoClient mongoClient;
 
     ExceptionCollector collector = new ExceptionCollector();
 
@@ -66,7 +78,7 @@ public class EmployeeRestControllerIntegrationTestJunit5 {
     @Test
     @EnableEvent(GarbageCollection.EVENT_NAME)
     @EnableEvent(ThreadSleep.EVENT_NAME)
-    public void doTest() {
+    public void doWebTest() {
         jfrEvents.awaitEvents();
         logger.info("configuration: {}", configuration);
         logger.info("application events: {}", applicationEvents.stream().collect(Collectors.toList()));
@@ -77,5 +89,21 @@ public class EmployeeRestControllerIntegrationTestJunit5 {
                 .expectStatus().isOk()
                 .expectHeader().valueEquals("Content-Type", MediaType.APPLICATION_OCTET_STREAM_VALUE)
                 .expectHeader().valueEquals("Content-Length", 118);
+    }
+
+    @Test
+    public void doMongoTest() {
+        MongoCollection<Document> collection = mongoClient.getDatabase("testDb").getCollection("testCollection");
+        assertEquals(0, collection.countDocuments());
+        Document doc = new Document("_id", 1)
+                .append("key42", "value42")
+                .append("key43", "value43");
+        collection.insertOne(doc);
+        assertEquals(1, collection.countDocuments());
+        FindIterable<Document> docs = collection.find(new BasicDBObject("key42", "value42"));
+        List<Document> docList = MongoUtils.pull(docs);
+        assertEquals(1, docList.size());
+        Document docFromDb = docs.iterator().next();
+        assertEquals("value43", docFromDb.get("key43", String.class));
     }
 }
