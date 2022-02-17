@@ -37,7 +37,7 @@
         <lombok.version>1.18.20</lombok.version>
         <platform.classifier>linux-x86_64</platform.classifier>
         <spotbugs-maven-plugin.version>4.5.3.0</spotbugs-maven-plugin.version>
-        <vertx.version>4.2.4</vertx.version>
+        <vertx.version>4.2.5</vertx.version>
         <grpc.version>1.44.0</grpc.version>
         <opentelemetry.version>1.11.0</opentelemetry.version>
         <spring-integration.version>5.5.8</spring-integration.version>

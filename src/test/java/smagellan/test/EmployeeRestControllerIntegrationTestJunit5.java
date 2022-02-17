@@ -2,7 +2,6 @@ package smagellan.test;
 
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
-import org.junit.jupiter.api.extension.ExtendWith;
 import org.moditect.jfrunit.EnableEvent;
 import org.moditect.jfrunit.JfrEventTest;
 import org.moditect.jfrunit.JfrEvents;
@@ -16,8 +15,6 @@ import org.springframework.http.MediaType;
 import org.springframework.test.context.ActiveProfiles;
 import org.springframework.test.context.event.ApplicationEvents;
 import org.springframework.test.context.event.RecordApplicationEvents;
-import org.springframework.test.context.junit.jupiter.SpringExtension;
-import org.springframework.test.context.junit.jupiter.SpringJUnitConfig;
 import org.springframework.test.context.junit.jupiter.web.SpringJUnitWebConfig;
 import org.springframework.test.context.support.DefaultActiveProfilesResolver;
 import org.springframework.test.util.ExceptionCollector;
@@ -31,7 +28,6 @@ import java.util.stream.Collectors;
 
 @SpringJUnitWebConfig(value = TestConfiguration.class, initializers = ConfigurationWarningsApplicationContextInitializer.class)
 @RecordApplicationEvents
-@ExtendWith(SpringExtension.class)
 @ActiveProfiles(value = "test", resolver = DefaultActiveProfilesResolver.class)
 @JfrEventTest
 public class EmployeeRestControllerIntegrationTestJunit5 {
@@ -46,12 +42,11 @@ public class EmployeeRestControllerIntegrationTestJunit5 {
     @Autowired
     ApplicationEvents applicationEvents;
 
-    //@Autowired
     ExceptionCollector collector = new ExceptionCollector();
 
-    MockMvc mockMvc;
+    private MockMvc mockMvc;
 
-    WebTestClient client;
+    private WebTestClient client;
 
     public JfrEvents jfrEvents = new JfrEvents();
 

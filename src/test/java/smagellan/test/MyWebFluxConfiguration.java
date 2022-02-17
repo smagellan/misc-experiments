@@ -5,7 +5,7 @@ import org.springframework.web.reactive.config.ResourceHandlerRegistry;
 import org.springframework.web.reactive.config.WebFluxConfigurationSupport;
 
 @Configuration
-public class MyWebFluxConfigSupport extends WebFluxConfigurationSupport {
+public class MyWebFluxConfiguration extends WebFluxConfigurationSupport {
     @Override
     protected void addResourceHandlers(ResourceHandlerRegistry registry) {
         registry.addResourceHandler("/resource/**").addResourceLocations("classpath:/META-INF/");
