@@ -27,10 +27,8 @@ import org.springframework.test.web.reactive.server.WebTestClient;
 import org.springframework.test.web.servlet.MockMvc;
 import org.springframework.test.web.servlet.setup.MockMvcBuilders;
 import org.springframework.web.context.WebApplicationContext;
-import smagellan.test.mongodb.MongoUtils;
 
 import java.nio.charset.StandardCharsets;
-import java.util.List;
 import java.util.stream.Collectors;
 
 import static org.junit.jupiter.api.Assertions.assertEquals;
@@ -101,8 +99,6 @@ public class EmployeeRestControllerIntegrationTestJunit5 {
         collection.insertOne(doc);
         assertEquals(1, collection.countDocuments());
         FindIterable<Document> docs = collection.find(new BasicDBObject("key42", "value42"));
-        List<Document> docList = MongoUtils.pull(docs);
-        assertEquals(1, docList.size());
         Document docFromDb = docs.iterator().next();
         assertEquals("value43", docFromDb.get("key43", String.class));
     }
