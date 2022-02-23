@@ -22,7 +22,7 @@
         <jooq.version>3.16.4</jooq.version>
         <mysql.driver>com.mysql.jdbc.Driver</mysql.driver>
         <clickhouse.driver>ru.yandex.clickhouse.ClickHouseDriver</clickhouse.driver>
-        <org.springframework.version>5.3.16</org.springframework.version>
+        <org.springframework.version>6.0.0-M2</org.springframework.version>
 
         <slf4j.version>1.7.36</slf4j.version>
         <log4j.version>2.17.1</log4j.version>
@@ -40,8 +40,16 @@
         <vertx.version>4.2.5</vertx.version>
         <grpc.version>1.44.1</grpc.version>
         <opentelemetry.version>1.11.0</opentelemetry.version>
-        <spring-integration.version>5.5.9</spring-integration.version>
+        <spring-integration.version>6.0.0-M1</spring-integration.version>
     </properties>
+
+    <repositories>
+        <repository>
+            <id>spring-milestones</id>
+            <name>spring-milestones repo</name>
+            <url>https://repo.spring.io/milestone/</url>
+        </repository>
+    </repositories>
 
     <reporting>
         <plugins>
@@ -462,15 +470,15 @@
         <dependency>
             <groupId>org.springframework.boot</groupId>
             <artifactId>spring-boot-starter-test</artifactId>
+            <version>3.0.0-M1</version>
             <scope>test</scope>
-            <version>2.6.3</version>
         </dependency>
 
         <dependency>
             <groupId>org.springframework.boot</groupId>
             <artifactId>spring-boot-starter-web</artifactId>
+            <version>3.0.0-M1</version>
             <scope>test</scope>
-            <version>2.6.3</version>
         </dependency>
 
         <dependency>
@@ -544,7 +552,7 @@
         <dependency>
             <groupId>org.springframework.security</groupId>
             <artifactId>spring-security-test</artifactId>
-            <version>5.6.2</version>
+            <version>6.0.0-M1</version>
             <scope>test</scope>
         </dependency>
 
@@ -667,6 +675,14 @@
             <groupId>javax.servlet</groupId>
             <artifactId>javax.servlet-api</artifactId>
             <version>4.0.1</version>
+            <scope>provided</scope>
+        </dependency>
+
+        <dependency>
+            <groupId>jakarta.servlet</groupId>
+            <artifactId>jakarta.servlet-api</artifactId>
+            <version>5.0.0</version>
+            <scope>provided</scope>
         </dependency>
 
         <dependency>

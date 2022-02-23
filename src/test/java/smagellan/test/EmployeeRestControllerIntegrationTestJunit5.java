@@ -8,7 +8,6 @@ import org.bson.Document;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.TestInfo;
-import org.moditect.jfrunit.JfrEventTest;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.context.ConfigurationWarningsApplicationContextInitializer;
@@ -33,7 +32,6 @@ import static org.junit.jupiter.api.Assertions.assertEquals;
 @SpringJUnitWebConfig(value = TestConfiguration.class, initializers = ConfigurationWarningsApplicationContextInitializer.class)
 @RecordApplicationEvents
 @ActiveProfiles(value = "test", resolver = DefaultActiveProfilesResolver.class)
-@JfrEventTest
 public class EmployeeRestControllerIntegrationTestJunit5 {
     private static final org.slf4j.Logger logger = LoggerFactory.getLogger(EmployeeRestControllerIntegrationTestJunit5.class);
 
@@ -49,7 +47,7 @@ public class EmployeeRestControllerIntegrationTestJunit5 {
     @Autowired
     MongoClient mongoClient;
 
-    ExceptionCollector collector = new ExceptionCollector();
+    private final ExceptionCollector collector = new ExceptionCollector();
 
     private MockMvc mockMvc;
 
