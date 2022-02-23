@@ -1,0 +1,19 @@
+package smagellan.test.servletwrapper;
+
+public class JakartaJavaxTaglibDescriptor implements jakarta.servlet.descriptor.TaglibDescriptor {
+    private final javax.servlet.descriptor.TaglibDescriptor wrapped;
+
+    public JakartaJavaxTaglibDescriptor(javax.servlet.descriptor.TaglibDescriptor wrapped) {
+        this.wrapped = wrapped;
+    }
+
+    @Override
+    public String getTaglibURI() {
+        return wrapped.getTaglibURI();
+    }
+
+    @Override
+    public String getTaglibLocation() {
+        return wrapped.getTaglibLocation();
+    }
+}

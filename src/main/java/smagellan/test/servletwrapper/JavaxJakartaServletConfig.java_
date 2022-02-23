@@ -1,0 +1,32 @@
+package smagellan.test.servletwrapper;
+
+import jakarta.servlet.ServletConfig;
+import java.util.Enumeration;
+
+public class JavaxJakartaServletConfig implements javax.servlet.ServletConfig {
+    private final jakarta.servlet.ServletConfig wrapped;
+
+    public JavaxJakartaServletConfig(ServletConfig wrapped) {
+        this.wrapped = wrapped;
+    }
+
+    @Override
+    public String getServletName() {
+        return wrapped.getServletName();
+    }
+
+    @Override
+    public javax.servlet.ServletContext getServletContext() {
+        return new JavaxJakartaServletContext(wrapped.getServletContext());
+    }
+
+    @Override
+    public String getInitParameter(String name) {
+        return wrapped.getInitParameter(name);
+    }
+
+    @Override
+    public Enumeration<String> getInitParameterNames() {
+        return wrapped.getInitParameterNames();
+    }
+}

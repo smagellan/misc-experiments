@@ -1,0 +1,30 @@
+package smagellan.test.servletwrapper;
+
+import jakarta.servlet.descriptor.JspPropertyGroupDescriptor;
+import jakarta.servlet.descriptor.TaglibDescriptor;
+
+import java.util.Collection;
+import java.util.stream.Collectors;
+
+public class JakartaJavaxJspConfigDescriptor implements jakarta.servlet.descriptor.JspConfigDescriptor {
+    private final javax.servlet.descriptor.JspConfigDescriptor wrapped;
+    public JakartaJavaxJspConfigDescriptor(javax.servlet.descriptor.JspConfigDescriptor jspConfigDescriptor) {
+        this.wrapped = jspConfigDescriptor;
+    }
+
+    @Override
+    public Collection<TaglibDescriptor> getTaglibs() {
+        return wrapped.getTaglibs()
+                .stream()
+                .map(JakartaJavaxTaglibDescriptor::new)
+                .collect(Collectors.toList());
+    }
+
+    @Override
+    public Collection<JspPropertyGroupDescriptor> getJspPropertyGroups() {
+        return wrapped.getJspPropertyGroups()
+                .stream()
+                .map(JakartaJavaxJspPropertyGroupDescriptor::new)
+                .collect(Collectors.toList());
+    }
+}

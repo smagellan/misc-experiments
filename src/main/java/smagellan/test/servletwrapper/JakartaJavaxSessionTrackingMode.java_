@@ -1,0 +1,38 @@
+package smagellan.test.servletwrapper;
+
+import java.util.EnumMap;
+import java.util.Map;
+import java.util.stream.Collectors;
+
+public class JakartaJavaxSessionTrackingMode {
+    private static final Map<javax.servlet.SessionTrackingMode, jakarta.servlet.SessionTrackingMode> javaxToJakarta = new EnumMap<>(Map.of(
+            javax.servlet.SessionTrackingMode.COOKIE, jakarta.servlet.SessionTrackingMode.COOKIE,
+            javax.servlet.SessionTrackingMode.URL, jakarta.servlet.SessionTrackingMode.URL,
+            javax.servlet.SessionTrackingMode.SSL, jakarta.servlet.SessionTrackingMode.SSL
+    ));
+
+    private static final Map<jakarta.servlet.SessionTrackingMode, javax.servlet.SessionTrackingMode> jakartaToJavax =
+            new EnumMap<>(invert(javaxToJakarta));
+
+    public static <K, V> Map<V, K> invert(Map<K, V> src) {
+        return src.entrySet()
+                .stream()
+                .collect(Collectors.toMap(Map.Entry::getValue, Map.Entry::getKey));
+    }
+
+    public static jakarta.servlet.SessionTrackingMode fromJavax(javax.servlet.SessionTrackingMode src) {
+        jakarta.servlet.SessionTrackingMode ret = javaxToJakarta.get(src);
+        if (ret == null) {
+            throw new RuntimeException("unknown enum value:" + src);
+        }
+        return ret;
+    }
+
+    public static javax.servlet.SessionTrackingMode fromJakarta(jakarta.servlet.SessionTrackingMode src) {
+        javax.servlet.SessionTrackingMode ret = jakartaToJavax.get(src);
+        if (ret == null) {
+            throw new RuntimeException("unknown enum value: " + src);
+        }
+        return ret;
+    }
+}

@@ -1,0 +1,333 @@
+package smagellan.test.servletwrapper;
+
+import com.google.common.collect.ImmutableList;
+import jakarta.servlet.*;
+import jakarta.servlet.descriptor.JspConfigDescriptor;
+
+import java.io.InputStream;
+import java.net.MalformedURLException;
+import java.net.URL;
+import java.util.*;
+import java.util.stream.Collectors;
+
+public class JakartaJavaxServletContext implements jakarta.servlet.ServletContext {
+    private final javax.servlet.ServletContext wrapped;
+
+    public JakartaJavaxServletContext(javax.servlet.ServletContext context) {
+        this.wrapped = context;
+    }
+
+    @Override
+    public String getContextPath() {
+        return wrapped.getContextPath();
+    }
+
+    @Override
+    public ServletContext getContext(String uripath) {
+        return new JakartaJavaxServletContext(wrapped.getContext(uripath));
+    }
+
+    @Override
+    public int getMajorVersion() {
+        return wrapped.getMajorVersion();
+    }
+
+    @Override
+    public int getMinorVersion() {
+        return wrapped.getMinorVersion();
+    }
+
+    @Override
+    public int getEffectiveMajorVersion() {
+        return wrapped.getEffectiveMajorVersion();
+    }
+
+    @Override
+    public int getEffectiveMinorVersion() {
+        return wrapped.getEffectiveMinorVersion();
+    }
+
+    @Override
+    public String getMimeType(String file) {
+        return wrapped.getMimeType(file);
+    }
+
+    @Override
+    public Set<String> getResourcePaths(String path) {
+        return wrapped.getResourcePaths(path);
+    }
+
+    @Override
+    public URL getResource(String path) throws MalformedURLException {
+        return wrapped.getResource(path);
+    }
+
+    @Override
+    public InputStream getResourceAsStream(String path) {
+        return wrapped.getResourceAsStream(path);
+    }
+
+    @Override
+    public RequestDispatcher getRequestDispatcher(String path) {
+        return wrapped.getRequestDispatcher(path);
+    }
+
+    @Override
+    public RequestDispatcher getNamedDispatcher(String name) {
+        return wrapped.getNamedDispatcher(name);
+    }
+
+    @Override
+    public Servlet getServlet(String name) throws ServletException {
+        try {
+            return new JakartaJavaxServlet(wrapped.getServlet(name));
+        } catch (javax.servlet.ServletException ex) {
+            throw new JakartaJavaxServletException(ex);
+        }
+    }
+
+    @Override
+    public Enumeration<Servlet> getServlets() {
+        List<jakarta.servlet.Servlet> tmp = ImmutableList.copyOf(wrapped.getServlets().asIterator())
+                .stream()
+                .map(JakartaJavaxServlet::new)
+                .collect(Collectors.toList());
+        return Collections.enumeration(tmp);
+    }
+
+    @Override
+    public Enumeration<String> getServletNames() {
+        return wrapped.getServletNames();
+    }
+
+    @Override
+    public void log(String msg) {
+        wrapped.log(msg);
+    }
+
+    @Override
+    public void log(Exception exception, String msg) {
+        wrapped.log(exception, msg);
+    }
+
+    @Override
+    public void log(String message, Throwable throwable) {
+        wrapped.log(message, throwable);
+    }
+
+    @Override
+    public String getRealPath(String path) {
+        return wrapped.getRealPath(path);
+    }
+
+    @Override
+    public String getServerInfo() {
+        return wrapped.getServerInfo();
+    }
+
+    @Override
+    public String getInitParameter(String name) {
+        return wrapped.getInitParameter(name);
+    }
+
+    @Override
+    public Enumeration<String> getInitParameterNames() {
+        return wrapped.getInitParameterNames();
+    }
+
+    @Override
+    public boolean setInitParameter(String name, String value) {
+        return wrapped.setInitParameter(name, value);
+    }
+
+    @Override
+    public Object getAttribute(String name) {
+        return wrapped.getAttribute(name);
+    }
+
+    @Override
+    public Enumeration<String> getAttributeNames() {
+        return wrapped.getAttributeNames();
+    }
+
+    @Override
+    public void setAttribute(String name, Object object) {
+        wrapped.setAttribute(name, object);
+    }
+
+    @Override
+    public void removeAttribute(String name) {
+        wrapped.removeAttribute(name);
+    }
+
+    @Override
+    public String getServletContextName() {
+        return wrapped.getServletContextName();
+    }
+
+    @Override
+    public ServletRegistration.Dynamic addServlet(String servletName, String className) {
+        return wrapped.addServlet(servletName, className);
+    }
+
+    @Override
+    public ServletRegistration.Dynamic addServlet(String servletName, Servlet servlet) {
+        return wrapped.addServlet(servletName, servlet);
+    }
+
+    @Override
+    public ServletRegistration.Dynamic addServlet(String servletName, Class<? extends Servlet> servletClass) {
+        return wrapped.addServlet(servletName, servletClass);
+    }
+
+    @Override
+    public ServletRegistration.Dynamic addJspFile(String servletName, String jspFile) {
+        return wrapped.addJspFile(servletName, jspFile);
+    }
+
+    @Override
+    public <T extends Servlet> T createServlet(Class<T> clazz) throws ServletException {
+        return wrapped.createServlet(clazz);
+    }
+
+    @Override
+    public ServletRegistration getServletRegistration(String servletName) {
+        return wrapped.getServletRegistration(servletName);
+    }
+
+    @Override
+    public Map<String, ? extends ServletRegistration> getServletRegistrations() {
+        return wrapped.getServletRegistrations();
+    }
+
+    @Override
+    public FilterRegistration.Dynamic addFilter(String filterName, String className) {
+        return wrapped.addFilter(filterName, className);
+    }
+
+    @Override
+    public FilterRegistration.Dynamic addFilter(String filterName, Filter filter) {
+        return wrapped.addFilter(filterName, filter);
+    }
+
+    @Override
+    public FilterRegistration.Dynamic addFilter(String filterName, Class<? extends Filter> filterClass) {
+        return wrapped.addFilter(filterName, filterClass);
+    }
+
+    @Override
+    public <T extends Filter> T createFilter(Class<T> clazz) throws ServletException {
+        return wrapped.createFilter(clazz);
+    }
+
+    @Override
+    public FilterRegistration getFilterRegistration(String filterName) {
+        return wrapped.getFilterRegistration(filterName);
+    }
+
+    @Override
+    public Map<String, ? extends FilterRegistration> getFilterRegistrations() {
+        return wrapped.getFilterRegistrations();
+    }
+
+    @Override
+    public SessionCookieConfig getSessionCookieConfig() {
+        return wrapped.getSessionCookieConfig();
+    }
+
+    @Override
+    public void setSessionTrackingModes(Set<SessionTrackingMode> sessionTrackingModes) {
+        Set<javax.servlet.SessionTrackingMode> tmp = sessionTrackingModes.stream()
+                .map(JakartaJavaxSessionTrackingMode::fromJakarta)
+                .collect(Collectors.toSet());
+        wrapped.setSessionTrackingModes(tmp);
+    }
+
+    @Override
+    public Set<SessionTrackingMode> getDefaultSessionTrackingModes() {
+        return wrapped.getDefaultSessionTrackingModes().stream()
+                .map(JakartaJavaxSessionTrackingMode::fromJavax)
+                .collect(Collectors.toSet());
+    }
+
+    @Override
+    public Set<SessionTrackingMode> getEffectiveSessionTrackingModes() {
+        return wrapped.getEffectiveSessionTrackingModes().stream()
+                .map(JakartaJavaxSessionTrackingMode::fromJavax)
+                .collect(Collectors.toSet());
+    }
+
+    @Override
+    public void addListener(String className) {
+        wrapped.addListener(className);
+    }
+
+    @Override
+    public <T extends EventListener> void addListener(T t) {
+        wrapped.addListener(t);
+    }
+
+    @Override
+    public void addListener(Class<? extends EventListener> listenerClass) {
+        wrapped.addListener(listenerClass);
+    }
+
+    @Override
+    public <T extends EventListener> T createListener(Class<T> clazz) throws ServletException {
+        try {
+            return wrapped.createListener(clazz);
+        } catch (javax.servlet.ServletException ex) {
+            throw new JakartaJavaxServletException(ex);
+        }
+    }
+
+    @Override
+    public JspConfigDescriptor getJspConfigDescriptor() {
+        return new JakartaJavaxJspConfigDescriptor(wrapped.getJspConfigDescriptor());
+    }
+
+    @Override
+    public ClassLoader getClassLoader() {
+        return wrapped.getClassLoader();
+    }
+
+    @Override
+    public void declareRoles(String... roleNames) {
+        wrapped.declareRoles(roleNames);
+    }
+
+    @Override
+    public String getVirtualServerName() {
+        return wrapped.getVirtualServerName();
+    }
+
+    @Override
+    public int getSessionTimeout() {
+        return wrapped.getSessionTimeout();
+    }
+
+    @Override
+    public void setSessionTimeout(int sessionTimeout) {
+        wrapped.setSessionTimeout(sessionTimeout);
+    }
+
+    @Override
+    public String getRequestCharacterEncoding() {
+        return wrapped.getRequestCharacterEncoding();
+    }
+
+    @Override
+    public void setRequestCharacterEncoding(String encoding) {
+        wrapped.setRequestCharacterEncoding(encoding);
+    }
+
+    @Override
+    public String getResponseCharacterEncoding() {
+        return wrapped.getResponseCharacterEncoding();
+    }
+
+    @Override
+    public void setResponseCharacterEncoding(String encoding) {
+        wrapped.setResponseCharacterEncoding(encoding);
+    }
+}

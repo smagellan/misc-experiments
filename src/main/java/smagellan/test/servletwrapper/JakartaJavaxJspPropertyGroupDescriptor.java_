@@ -1,0 +1,71 @@
+package smagellan.test.servletwrapper;
+
+import java.util.Collection;
+
+public class JakartaJavaxJspPropertyGroupDescriptor implements jakarta.servlet.descriptor.JspPropertyGroupDescriptor {
+    private final javax.servlet.descriptor.JspPropertyGroupDescriptor wrapped;
+
+    public JakartaJavaxJspPropertyGroupDescriptor(javax.servlet.descriptor.JspPropertyGroupDescriptor wrapped) {
+        this.wrapped = wrapped;
+    }
+
+    @Override
+    public Collection<String> getUrlPatterns() {
+        return wrapped.getUrlPatterns();
+    }
+
+    @Override
+    public String getElIgnored() {
+        return wrapped.getElIgnored();
+    }
+
+    @Override
+    public String getPageEncoding() {
+        return wrapped.getPageEncoding();
+    }
+
+    @Override
+    public String getScriptingInvalid() {
+        return wrapped.getScriptingInvalid();
+    }
+
+    @Override
+    public String getIsXml() {
+        return wrapped.getIsXml();
+    }
+
+    @Override
+    public Collection<String> getIncludePreludes() {
+        return wrapped.getIncludePreludes();
+    }
+
+    @Override
+    public Collection<String> getIncludeCodas() {
+        return wrapped.getIncludeCodas();
+    }
+
+    @Override
+    public String getDeferredSyntaxAllowedAsLiteral() {
+        return wrapped.getDeferredSyntaxAllowedAsLiteral();
+    }
+
+    @Override
+    public String getTrimDirectiveWhitespaces() {
+        return wrapped.getTrimDirectiveWhitespaces();
+    }
+
+    @Override
+    public String getDefaultContentType() {
+        return wrapped.getDefaultContentType();
+    }
+
+    @Override
+    public String getBuffer() {
+        return wrapped.getBuffer();
+    }
+
+    @Override
+    public String getErrorOnUndeclaredNamespace() {
+        return wrapped.getErrorOnUndeclaredNamespace();
+    }
+}

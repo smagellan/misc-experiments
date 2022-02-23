@@ -1,0 +1,44 @@
+package smagellan.test.servletwrapper;
+
+import jakarta.servlet.ServletConfig;
+import jakarta.servlet.ServletException;
+import jakarta.servlet.ServletRequest;
+import jakarta.servlet.ServletResponse;
+import java.io.IOException;
+
+public class JakartaJavaxServlet implements jakarta.servlet.Servlet {
+    private final javax.servlet.Servlet wrapped;
+
+    public JakartaJavaxServlet(javax.servlet.Servlet wrapped) {
+        this.wrapped = wrapped;
+    }
+
+    @Override
+    public void init(ServletConfig config) throws ServletException {
+        try {
+            wrapped.init(new JavaxJakartaServletConfig(config));
+        } catch (javax.servlet.ServletException ex) {
+            throw new JakartaJavaxServletException(ex);
+        }
+    }
+
+    @Override
+    public ServletConfig getServletConfig() {
+        return null;
+    }
+
+    @Override
+    public void service(ServletRequest req, ServletResponse res) throws ServletException, IOException {
+
+    }
+
+    @Override
+    public String getServletInfo() {
+        return wrapped.getServletInfo();
+    }
+
+    @Override
+    public void destroy() {
+        wrapped.destroy();
+    }
+}

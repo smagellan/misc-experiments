@@ -1,0 +1,7 @@
+package smagellan.test.servletwrapper;
+
+public class JakartaJavaxServletException extends jakarta.servlet.ServletException {
+    public JakartaJavaxServletException(javax.servlet.ServletException ex) {
+        super(ex);
+    }
+}

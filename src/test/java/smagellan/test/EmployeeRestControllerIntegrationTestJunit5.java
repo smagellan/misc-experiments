@@ -7,11 +7,8 @@ import com.mongodb.client.MongoCollection;
 import org.bson.Document;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
-import org.moditect.jfrunit.EnableEvent;
+import org.junit.jupiter.api.TestInfo;
 import org.moditect.jfrunit.JfrEventTest;
-import org.moditect.jfrunit.JfrEvents;
-import org.moditect.jfrunit.events.GarbageCollection;
-import org.moditect.jfrunit.events.ThreadSleep;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.context.ConfigurationWarningsApplicationContextInitializer;
@@ -58,8 +55,6 @@ public class EmployeeRestControllerIntegrationTestJunit5 {
 
     private WebTestClient client;
 
-    public JfrEvents jfrEvents = new JfrEvents();
-
     @BeforeEach
     public void setup(WebApplicationContext wac) {
         logger.info("wac: {}", wac);
@@ -74,13 +69,9 @@ public class EmployeeRestControllerIntegrationTestJunit5 {
     }
 
     @Test
-    @EnableEvent(GarbageCollection.EVENT_NAME)
-    @EnableEvent(ThreadSleep.EVENT_NAME)
     public void doWebTest() {
-        jfrEvents.awaitEvents();
         logger.info("configuration: {}", configuration);
         logger.info("application events: {}", applicationEvents.stream().collect(Collectors.toList()));
-        logger.info("jfr events: {}", jfrEvents.events().collect(Collectors.toList()));
         client.get()
                 .uri("/resource/javamail.providers")
                 .exchange()
@@ -90,7 +81,7 @@ public class EmployeeRestControllerIntegrationTestJunit5 {
     }
 
     @Test
-    public void doMongoTest() {
+    public void doMongoTest(TestInfo testInfo) {
         MongoCollection<Document> collection = mongoClient.getDatabase("testDb").getCollection("testCollection");
         assertEquals(0, collection.countDocuments());
         Document doc = new Document("_id", 1)
@@ -101,5 +92,6 @@ public class EmployeeRestControllerIntegrationTestJunit5 {
         FindIterable<Document> docs = collection.find(new BasicDBObject("key42", "value42"));
         Document docFromDb = docs.iterator().next();
         assertEquals("value43", docFromDb.get("key43", String.class));
+        logger.info("testInfo: {}", testInfo);
     }
 }
