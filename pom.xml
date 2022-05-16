@@ -28,7 +28,7 @@
         <log4j.version>2.17.1</log4j.version>
         <netty.version>4.1.74.Final</netty.version>
         <quartz.version>2.3.2</quartz.version>
-        <jackson.version>2.13.1</jackson.version>
+        <jackson.version>2.13.2.1</jackson.version>
         <bytebuddy.version>1.12.8</bytebuddy.version>
         <org.eclipse.jetty>11.0.8</org.eclipse.jetty>
         <junit.version>5.8.2</junit.version>
