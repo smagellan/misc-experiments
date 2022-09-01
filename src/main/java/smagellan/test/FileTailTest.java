@@ -47,7 +47,7 @@ public class FileTailTest {
         msgSource.setDirectory(new File("/tmp/mon-dir"));
         msgSource.setLoggingEnabled(true);
         msgSource.setWatchEvents(FileReadingMessageSource.WatchEventType.MODIFY, FileReadingMessageSource.WatchEventType.CREATE);
-        IntegrationFlow flow = IntegrationFlows
+        IntegrationFlow flow = IntegrationFlow
                 .from(msgSource, config -> config.poller(Pollers.fixedDelay(1000)))
                 .channel(channel)
                 .get();

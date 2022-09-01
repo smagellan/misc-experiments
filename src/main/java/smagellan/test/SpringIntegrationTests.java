@@ -26,7 +26,7 @@ public class SpringIntegrationTests {
     public IntegrationFlow tailTest2() {
         QueueChannel channel = new QueueChannel();
         AbstractEndpoint ep1 = FileTailTest.subscribe("/tmp/aa-test2", channel);
-        return IntegrationFlows.from((MessageChannel) channel)
+        return IntegrationFlow.from((MessageChannel) channel)
                 .bridge(e -> e.poller(Pollers.fixedDelay(5000).maxMessagesPerPoll(3)))
                 .handle((msg) -> System.err.println("tailTest2 msg:" + msg))
                 .get();
