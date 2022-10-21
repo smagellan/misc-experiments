@@ -19,33 +19,35 @@
 
         <mysql.driver>com.mysql.jdbc.Driver</mysql.driver>
         <clickhouse.driver>ru.yandex.clickhouse.ClickHouseDriver</clickhouse.driver>
-        <org.springframework.version>6.0.0-M5</org.springframework.version>
+        <org.springframework.version>6.0.0-RC2</org.springframework.version>
 
         <jmh.version>1.35</jmh.version>
-        <mysql.version>8.0.30</mysql.version>
+        <mysql.version>8.0.31</mysql.version>
         <jooq.version>3.17.4</jooq.version>
-        <slf4j.version>1.7.36</slf4j.version>
-        <log4j.version>2.18.0</log4j.version>
-        <netty.version>4.1.82.Final</netty.version>
+        <slf4j.version>2.0.3</slf4j.version>
+        <log4j.version>2.19.0</log4j.version>
+        <netty.version>4.1.84.Final</netty.version>
         <quartz.version>2.3.2</quartz.version>
         <jackson.version>2.13.4</jackson.version>
-        <bytebuddy.version>1.12.16</bytebuddy.version>
-        <org.eclipse.jetty>11.0.11</org.eclipse.jetty>
-        <junit.version>5.9.0</junit.version>
-        <junit.platform.version>1.9.0</junit.platform.version>
+        <bytebuddy.version>1.12.18</bytebuddy.version>
+        <org.eclipse.jetty>11.0.12</org.eclipse.jetty>
+        <junit.version>5.9.1</junit.version>
+        <junit.platform.version>1.9.1</junit.platform.version>
         <dl4j.version>1.0.0-M2.1</dl4j.version>
         <lombok.version>1.18.24</lombok.version>
         <platform.classifier>linux-x86_64</platform.classifier>
-        <spotbugs-maven-plugin.version>4.7.2.0</spotbugs-maven-plugin.version>
-        <vertx.version>4.3.3</vertx.version>
-        <grpc.version>1.49.0</grpc.version>
-        <opentelemetry.version>1.18.0</opentelemetry.version>
-        <spring-integration.version>6.0.0-M4</spring-integration.version>
+        <spotbugs-maven-plugin.version>4.7.2.1</spotbugs-maven-plugin.version>
+        <vertx.version>4.3.4</vertx.version>
+        <grpc.version>1.50.2</grpc.version>
+        <opentelemetry.version>1.19.0</opentelemetry.version>
+        <spring-integration.version>6.0.0-RC1</spring-integration.version>
+        <error-prone.version>2.16</error-prone.version>
+        <error-prone-support.version>0.4.0</error-prone-support.version>
 
         <quarkus.platform.artifact-id>quarkus-bom</quarkus.platform.artifact-id>
         <quarkus.platform.group-id>io.quarkus</quarkus.platform.group-id>
-        <quarkus.platform.version>2.12.2.Final</quarkus.platform.version>
-        <quarkus-plugin.version>2.12.2.Final</quarkus-plugin.version>
+        <quarkus.platform.version>2.13.3.Final</quarkus.platform.version>
+        <quarkus-plugin.version>2.13.3.Final</quarkus-plugin.version>
     </properties>
 
     <repositories>
@@ -92,9 +94,7 @@
 
         <dependency>
             <groupId>org.apache.logging.log4j</groupId>
-            <artifactId>log4j-slf4j-impl</artifactId>
-            <!-- TODO upgrade slf4j to 2.X and switch  to log4j-slf4j20-impl -->
-            <!-- artifactId>log4j-slf4j20-impl</artifactId -->
+            <artifactId>log4j-slf4j2-impl</artifactId>
             <version>${log4j.version}</version>
         </dependency>
 
@@ -127,6 +127,18 @@
             <groupId>org.apache.logging.log4j</groupId>
             <artifactId>log4j-jul</artifactId>
             <version>${log4j.version}</version>
+        </dependency>
+
+        <dependency>
+            <groupId>io.undertow</groupId>
+            <artifactId>undertow-core</artifactId>
+            <version>2.3.0.Final</version>
+        </dependency>
+
+        <dependency>
+            <groupId>io.undertow</groupId>
+            <artifactId>undertow-servlet</artifactId>
+            <version>2.3.0.Final</version>
         </dependency>
 
         <dependency>
@@ -170,6 +182,13 @@
             <artifactId>opentelemetry-semconv</artifactId>
             <version>${opentelemetry.version}-alpha</version>
         </dependency>
+
+        <dependency>
+            <groupId>io.opentelemetry.instrumentation</groupId>
+            <artifactId>opentelemetry-resources</artifactId>
+            <version>${opentelemetry.version}-alpha</version>
+        </dependency>
+
 
         <!-- <dependency>
             <groupId>io.opentracing.contrib</groupId>
@@ -307,13 +326,19 @@
         <dependency>
             <groupId>org.javassist</groupId>
             <artifactId>javassist</artifactId>
-            <version>3.29.1-GA</version>
+            <version>3.29.2-GA</version>
+        </dependency>
+
+        <dependency>
+            <groupId>org.threeten</groupId>
+            <artifactId>threeten-extra</artifactId>
+            <version>1.7.1</version>
         </dependency>
 
         <dependency>
             <groupId>io.lettuce</groupId>
             <artifactId>lettuce-core</artifactId>
-            <version>6.2.0.RELEASE</version>
+            <version>6.2.1.RELEASE</version>
             <exclusions>
                 <exclusion>
                     <groupId>io.projectreactor</groupId>
@@ -331,7 +356,7 @@
         <dependency>
             <groupId>redis.clients</groupId>
             <artifactId>jedis</artifactId>
-            <version>4.2.3</version>
+            <version>4.3.1</version>
         </dependency>
 
         <dependency>
@@ -343,7 +368,7 @@
         <dependency>
             <groupId>it.unimi.dsi</groupId>
             <artifactId>fastutil</artifactId>
-            <version>8.5.8</version>
+            <version>8.5.9</version>
         </dependency>
 
         <dependency>
@@ -369,15 +394,21 @@
         </dependency>
 
         <dependency>
+            <groupId>org.quickfixj</groupId>
+            <artifactId>quickfixj-core</artifactId>
+            <version>2.3.1</version>
+        </dependency>
+
+        <dependency>
             <groupId>org.apache.qpid</groupId>
             <artifactId>qpid-jms-client</artifactId>
-            <version>2.0.0</version>
+            <version>2.1.0</version>
         </dependency>
 
         <dependency>
             <groupId>org.apache.activemq</groupId>
             <artifactId>artemis-jms-client</artifactId>
-            <version>2.25.0</version>
+            <version>2.26.0</version>
         </dependency>
 
         <dependency>
@@ -428,6 +459,17 @@
             <version>5.0.1</version>
         </dependency>
 
+        <dependency>
+            <groupId>net.objectlab.kit</groupId>
+            <artifactId>datecalc-jdk8</artifactId>
+            <version>1.4.8</version>
+        </dependency>
+
+        <dependency>
+            <groupId>net.objectlab.kit</groupId>
+            <artifactId>datecalc-common</artifactId>
+            <version>1.4.8</version>
+        </dependency>
 
         <!-- TODO: inspect Patricia -->
         <dependency>
@@ -564,14 +606,14 @@
         <dependency>
             <groupId>org.springframework.boot</groupId>
             <artifactId>spring-boot-starter-test</artifactId>
-            <version>3.0.0-M4</version>
+            <version>3.0.0-RC1</version>
             <scope>test</scope>
         </dependency>
 
         <dependency>
             <groupId>org.springframework.boot</groupId>
             <artifactId>spring-boot-starter-web</artifactId>
-            <version>3.0.0-M4</version>
+            <version>3.0.0-RC1</version>
             <scope>test</scope>
         </dependency>
 
@@ -639,14 +681,14 @@
         <dependency>
             <groupId>org.springframework.security</groupId>
             <artifactId>spring-security-test</artifactId>
-            <version>6.0.0-M6</version>
+            <version>6.0.0-RC1</version>
             <scope>test</scope>
         </dependency>
 
         <dependency>
             <groupId>org.springframework.cloud</groupId>
             <artifactId>spring-cloud-context</artifactId>
-            <version>4.0.0-M4</version>
+            <version>4.0.0-M5</version>
         </dependency>
 
         <dependency>
@@ -730,13 +772,49 @@
         <dependency>
             <groupId>com.icegreen</groupId>
             <artifactId>greenmail</artifactId>
-            <version>1.6.5</version>
+            <version>1.6.10</version>
             <exclusions>
                 <exclusion>
                     <groupId>junit</groupId>
                     <artifactId>junit</artifactId>
                 </exclusion>
             </exclusions>
+        </dependency>
+
+        <dependency>
+            <groupId>io.helidon.health</groupId>
+            <artifactId>helidon-health</artifactId>
+            <version>3.0.2</version>
+        </dependency>
+
+        <dependency>
+            <groupId>io.helidon.health</groupId>
+            <artifactId>helidon-health-checks</artifactId>
+            <version>3.0.2</version>
+        </dependency>
+
+        <dependency>
+            <groupId>io.helidon.webserver</groupId>
+            <artifactId>helidon-webserver</artifactId>
+            <version>3.0.2</version>
+        </dependency>
+
+        <dependency>
+            <groupId>io.helidon.webclient</groupId>
+            <artifactId>helidon-webclient</artifactId>
+            <version>3.0.2</version>
+        </dependency>
+
+        <dependency>
+            <groupId>io.helidon.microprofile.bundles</groupId>
+            <artifactId>helidon-microprofile</artifactId>
+            <version>3.0.2</version>
+        </dependency>
+
+        <dependency>
+            <groupId>io.helidon.microprofile.bundles</groupId>
+            <artifactId>helidon-microprofile-core</artifactId>
+            <version>3.0.2</version>
         </dependency>
 
         <dependency>
@@ -782,7 +860,7 @@
             <!-- org.hibernate relocated to org.hibernate.orm -->
             <groupId>org.hibernate.orm</groupId>
             <artifactId>hibernate-core</artifactId>
-            <version>6.1.3.Final</version>
+            <version>6.1.4.Final</version>
         </dependency>
 
         <dependency>
@@ -820,7 +898,7 @@
             <groupId>org.mongodb</groupId>
             <artifactId>mongodb-driver-legacy</artifactId>
             <!--version>3.12.10</version-->
-            <version>4.7.1</version>
+            <version>4.7.2</version>
         </dependency>
 
         <dependency>
@@ -829,24 +907,28 @@
             <version>${junit.version}</version>
             <scope>test</scope>
         </dependency>
+
         <dependency>
             <groupId>org.junit.jupiter</groupId>
             <artifactId>junit-jupiter-engine</artifactId>
             <version>${junit.version}</version>
             <scope>test</scope>
         </dependency>
+
         <dependency>
             <groupId>org.junit.vintage</groupId>
             <artifactId>junit-vintage-engine</artifactId>
             <version>${junit.version}</version>
             <scope>test</scope>
         </dependency>
+
         <dependency>
             <groupId>org.junit.platform</groupId>
             <artifactId>junit-platform-launcher</artifactId>
             <version>${junit.platform.version}</version>
             <scope>test</scope>
         </dependency>
+
         <dependency>
             <groupId>org.junit.platform</groupId>
             <artifactId>junit-platform-runner</artifactId>
@@ -857,7 +939,7 @@
         <dependency>
             <groupId>org.mockito</groupId>
             <artifactId>mockito-junit-jupiter</artifactId>
-            <version>4.8.0</version>
+            <version>4.8.1</version>
             <scope>test</scope>
         </dependency>
 
@@ -975,6 +1057,26 @@
                 <artifactId>maven-compiler-plugin</artifactId>
                 <version>3.10.1</version>
                 <configuration>
+                    <annotationProcessorPaths>
+                        <!-- Error Prone itself. -->
+                        <path>
+                            <groupId>com.google.errorprone</groupId>
+                            <artifactId>error_prone_core</artifactId>
+                            <version>${error-prone.version}</version>
+                        </path>
+                        <!-- Error Prone Support's additional bug checkers. -->
+                        <path>
+                            <groupId>tech.picnic.error-prone-support</groupId>
+                            <artifactId>error-prone-contrib</artifactId>
+                            <version>${error-prone-support.version}</version>
+                        </path>
+                        <!-- Error Prone Support's Refaster rules. -->
+                        <path>
+                            <groupId>tech.picnic.error-prone-support</groupId>
+                            <artifactId>refaster-runner</artifactId>
+                            <version>${error-prone-support.version}</version>
+                        </path>
+                    </annotationProcessorPaths>
                     <source>${maven.compiler.source}</source>
                     <target>${maven.compiler.target}</target>
                     <compilerArgs>
@@ -984,6 +1086,12 @@
                         <arg>- -add-exports</arg>
                         <arg>java.security.jgss/sun.security.krb5=ALL-UNNAMED</arg>
                         -->
+                        <arg>
+                            -Xplugin:ErrorProne
+                            <!-- Add other Error Prone flags here. See
+                            https://errorprone.info/docs/flags. -->
+                        </arg>
+                        <arg>-XDcompilePolicy=simple</arg>
                     </compilerArgs>
                 </configuration>
             </plugin>
@@ -1040,7 +1148,7 @@
                 <groupId>org.owasp</groupId>
                 <artifactId>dependency-check-maven</artifactId>
                 <!-- fails for 6.3.2: https://github.com/jeremylong/DependencyCheck/issues/3707 -->
-                <version>7.1.2</version>
+                <version>7.2.1</version>
                 <executions>
                     <execution>
                         <goals>
