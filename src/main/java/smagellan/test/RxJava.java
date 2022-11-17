@@ -22,7 +22,7 @@ public class RxJava {
                     @Override
                     public void onNext(Observable<Integer> integers) {
                         System.out.println("onNext: ");
-                        integers.subscribe(value -> System.out.println(value));
+                        Disposable unused = integers.subscribe(value -> System.out.println(value));
                     }
                     @Override
                     public void onError(Throwable e) {

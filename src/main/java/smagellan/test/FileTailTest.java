@@ -14,6 +14,7 @@ import org.springframework.messaging.Message;
 import org.springframework.messaging.MessageChannel;
 import reactor.core.Disposable;
 import reactor.core.publisher.Flux;
+import reactor.util.concurrent.Queues;
 
 import java.io.File;
 import java.io.IOException;
@@ -58,7 +59,7 @@ public class FileTailTest {
         FluxMessageChannel channel = new FluxMessageChannel();
         Flux<List<Message<?>>> flux = Flux.from(channel)
                 .windowTimeout(10, Duration.ofSeconds(10))
-                .flatMap(Flux::collectList)
+                .flatMap(Flux::collectList, Queues.SMALL_BUFFER_SIZE)
                 .filter(lst -> !lst.isEmpty())
                 .doOnComplete(() -> System.err.println("flux completed"))
                 .doOnCancel(() -> System.err.println("flux cancelled"))
