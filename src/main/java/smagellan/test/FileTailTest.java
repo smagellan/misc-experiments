@@ -4,7 +4,6 @@ import com.sun.nio.file.SensitivityWatchEventModifier;
 import org.springframework.context.SmartLifecycle;
 import org.springframework.integration.channel.FluxMessageChannel;
 import org.springframework.integration.dsl.IntegrationFlow;
-import org.springframework.integration.dsl.IntegrationFlows;
 import org.springframework.integration.dsl.Pollers;
 import org.springframework.integration.endpoint.AbstractEndpoint;
 import org.springframework.integration.file.FileReadingMessageSource;
