@@ -11,18 +11,23 @@ import org.bson.Document;
 import org.slf4j.LoggerFactory;
 
 import java.net.InetSocketAddress;
+import java.util.Arrays;
 import java.util.List;
 
 public class MongoConnect {
     private static final org.slf4j.Logger logger = LoggerFactory.getLogger(MongoConnect.class);
 
     public static void main(String[] args) throws InterruptedException {
+        BasicDBObject.parse();
+
         MongoClientOptions opts = new MongoClientOptions.Builder()
                 .applicationName("testApp")
                 .addServerListener(new TracingServerListener())
                 .addServerMonitorListener(new TracingServerMonitorListener())
+                .compressorList(Arrays.asList(MongoCompressor.createZlibCompressor(), MongoCompressor.createSnappyCompressor()))
                 .heartbeatFrequency(10_000)
                 .build();
+        logger.info("compressor list: {}", opts.getCompressorList());
         //MongoCredential credential = MongoCredential.createCredential("mongouser", "admin", "someothersecret".toCharArray());
         //MongoCredential credential = MongoCredential.createCredential("mongoadmin", "admin", "secret".toCharArray());
         //MongoCredential credential = MongoCredential.createPlainCredential("mongoadmin", "admin", "secret".toCharArray());
@@ -45,7 +50,7 @@ public class MongoConnect {
                     List<String> collectionNames = MongoUtils.pull(db.listCollectionNames());
                     logger.info("listCollectionNames({}): {}", dbName, collectionNames);
                 }
-                Thread.sleep(30 * 1000);
+                //Thread.sleep(30 * 1000);
             }
         } finally {
             if (srv != null) {
