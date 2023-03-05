@@ -1,4 +1,4 @@
-package smagellan.test.spring;
+package smagellan.test.spring.config1;
 
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;

@@ -18,7 +18,7 @@ public class MongoConnect {
     private static final org.slf4j.Logger logger = LoggerFactory.getLogger(MongoConnect.class);
 
     public static void main(String[] args) throws InterruptedException {
-        BasicDBObject.parse();
+        //BasicDBObject.parse();
 
         MongoClientOptions opts = new MongoClientOptions.Builder()
                 .applicationName("testApp")

@@ -1,4 +1,4 @@
-package smagellan.test.spring;
+package smagellan.test.spring.config1;
 
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -10,7 +10,7 @@ import org.springframework.context.annotation.Lazy;
 
 @Configuration
 @ComponentScan(
-        basePackages = "smagellan.test.spring"
+        basePackages = "smagellan.test.spring.config1"
         //excludeFilters = @ComponentScan.Filter(value = Configuration.class, type = FilterType.ANNOTATION)
 )
 public class AppConfig {

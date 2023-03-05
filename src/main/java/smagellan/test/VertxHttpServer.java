@@ -3,8 +3,7 @@ package smagellan.test;
 import io.vertx.core.*;
 import io.vertx.core.buffer.Buffer;
 import io.vertx.core.http.*;
-import io.vertx.core.impl.MyVertxFactory;
-//import io.vertx.core.impl.VertxFactory;
+import io.vertx.core.impl.VertxBuilder;
 import io.vertx.core.json.JsonObject;
 import io.vertx.core.net.OpenSSLEngineOptions;
 import io.vertx.core.net.PemKeyCertOptions;
@@ -19,7 +18,9 @@ public class VertxHttpServer {
         System.err.println("ours pid: " + ProcessHandle.current().pid());
         VertxOptions options = new VertxOptions()
                 .setPreferNativeTransport(true);
-        Vertx vertx = new MyVertxFactory(options).vertx();
+        Vertx vertx = new VertxBuilder(options)
+                .findTransport(new IOURingTransport())
+                .vertx();
         DeploymentOptions deploymentOptions = new DeploymentOptions()
                 .setInstances(1);
                 //.setInstances(Runtime.getRuntime().availableProcessors());

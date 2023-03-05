@@ -1,4 +1,4 @@
-package io.vertx.core.impl;
+package smagellan.test;
 
 import io.netty.bootstrap.Bootstrap;
 import io.netty.bootstrap.ServerBootstrap;
@@ -12,12 +12,12 @@ import io.netty.incubator.channel.uring.*;
 import io.vertx.core.datagram.DatagramSocketOptions;
 import io.vertx.core.net.ClientOptionsBase;
 import io.vertx.core.net.NetServerOptions;
-import io.vertx.core.net.impl.transport.Transport;
+import io.vertx.core.spi.transport.Transport;
 import org.slf4j.LoggerFactory;
 
 import java.util.concurrent.ThreadFactory;
 
-class IOURingTransport extends Transport {
+public class IOURingTransport implements Transport {
     private static final org.slf4j.Logger logger = LoggerFactory.getLogger(IOURingTransport.class);
 
     private static volatile int pendingFastOpenRequestsThreshold = 256;
@@ -84,7 +84,7 @@ class IOURingTransport extends Transport {
     @Override
     public void configure(DatagramChannel channel, DatagramSocketOptions options) {
         channel.config().setOption(IOUringChannelOption.SO_REUSEPORT, options.isReusePort());
-        super.configure(channel, options);
+        Transport.super.configure(channel, options);
     }
 
     @Override
@@ -97,7 +97,7 @@ class IOURingTransport extends Transport {
             bootstrap.childOption(IOUringChannelOption.TCP_QUICKACK, options.isTcpQuickAck());
             bootstrap.childOption(IOUringChannelOption.TCP_CORK, options.isTcpCork());
         }
-        super.configure(options, domainSocket, bootstrap);
+        Transport.super.configure(options, domainSocket, bootstrap);
     }
 
     @Override
@@ -109,6 +109,6 @@ class IOURingTransport extends Transport {
             bootstrap.option(IOUringChannelOption.TCP_QUICKACK, options.isTcpQuickAck());
             bootstrap.option(IOUringChannelOption.TCP_CORK, options.isTcpCork());
         }
-        super.configure(options, domainSocket, bootstrap);
+        Transport.super.configure(options, domainSocket, bootstrap);
     }
 }

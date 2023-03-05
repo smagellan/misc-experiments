@@ -128,7 +128,7 @@ class OpenTelemetryConfiguration {
     }
 
     @Bean
-    public io.opentracing.Tracer tracerShim(io.opentelemetry.api.trace.Tracer tracer) {
+    public io.opentracing.Tracer tracerShim(io.opentelemetry.api.OpenTelemetry tracer) {
         return OpenTracingShim.createTracerShim(tracer);
     }
 
