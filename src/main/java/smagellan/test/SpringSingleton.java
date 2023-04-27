@@ -3,8 +3,6 @@ package smagellan.test;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.InitializingBean;
 
-import javax.annotation.PostConstruct;
-
 public class SpringSingleton implements InitializingBean {
     private static final org.slf4j.Logger logger = LoggerFactory.getLogger(SpringSingleton.class);
 
