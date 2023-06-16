@@ -19,18 +19,18 @@
 
         <mysql.driver>com.mysql.jdbc.Driver</mysql.driver>
         <clickhouse.driver>ru.yandex.clickhouse.ClickHouseDriver</clickhouse.driver>
-        <org.springframework.version>6.0.8</org.springframework.version>
+        <org.springframework.version>6.0.10</org.springframework.version>
 
         <jmh.version>1.36</jmh.version>
         <mysql.version>8.0.33</mysql.version>
-        <jooq.version>3.18.3</jooq.version>
+        <jooq.version>3.18.4</jooq.version>
         <resilience4j.version>2.0.2</resilience4j.version>
         <slf4j.version>2.0.7</slf4j.version>
         <log4j.version>2.20.0</log4j.version>
-        <netty.version>4.1.91.Final</netty.version>
+        <netty.version>4.1.93.Final</netty.version>
         <quartz.version>2.3.2</quartz.version>
-        <jackson.version>2.15.0</jackson.version>
-        <bytebuddy.version>1.14.4</bytebuddy.version>
+        <jackson.version>2.15.2</jackson.version>
+        <bytebuddy.version>1.14.5</bytebuddy.version>
         <org.eclipse.jetty>11.0.15</org.eclipse.jetty>
         <junit.version>5.9.3</junit.version>
         <junit.platform.version>1.9.3</junit.platform.version>
@@ -38,17 +38,17 @@
         <lombok.version>1.18.26</lombok.version>
         <platform.classifier>linux-x86_64</platform.classifier>
         <spotbugs-maven-plugin.version>4.7.3.4</spotbugs-maven-plugin.version>
-        <vertx.version>4.4.1</vertx.version>
-        <grpc.version>1.54.1</grpc.version>
-        <opentelemetry.version>1.25.0</opentelemetry.version>
-        <spring-integration.version>6.0.5</spring-integration.version>
+        <vertx.version>4.4.3</vertx.version>
+        <grpc.version>1.56.0</grpc.version>
+        <opentelemetry.version>1.27.0</opentelemetry.version>
+        <spring-integration.version>6.1.0</spring-integration.version>
         <error-prone.version>2.16</error-prone.version>
         <error-prone-support.version>0.4.0</error-prone-support.version>
 
         <quarkus.platform.artifact-id>quarkus-bom</quarkus.platform.artifact-id>
         <quarkus.platform.group-id>io.quarkus</quarkus.platform.group-id>
-        <quarkus.platform.version>3.0.1.Final</quarkus.platform.version>
-        <quarkus-plugin.version>3.0.1.Final</quarkus-plugin.version>
+        <quarkus.platform.version>3.1.2.Final</quarkus.platform.version>
+        <quarkus-plugin.version>3.1.2.Final</quarkus-plugin.version>
 
         <debezium.version>2.2.0.Final</debezium.version>
     </properties>
@@ -124,6 +124,8 @@
             <groupId>org.apache.logging.log4j</groupId>
             <artifactId>log4j-core</artifactId>
             <version>${log4j.version}</version>
+            <!-- quarkus-bom declares scope as 'test', this breaks Log4j2PluginSearch -->
+            <scope>compile</scope>
         </dependency>
 
         <dependency>
@@ -172,13 +174,13 @@
         <dependency>
             <groupId>io.undertow</groupId>
             <artifactId>undertow-core</artifactId>
-            <version>2.3.5.Final</version>
+            <version>2.3.7.Final</version>
         </dependency>
 
         <dependency>
             <groupId>io.undertow</groupId>
             <artifactId>undertow-servlet</artifactId>
-            <version>2.3.5.Final</version>
+            <version>2.3.7.Final</version>
         </dependency>
 
         <dependency>
@@ -207,13 +209,43 @@
 
         <dependency>
             <groupId>io.opentelemetry</groupId>
+            <artifactId>opentelemetry-sdk-common</artifactId>
+            <version>${opentelemetry.version}</version>
+        </dependency>
+
+        <dependency>
+            <groupId>io.opentelemetry</groupId>
             <artifactId>opentelemetry-sdk-logs</artifactId>
-            <version>${opentelemetry.version}-alpha</version>
+            <version>${opentelemetry.version}</version>
+        </dependency>
+
+        <dependency>
+            <groupId>io.opentelemetry</groupId>
+            <artifactId>opentelemetry-context</artifactId>
+            <version>${opentelemetry.version}</version>
+        </dependency>
+
+        <dependency>
+            <groupId>io.opentelemetry</groupId>
+            <artifactId>opentelemetry-sdk-trace</artifactId>
+            <version>${opentelemetry.version}</version>
+        </dependency>
+
+        <dependency>
+            <groupId>io.opentelemetry</groupId>
+            <artifactId>opentelemetry-sdk-metrics</artifactId>
+            <version>${opentelemetry.version}</version>
         </dependency>
 
         <dependency>
             <groupId>io.opentelemetry</groupId>
             <artifactId>opentelemetry-api</artifactId>
+            <version>${opentelemetry.version}</version>
+        </dependency>
+
+        <dependency>
+            <groupId>io.opentelemetry</groupId>
+            <artifactId>opentelemetry-sdk-extension-autoconfigure-spi</artifactId>
             <version>${opentelemetry.version}</version>
         </dependency>
 
@@ -226,7 +258,7 @@
         <dependency>
             <groupId>io.opentelemetry</groupId>
             <artifactId>opentelemetry-opentracing-shim</artifactId>
-            <version>${opentelemetry.version}-alpha</version>
+            <version>${opentelemetry.version}</version>
         </dependency>
 
         <dependency>
@@ -258,7 +290,7 @@
         <dependency>
             <groupId>com.google.auto.service</groupId>
             <artifactId>auto-service-annotations</artifactId>
-            <version>1.0.1</version>
+            <version>1.1.1</version>
         </dependency>
 
         <dependency>
@@ -302,7 +334,7 @@
             <groupId>io.netty</groupId>
             <artifactId>netty-tcnative</artifactId>
             <!-- vanilla version requires libssl1.0.0 -->
-            <version>2.0.59.Final</version>
+            <version>2.0.61.Final</version>
             <classifier>${platform.classifier}</classifier>
         </dependency>
 
@@ -315,8 +347,8 @@
 
         <dependency>
             <groupId>io.netty.incubator</groupId>
-            <artifactId>netty-incubator-codec-quic</artifactId>
-            <version>0.0.20.Final</version>
+            <artifactId>netty-incubator-codec-native-quic</artifactId>
+            <version>0.0.46.Final</version>
             <classifier>${platform.classifier}</classifier>
         </dependency>
 
@@ -420,7 +452,7 @@
         <dependency>
             <groupId>com.google.guava</groupId>
             <artifactId>guava</artifactId>
-            <version>31.1-jre</version>
+            <version>32.0.1-jre</version>
         </dependency>
 
         <dependency>
@@ -454,7 +486,7 @@
         <dependency>
             <groupId>io.micrometer</groupId>
             <artifactId>micrometer-registry-prometheus</artifactId>
-            <version>1.10.6</version>
+            <version>1.11.1</version>
         </dependency>
 
         <dependency>
@@ -466,7 +498,7 @@
         <dependency>
             <groupId>org.apache.qpid</groupId>
             <artifactId>qpid-jms-client</artifactId>
-            <version>2.2.0</version>
+            <version>2.3.0</version>
         </dependency>
 
         <dependency>
@@ -640,19 +672,28 @@
                 </exclusion>
             </exclusions>
         </dependency>
+
         <dependency>
             <groupId>io.quarkus</groupId>
             <artifactId>quarkus-resteasy</artifactId>
         </dependency>
+
+        <!--dependency>
+            <groupId>io.quarkus</groupId>
+            <artifactId>quarkus-resteasy-server-common-deployment</artifactId>
+        </dependency-->
+
         <dependency>
             <groupId>io.quarkus</groupId>
             <artifactId>quarkus-arc</artifactId>
         </dependency>
+
         <dependency>
             <groupId>io.quarkus</groupId>
             <artifactId>quarkus-junit5</artifactId>
             <scope>test</scope>
         </dependency>
+
         <dependency>
             <groupId>io.quarkus</groupId>
             <artifactId>quarkus-mutiny</artifactId>
@@ -661,7 +702,7 @@
         <dependency>
             <groupId>io.smallrye.reactive</groupId>
             <artifactId>mutiny</artifactId>
-            <version>2.1.0</version>
+            <version>2.2.0</version>
         </dependency>
 
 
@@ -682,14 +723,14 @@
         <dependency>
             <groupId>org.springframework.boot</groupId>
             <artifactId>spring-boot-starter-test</artifactId>
-            <version>3.0.6</version>
+            <version>3.1.0</version>
             <scope>test</scope>
         </dependency>
 
         <dependency>
             <groupId>org.springframework.boot</groupId>
             <artifactId>spring-boot-starter-web</artifactId>
-            <version>3.0.6</version>
+            <version>3.1.0</version>
             <scope>test</scope>
         </dependency>
 
@@ -757,14 +798,14 @@
         <dependency>
             <groupId>org.springframework.security</groupId>
             <artifactId>spring-security-test</artifactId>
-            <version>6.0.3</version>
+            <version>6.1.0</version>
             <scope>test</scope>
         </dependency>
 
         <dependency>
             <groupId>org.springframework.cloud</groupId>
             <artifactId>spring-cloud-context</artifactId>
-            <version>4.0.2</version>
+            <version>4.0.3</version>
         </dependency>
 
         <dependency>
@@ -809,13 +850,13 @@
         <dependency>
             <groupId>com.clickhouse</groupId>
             <artifactId>clickhouse-jdbc</artifactId>
-            <version>0.4.5</version>
+            <version>0.4.6</version>
         </dependency>
 
         <dependency>
             <groupId>com.clickhouse</groupId>
             <artifactId>clickhouse-data</artifactId>
-            <version>0.4.5</version>
+            <version>0.4.6</version>
         </dependency>
 
         <dependency>
@@ -851,7 +892,7 @@
         <dependency>
             <groupId>org.simplejavamail</groupId>
             <artifactId>simple-java-mail</artifactId>
-            <version>8.1.0</version>
+            <version>8.1.1</version>
         </dependency>
 
         <dependency>
@@ -866,7 +907,8 @@
             </exclusions>
         </dependency>
 
-        <dependency>
+        <!-- Fails due to quarkus -->
+        <!--dependency>
             <groupId>io.helidon.health</groupId>
             <artifactId>helidon-health</artifactId>
             <version>3.2.0</version>
@@ -893,14 +935,20 @@
         <dependency>
             <groupId>io.helidon.microprofile.bundles</groupId>
             <artifactId>helidon-microprofile</artifactId>
-            <version>3.1.0</version>
+            <version>3.2.0</version>
         </dependency>
 
         <dependency>
             <groupId>io.helidon.microprofile.bundles</groupId>
             <artifactId>helidon-microprofile-core</artifactId>
-            <version>3.1.0</version>
+            <version>3.2.0</version>
         </dependency>
+
+        <dependency>
+            <groupId>io.helidon.microprofile.server</groupId>
+            <artifactId>helidon-microprofile-server</artifactId>
+            <version>3.2.0</version>
+        </dependency -->
 
         <dependency>
             <groupId>com.squareup</groupId>
@@ -945,7 +993,7 @@
             <!-- org.hibernate relocated to org.hibernate.orm -->
             <groupId>org.hibernate.orm</groupId>
             <artifactId>hibernate-core</artifactId>
-            <version>6.2.1.Final</version>
+            <version>6.2.4.Final</version>
         </dependency>
 
         <dependency>
@@ -1044,28 +1092,28 @@
         <dependency>
             <groupId>net.javacrumbs.json-unit</groupId>
             <artifactId>json-unit-assertj</artifactId>
-            <version>2.37.0</version>
+            <version>2.38.0</version>
             <scope>test</scope>
         </dependency>
 
         <dependency>
             <groupId>net.javacrumbs.json-unit</groupId>
             <artifactId>json-unit</artifactId>
-            <version>2.37.0</version>
+            <version>2.38.0</version>
             <scope>test</scope>
         </dependency>
 
         <dependency>
             <groupId>net.javacrumbs.json-unit</groupId>
             <artifactId>json-unit-spring</artifactId>
-            <version>2.37.0</version>
+            <version>2.38.0</version>
             <scope>test</scope>
         </dependency>
 
         <dependency>
             <groupId>net.javacrumbs.json-unit</groupId>
             <artifactId>json-unit-json-path</artifactId>
-            <version>2.37.0</version>
+            <version>2.38.0</version>
             <scope>test</scope>
         </dependency>
 
@@ -1150,7 +1198,7 @@
         <dependency>
             <groupId>io.github.classgraph</groupId>
             <artifactId>classgraph</artifactId>
-            <version>4.8.157</version>
+            <version>4.8.160</version>
         </dependency>
 
         <!--<dependency>
@@ -1220,22 +1268,40 @@
         <dependency>
             <groupId>com.fasterxml.uuid</groupId>
             <artifactId>java-uuid-generator</artifactId>
-            <version>4.1.0</version>
+            <version>4.2.0</version>
         </dependency>
 
         <dependency>
             <groupId>io.smallrye</groupId>
             <artifactId>jandex</artifactId>
-            <version>3.1.1</version>
+            <version>3.1.2</version>
         </dependency>
 
         <dependency>
             <groupId>org.apache.maven.surefire</groupId>
             <artifactId>surefire-logger-api</artifactId>
-            <version>3.0.0</version>
-            <!-- to get around bug https://github.com/junit-team/junit5/issues/1367 -->
+            <version>3.1.2</version>
+            <!-- to get around https://github.com/junit-team/junit5/issues/1367 -->
             <scope>test</scope>
             <optional>true</optional>
+        </dependency>
+
+        <dependency>
+            <groupId>com.esotericsoftware</groupId>
+            <artifactId>kryo</artifactId>
+            <version>5.5.0</version>
+        </dependency>
+
+        <dependency>
+            <groupId>org.owasp.encoder</groupId>
+            <artifactId>encoder</artifactId>
+            <version>1.2.3</version>
+        </dependency>
+
+        <dependency>
+            <groupId>com.google.crypto.tink</groupId>
+            <artifactId>tink</artifactId>
+            <version>1.9.0</version>
         </dependency>
     </dependencies>
 
@@ -1244,7 +1310,7 @@
             <plugin>
                 <groupId>org.apache.maven.plugins</groupId>
                 <artifactId>maven-surefire-plugin</artifactId>
-                <version>3.0.0</version>
+                <version>3.1.2</version>
                 <configuration>
                     <forkCount>2</forkCount>
                     <reuseForks>true</reuseForks>
@@ -1273,6 +1339,12 @@
                 <version>3.11.0</version>
                 <configuration>
                     <annotationProcessorPaths>
+                        <path>
+                            <groupId>org.openjdk.jmh</groupId>
+                            <artifactId>jmh-generator-annprocess</artifactId>
+                            <version>${jmh.version}</version>
+                        </path>
+
                         <!-- Error Prone itself. -->
                         <path>
                             <groupId>com.google.errorprone</groupId>
