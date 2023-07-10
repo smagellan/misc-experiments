@@ -23,11 +23,11 @@
 
         <jmh.version>1.36</jmh.version>
         <mysql.version>8.0.33</mysql.version>
-        <jooq.version>3.18.4</jooq.version>
-        <resilience4j.version>2.0.2</resilience4j.version>
+        <jooq.version>3.18.5</jooq.version>
+        <resilience4j.version>2.1.0</resilience4j.version>
         <slf4j.version>2.0.7</slf4j.version>
         <log4j.version>2.20.0</log4j.version>
-        <netty.version>4.1.93.Final</netty.version>
+        <netty.version>4.1.94.Final</netty.version>
         <quartz.version>2.3.2</quartz.version>
         <jackson.version>2.15.2</jackson.version>
         <bytebuddy.version>1.14.5</bytebuddy.version>
@@ -37,20 +37,21 @@
         <dl4j.version>1.0.0-M2.1</dl4j.version>
         <lombok.version>1.18.26</lombok.version>
         <platform.classifier>linux-x86_64</platform.classifier>
-        <spotbugs-maven-plugin.version>4.7.3.4</spotbugs-maven-plugin.version>
-        <vertx.version>4.4.3</vertx.version>
-        <grpc.version>1.56.0</grpc.version>
-        <opentelemetry.version>1.27.0</opentelemetry.version>
-        <spring-integration.version>6.1.0</spring-integration.version>
-        <error-prone.version>2.16</error-prone.version>
-        <error-prone-support.version>0.4.0</error-prone-support.version>
+        <spotbugs-maven-plugin.version>4.7.3.5</spotbugs-maven-plugin.version>
+        <vertx.version>4.4.4</vertx.version>
+        <grpc.version>1.56.1</grpc.version>
+        <opentelemetry.version>1.28.0</opentelemetry.version>
+        <spring-integration.version>6.1.1</spring-integration.version>
+        <error-prone.version>2.20.0</error-prone.version>
+        <error-prone-support.version>0.12.0</error-prone-support.version>
 
         <quarkus.platform.artifact-id>quarkus-bom</quarkus.platform.artifact-id>
         <quarkus.platform.group-id>io.quarkus</quarkus.platform.group-id>
-        <quarkus.platform.version>3.1.2.Final</quarkus.platform.version>
-        <quarkus-plugin.version>3.1.2.Final</quarkus-plugin.version>
+        <quarkus.platform.version>3.2.0.Final</quarkus.platform.version>
+        <quarkus-plugin.version>3.2.0.Final</quarkus-plugin.version>
 
-        <debezium.version>2.2.0.Final</debezium.version>
+        <debezium.version>2.3.0.Final</debezium.version>
+        <tomcat.version>9.0.76</tomcat.version>
     </properties>
 
     <!-- repositories>
@@ -133,6 +134,13 @@
             <artifactId>log4j-jul</artifactId>
             <version>${log4j.version}</version>
         </dependency>
+
+        <dependency>
+            <groupId>org.apache.logging.log4j</groupId>
+            <artifactId>log4j-appserver</artifactId>
+            <version>${log4j.version}</version>
+        </dependency>
+
 
         <dependency>
             <groupId>io.github.resilience4j</groupId>
@@ -270,7 +278,7 @@
         <dependency>
             <groupId>io.opentelemetry.instrumentation</groupId>
             <artifactId>opentelemetry-resources</artifactId>
-            <version>${opentelemetry.version}-alpha</version>
+            <version>1.27.0-alpha</version>
         </dependency>
 
 
@@ -348,7 +356,7 @@
         <dependency>
             <groupId>io.netty.incubator</groupId>
             <artifactId>netty-incubator-codec-native-quic</artifactId>
-            <version>0.0.46.Final</version>
+            <version>0.0.48.Final</version>
             <classifier>${platform.classifier}</classifier>
         </dependency>
 
@@ -452,7 +460,7 @@
         <dependency>
             <groupId>com.google.guava</groupId>
             <artifactId>guava</artifactId>
-            <version>32.0.1-jre</version>
+            <version>32.1.1-jre</version>
         </dependency>
 
         <dependency>
@@ -498,13 +506,13 @@
         <dependency>
             <groupId>org.apache.qpid</groupId>
             <artifactId>qpid-jms-client</artifactId>
-            <version>2.3.0</version>
+            <version>2.4.0</version>
         </dependency>
 
         <dependency>
             <groupId>org.apache.activemq</groupId>
             <artifactId>artemis-jms-client</artifactId>
-            <version>2.28.0</version>
+            <version>2.29.0</version>
         </dependency>
 
         <dependency>
@@ -596,7 +604,7 @@
         <dependency>
             <groupId>com.google.jimfs</groupId>
             <artifactId>jimfs</artifactId>
-            <version>1.2</version>
+            <version>1.3.0</version>
         </dependency>
 
         <dependency>
@@ -702,7 +710,7 @@
         <dependency>
             <groupId>io.smallrye.reactive</groupId>
             <artifactId>mutiny</artifactId>
-            <version>2.2.0</version>
+            <version>2.3.1</version>
         </dependency>
 
 
@@ -710,27 +718,27 @@
             <groupId>io.rest-assured</groupId>
             <artifactId>rest-assured</artifactId>
             <scope>test</scope>
-            <version>5.3.0</version>
+            <version>5.3.1</version>
         </dependency>
 
         <dependency>
             <groupId>com.h2database</groupId>
             <artifactId>h2</artifactId>
-            <version>2.1.214</version>
+            <version>2.2.220</version>
             <scope>test</scope>
         </dependency>
 
         <dependency>
             <groupId>org.springframework.boot</groupId>
             <artifactId>spring-boot-starter-test</artifactId>
-            <version>3.1.0</version>
+            <version>3.1.1</version>
             <scope>test</scope>
         </dependency>
 
         <dependency>
             <groupId>org.springframework.boot</groupId>
             <artifactId>spring-boot-starter-web</artifactId>
-            <version>3.1.0</version>
+            <version>3.1.1</version>
             <scope>test</scope>
         </dependency>
 
@@ -798,7 +806,7 @@
         <dependency>
             <groupId>org.springframework.security</groupId>
             <artifactId>spring-security-test</artifactId>
-            <version>6.1.0</version>
+            <version>6.1.1</version>
             <scope>test</scope>
         </dependency>
 
@@ -880,7 +888,7 @@
         <dependency>
             <groupId>de.bwaldvogel</groupId>
             <artifactId>mongo-java-server</artifactId>
-            <version>1.43.0</version>
+            <version>1.44.0</version>
         </dependency>
 
         <dependency>
@@ -892,7 +900,7 @@
         <dependency>
             <groupId>org.simplejavamail</groupId>
             <artifactId>simple-java-mail</artifactId>
-            <version>8.1.1</version>
+            <version>8.1.2</version>
         </dependency>
 
         <dependency>
@@ -993,7 +1001,7 @@
             <!-- org.hibernate relocated to org.hibernate.orm -->
             <groupId>org.hibernate.orm</groupId>
             <artifactId>hibernate-core</artifactId>
-            <version>6.2.4.Final</version>
+            <version>6.2.6.Final</version>
         </dependency>
 
         <dependency>
@@ -1031,7 +1039,7 @@
             <groupId>org.mongodb</groupId>
             <artifactId>mongodb-driver-legacy</artifactId>
             <!--version>3.12.10</version-->
-            <version>4.9.1</version>
+            <version>4.10.1</version>
         </dependency>
 
         <dependency>
@@ -1092,42 +1100,42 @@
         <dependency>
             <groupId>net.javacrumbs.json-unit</groupId>
             <artifactId>json-unit-assertj</artifactId>
-            <version>2.38.0</version>
+            <version>3.0.0</version>
             <scope>test</scope>
         </dependency>
 
         <dependency>
             <groupId>net.javacrumbs.json-unit</groupId>
             <artifactId>json-unit</artifactId>
-            <version>2.38.0</version>
+            <version>3.0.0</version>
             <scope>test</scope>
         </dependency>
 
         <dependency>
             <groupId>net.javacrumbs.json-unit</groupId>
             <artifactId>json-unit-spring</artifactId>
-            <version>2.38.0</version>
+            <version>3.0.0</version>
             <scope>test</scope>
         </dependency>
 
         <dependency>
             <groupId>net.javacrumbs.json-unit</groupId>
             <artifactId>json-unit-json-path</artifactId>
-            <version>2.38.0</version>
+            <version>3.0.0</version>
             <scope>test</scope>
         </dependency>
 
         <dependency>
             <groupId>org.mockito</groupId>
             <artifactId>mockito-core</artifactId>
-            <version>5.3.1</version>
+            <version>5.4.0</version>
             <scope>test</scope>
         </dependency>
 
         <dependency>
             <groupId>org.mockito</groupId>
             <artifactId>mockito-junit-jupiter</artifactId>
-            <version>5.3.1</version>
+            <version>5.4.0</version>
             <scope>test</scope>
         </dependency>
 
@@ -1198,7 +1206,7 @@
         <dependency>
             <groupId>io.github.classgraph</groupId>
             <artifactId>classgraph</artifactId>
-            <version>4.8.160</version>
+            <version>4.8.161</version>
         </dependency>
 
         <!--<dependency>
@@ -1302,6 +1310,48 @@
             <groupId>com.google.crypto.tink</groupId>
             <artifactId>tink</artifactId>
             <version>1.9.0</version>
+        </dependency>
+
+        <dependency>
+            <groupId>com.google.errorprone</groupId>
+            <artifactId>error_prone_annotations</artifactId>
+            <version>${error-prone.version}</version>
+        </dependency>
+
+        <dependency>
+            <groupId>org.apache.tomcat</groupId>
+            <artifactId>tomcat-catalina</artifactId>
+            <version>${tomcat.version}</version>
+        </dependency>
+
+        <dependency>
+            <groupId>org.apache.tomcat</groupId>
+            <artifactId>tomcat-util</artifactId>
+            <version>${tomcat.version}</version>
+        </dependency>
+        
+        <dependency>
+            <groupId>org.apache.tomcat.embed</groupId>
+            <artifactId>tomcat-embed-core</artifactId>
+            <version>${tomcat.version}</version>
+        </dependency>
+
+        <dependency>
+            <groupId>org.apache.tomcat.embed</groupId>
+            <artifactId>tomcat-embed-jasper</artifactId>
+            <version>${tomcat.version}</version>
+        </dependency>
+
+        <dependency>
+            <groupId>org.apache.tomcat.embed</groupId>
+            <artifactId>tomcat-embed-el</artifactId>
+            <version>${tomcat.version}</version>
+        </dependency>
+
+        <dependency>
+            <groupId>org.apache.tomcat.embed</groupId>
+            <artifactId>tomcat-embed-websocket</artifactId>
+            <version>${tomcat.version}</version>
         </dependency>
     </dependencies>
 
@@ -1435,7 +1485,7 @@
                 <groupId>org.owasp</groupId>
                 <artifactId>dependency-check-maven</artifactId>
                 <!-- fails for 6.3.2: https://github.com/jeremylong/DependencyCheck/issues/3707 -->
-                <version>8.2.1</version>
+                <version>8.3.1</version>
                 <executions>
                     <execution>
                         <goals>

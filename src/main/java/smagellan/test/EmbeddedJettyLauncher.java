@@ -11,11 +11,14 @@ import org.springframework.web.context.support.AnnotationConfigWebApplicationCon
 import org.springframework.web.filter.DelegatingFilterProxy;
 import org.springframework.web.servlet.DispatcherServlet;
 
-import javax.servlet.DispatcherType;
+import jakarta.servlet.DispatcherType;
 import java.io.IOException;
 import java.util.EnumSet;
 
 public class EmbeddedJettyLauncher {
+
+    public static final String CONTEXT_PATH = "";
+    public static final String MAPPING_URL = "";
     private static final org.slf4j.Logger logger = LoggerFactory.getLogger(EmbeddedJettyLauncher.class);
 
     private WebApplicationContext buildContext(String configLocation) {
@@ -32,8 +35,8 @@ public class EmbeddedJettyLauncher {
         contextHandler.addServlet(new ServletHolder(dispatcherServlet), MAPPING_URL);
         contextHandler.addEventListener(new ContextLoaderListener(context));
 
-        contextHandler.addFilter(new FilterHolder(new DelegatingFilterProxy("springSecurityFilterChain", context)),
-                "/*", EnumSet.allOf(DispatcherType.class));
+        FilterHolder filterChain = new FilterHolder(new DelegatingFilterProxy("springSecurityFilterChain", context));
+        contextHandler.addFilter(filterChain, "/*", EnumSet.allOf(DispatcherType.class));
 
         contextHandler.setResourceBase(new ClassPathResource("webapp").getURI().toString());
         return contextHandler;
