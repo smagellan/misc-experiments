@@ -19,10 +19,10 @@
 
         <mysql.driver>com.mysql.jdbc.Driver</mysql.driver>
         <clickhouse.driver>ru.yandex.clickhouse.ClickHouseDriver</clickhouse.driver>
-        <org.springframework.version>6.0.10</org.springframework.version>
+        <org.springframework.version>6.0.11</org.springframework.version>
 
         <jmh.version>1.36</jmh.version>
-        <mysql.version>8.0.33</mysql.version>
+        <mysql.version>8.1.0</mysql.version>
         <jooq.version>3.18.5</jooq.version>
         <resilience4j.version>2.1.0</resilience4j.version>
         <slf4j.version>2.0.7</slf4j.version>
@@ -41,17 +41,17 @@
         <vertx.version>4.4.4</vertx.version>
         <grpc.version>1.56.1</grpc.version>
         <opentelemetry.version>1.28.0</opentelemetry.version>
-        <spring-integration.version>6.1.1</spring-integration.version>
+        <spring-integration.version>6.1.2</spring-integration.version>
         <error-prone.version>2.20.0</error-prone.version>
         <error-prone-support.version>0.12.0</error-prone-support.version>
 
         <quarkus.platform.artifact-id>quarkus-bom</quarkus.platform.artifact-id>
         <quarkus.platform.group-id>io.quarkus</quarkus.platform.group-id>
-        <quarkus.platform.version>3.2.0.Final</quarkus.platform.version>
-        <quarkus-plugin.version>3.2.0.Final</quarkus-plugin.version>
+        <quarkus.platform.version>3.2.1.Final</quarkus.platform.version>
+        <quarkus-plugin.version>3.2.1.Final</quarkus-plugin.version>
 
         <debezium.version>2.3.0.Final</debezium.version>
-        <tomcat.version>9.0.76</tomcat.version>
+        <tomcat.version>9.0.78</tomcat.version>
     </properties>
 
     <!-- repositories>
@@ -278,7 +278,7 @@
         <dependency>
             <groupId>io.opentelemetry.instrumentation</groupId>
             <artifactId>opentelemetry-resources</artifactId>
-            <version>1.27.0-alpha</version>
+            <version>1.28.0-alpha</version>
         </dependency>
 
 
@@ -436,7 +436,7 @@
         <dependency>
             <groupId>io.lettuce</groupId>
             <artifactId>lettuce-core</artifactId>
-            <version>6.2.4.RELEASE</version>
+            <version>6.2.5.RELEASE</version>
             <exclusions>
                 <exclusion>
                     <groupId>io.projectreactor</groupId>
@@ -494,7 +494,7 @@
         <dependency>
             <groupId>io.micrometer</groupId>
             <artifactId>micrometer-registry-prometheus</artifactId>
-            <version>1.11.1</version>
+            <version>1.11.2</version>
         </dependency>
 
         <dependency>
@@ -731,14 +731,14 @@
         <dependency>
             <groupId>org.springframework.boot</groupId>
             <artifactId>spring-boot-starter-test</artifactId>
-            <version>3.1.1</version>
+            <version>3.1.2</version>
             <scope>test</scope>
         </dependency>
 
         <dependency>
             <groupId>org.springframework.boot</groupId>
             <artifactId>spring-boot-starter-web</artifactId>
-            <version>3.1.1</version>
+            <version>3.1.2</version>
             <scope>test</scope>
         </dependency>
 
@@ -806,7 +806,7 @@
         <dependency>
             <groupId>org.springframework.security</groupId>
             <artifactId>spring-security-test</artifactId>
-            <version>6.1.1</version>
+            <version>6.1.2</version>
             <scope>test</scope>
         </dependency>
 
@@ -900,7 +900,7 @@
         <dependency>
             <groupId>org.simplejavamail</groupId>
             <artifactId>simple-java-mail</artifactId>
-            <version>8.1.2</version>
+            <version>8.1.3</version>
         </dependency>
 
         <dependency>
@@ -1039,7 +1039,7 @@
             <groupId>org.mongodb</groupId>
             <artifactId>mongodb-driver-legacy</artifactId>
             <!--version>3.12.10</version-->
-            <version>4.10.1</version>
+            <version>4.10.2</version>
         </dependency>
 
         <dependency>
@@ -1231,7 +1231,7 @@
         <dependency>
             <groupId>com.squareup.okhttp3</groupId>
             <artifactId>mockwebserver</artifactId>
-            <version>4.10.0</version>
+            <version>4.11.0</version>
             <scope>test</scope>
         </dependency>
 
@@ -1309,7 +1309,7 @@
         <dependency>
             <groupId>com.google.crypto.tink</groupId>
             <artifactId>tink</artifactId>
-            <version>1.9.0</version>
+            <version>1.10.0</version>
         </dependency>
 
         <dependency>

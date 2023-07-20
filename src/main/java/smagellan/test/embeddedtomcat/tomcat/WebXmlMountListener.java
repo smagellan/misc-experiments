@@ -10,6 +10,8 @@ import org.apache.catalina.LifecycleListener;
 import org.apache.catalina.WebResourceRoot;
 import org.apache.catalina.WebResourceRoot.ResourceSetType;
 import org.apache.catalina.webresources.StandardRoot;
+import org.apache.juli.logging.Log;
+import org.apache.juli.logging.LogFactory;
 
 /**
  * <pre>
@@ -20,6 +22,7 @@ import org.apache.catalina.webresources.StandardRoot;
  *
  */
 public class WebXmlMountListener implements LifecycleListener {
+    private static final Log log = LogFactory.getLog(WebXmlMountListener.class);
 
     @Override
     public void lifecycleEvent(LifecycleEvent event) {
@@ -38,6 +41,7 @@ public class WebXmlMountListener implements LifecycleListener {
              * </pre>
              */
             URL resource = context.getParentClassLoader().getResource("WEB-INF/web.xml");
+            log.info("web.xml candidate: " + resource);
             if (resource != null) {
                 String webXmlUrlString = resource.toString();
                 URL root;

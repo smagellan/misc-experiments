@@ -16,5 +16,6 @@ public class HelloServlet extends HttpServlet {
         res.getWriter()
                 .append(String.format("current time is %s",
                         LocalDateTime.now()));
+        req.getSession().setAttribute("myattr", "val");
     }
 }

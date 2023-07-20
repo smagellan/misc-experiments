@@ -39,6 +39,7 @@ public class TomcatLauncher {
         tomcat.setHostname(hostName);
 
         Host host = tomcat.getHost();
+        tomcat.getEngine().setJvmRoute("42");
         Context context = tomcat.addWebapp(host, contextPath, contextDocBase, new EmbededContextConfig());
 
         context.setJarScanner(new EmbededStandardJarScanner());
