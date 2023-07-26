@@ -1,0 +1,28 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<Configuration status="info" strict="true">
+    <!-- This config is used before logging is reinitialized -->
+    <Appenders>
+        <Console name="CONSOLE" target="SYSTEM_OUT">
+            <!-- PatternLayout pattern="%d{HH:mm:ss.SSS} [%t] %-5level %logger{42} - %msg %xThrowable{full,separator(|)} %n"/ -->
+            <PatternLayout pattern="%d{DEFAULT} [%t] %-5level %logger{42} - %msg %xThrowable %n"/>
+        </Console>
+        <!--
+        <RollingFile name="RollingFile" fileName="logs/app.log"
+                     filePattern="logs/$${date:yyyy-MM}/app-%d{yyyy-MM-dd}-%i.log.gz">
+            <PatternLayout pattern="%d{HH:mm:ss.SSS} [%t] %-5level %logger{42} - %msg %xThrowable{full,separator(|)} %n"/>
+            <Policies>
+                <TimeBasedTriggeringPolicy />
+                <SizeBasedTriggeringPolicy size="100 MB"/>
+            </Policies>
+            <DefaultRolloverStrategy max="20" compressionLevel="9"/>
+        </RollingFile>
+        -->
+    </Appenders>
+
+    <Loggers>
+        <Root level="DEBUG">
+            <AppenderRef ref="CONSOLE"/>
+            <!-- <AppenderRef ref="RollingFile"/> -->
+        </Root>
+    </Loggers>
+</Configuration>

@@ -7,6 +7,7 @@
     <groupId>smagellan.idea-playground</groupId>
     <artifactId>experiments</artifactId>
     <version>1.0-SNAPSHOT</version>
+    <packaging>pom</packaging>
 
     <prerequisites>
         <maven>3.3.9</maven>
@@ -27,13 +28,12 @@
         <resilience4j.version>2.1.0</resilience4j.version>
         <slf4j.version>2.0.7</slf4j.version>
         <log4j.version>2.20.0</log4j.version>
-        <netty.version>4.1.94.Final</netty.version>
+        <netty.version>4.1.95.Final</netty.version>
         <quartz.version>2.3.2</quartz.version>
         <jackson.version>2.15.2</jackson.version>
         <bytebuddy.version>1.14.5</bytebuddy.version>
-        <org.eclipse.jetty>11.0.15</org.eclipse.jetty>
-        <junit.version>5.9.3</junit.version>
-        <junit.platform.version>1.9.3</junit.platform.version>
+        <junit.version>5.10.0</junit.version>
+        <junit.platform.version>1.10.0</junit.platform.version>
         <dl4j.version>1.0.0-M2.1</dl4j.version>
         <lombok.version>1.18.26</lombok.version>
         <platform.classifier>linux-x86_64</platform.classifier>
@@ -47,12 +47,16 @@
 
         <quarkus.platform.artifact-id>quarkus-bom</quarkus.platform.artifact-id>
         <quarkus.platform.group-id>io.quarkus</quarkus.platform.group-id>
-        <quarkus.platform.version>3.2.1.Final</quarkus.platform.version>
-        <quarkus-plugin.version>3.2.1.Final</quarkus-plugin.version>
+        <quarkus.platform.version>3.2.2.Final</quarkus.platform.version>
+        <quarkus-plugin.version>3.2.2.Final</quarkus-plugin.version>
 
         <debezium.version>2.3.0.Final</debezium.version>
-        <tomcat.version>9.0.78</tomcat.version>
     </properties>
+
+    <modules>
+        <module>embedded-server</module>
+        <module>unsorted</module>
+    </modules>
 
     <!-- repositories>
         <repository>
@@ -132,12 +136,6 @@
         <dependency>
             <groupId>org.apache.logging.log4j</groupId>
             <artifactId>log4j-jul</artifactId>
-            <version>${log4j.version}</version>
-        </dependency>
-
-        <dependency>
-            <groupId>org.apache.logging.log4j</groupId>
-            <artifactId>log4j-appserver</artifactId>
             <version>${log4j.version}</version>
         </dependency>
 
@@ -356,8 +354,14 @@
         <dependency>
             <groupId>io.netty.incubator</groupId>
             <artifactId>netty-incubator-codec-native-quic</artifactId>
-            <version>0.0.48.Final</version>
+            <version>0.0.49.Final</version>
             <classifier>${platform.classifier}</classifier>
+        </dependency>
+
+        <dependency>
+            <groupId>io.netty.incubator</groupId>
+            <artifactId>netty-incubator-codec-http3</artifactId>
+            <version>0.0.19.Final</version>
         </dependency>
 
         <dependency>
@@ -648,17 +652,17 @@
             <version>${jooq.version}</version>
         </dependency>
 
-        <!--dependency>
+        <!-- dependency>
             <groupId>org.apache.httpcomponents</groupId>
             <artifactId>httpclient</artifactId>
-            <version>4.5.13</version>
+            <version>4.5.14</version>
         </dependency>
 
         <dependency>
             <groupId>org.apache.maven.wagon</groupId>
             <artifactId>wagon-http</artifactId>
-            <version>3.5.1</version>
-        </dependency-->
+            <version>3.5.3</version>
+        </dependency -->
 
         <dependency>
             <groupId>io.quarkus</groupId>
@@ -808,6 +812,24 @@
             <artifactId>spring-security-test</artifactId>
             <version>6.1.2</version>
             <scope>test</scope>
+        </dependency>
+
+        <dependency>
+            <groupId>org.springframework.security</groupId>
+            <artifactId>spring-security-oauth2-core</artifactId>
+            <version>6.1.2</version>
+        </dependency>
+
+        <dependency>
+            <groupId>org.springframework.security</groupId>
+            <artifactId>spring-security-oauth2-client</artifactId>
+            <version>6.1.2</version>
+        </dependency>
+
+        <dependency>
+            <groupId>org.springframework.security</groupId>
+            <artifactId>spring-security-oauth2-jose</artifactId>
+            <version>6.1.2</version>
         </dependency>
 
         <dependency>
@@ -962,18 +984,6 @@
             <groupId>com.squareup</groupId>
             <artifactId>javapoet</artifactId>
             <version>1.13.0</version>
-        </dependency>
-
-        <dependency>
-            <groupId>org.eclipse.jetty</groupId>
-            <artifactId>jetty-server</artifactId>
-            <version>${org.eclipse.jetty}</version>
-        </dependency>
-
-        <dependency>
-            <groupId>org.eclipse.jetty</groupId>
-            <artifactId>jetty-webapp</artifactId>
-            <version>${org.eclipse.jetty}</version>
         </dependency>
 
         <dependency>
@@ -1235,6 +1245,44 @@
             <scope>test</scope>
         </dependency>
 
+        <dependency>
+            <groupId>com.github.tomakehurst</groupId>
+            <artifactId>wiremock</artifactId>
+            <version>2.27.2</version>
+            <type>pom</type>
+            <scope>test</scope>
+        </dependency>
+
+        <dependency>
+            <groupId>com.squareup.okhttp3</groupId>
+            <artifactId>okhttp</artifactId>
+            <version>4.11.0</version>
+        </dependency>
+
+        <dependency>
+            <groupId>com.squareup.okhttp3</groupId>
+            <artifactId>logging-interceptor</artifactId>
+            <version>4.11.0</version>
+        </dependency>
+
+        <dependency>
+            <groupId>com.squareup.okhttp3</groupId>
+            <artifactId>okhttp-tls</artifactId>
+            <version>4.11.0</version>
+            <scope>test</scope>
+        </dependency>
+
+        <dependency>
+            <groupId>com.squareup.okhttp3</groupId>
+            <artifactId>okcurl</artifactId>
+            <version>4.11.0</version>
+        </dependency>
+
+        <dependency>
+            <groupId>com.squareup.okio</groupId>
+            <artifactId>okio</artifactId>
+            <version>3.4.0</version>
+        </dependency>
 
         <dependency>
             <groupId>io.debezium</groupId>
@@ -1270,7 +1318,7 @@
         <dependency>
             <groupId>org.apache.calcite</groupId>
             <artifactId>calcite-core</artifactId>
-            <version>1.34.0</version>
+            <version>1.35.0</version>
         </dependency>
 
         <dependency>
@@ -1318,41 +1366,7 @@
             <version>${error-prone.version}</version>
         </dependency>
 
-        <dependency>
-            <groupId>org.apache.tomcat</groupId>
-            <artifactId>tomcat-catalina</artifactId>
-            <version>${tomcat.version}</version>
-        </dependency>
 
-        <dependency>
-            <groupId>org.apache.tomcat</groupId>
-            <artifactId>tomcat-util</artifactId>
-            <version>${tomcat.version}</version>
-        </dependency>
-        
-        <dependency>
-            <groupId>org.apache.tomcat.embed</groupId>
-            <artifactId>tomcat-embed-core</artifactId>
-            <version>${tomcat.version}</version>
-        </dependency>
-
-        <dependency>
-            <groupId>org.apache.tomcat.embed</groupId>
-            <artifactId>tomcat-embed-jasper</artifactId>
-            <version>${tomcat.version}</version>
-        </dependency>
-
-        <dependency>
-            <groupId>org.apache.tomcat.embed</groupId>
-            <artifactId>tomcat-embed-el</artifactId>
-            <version>${tomcat.version}</version>
-        </dependency>
-
-        <dependency>
-            <groupId>org.apache.tomcat.embed</groupId>
-            <artifactId>tomcat-embed-websocket</artifactId>
-            <version>${tomcat.version}</version>
-        </dependency>
     </dependencies>
 
     <build>
