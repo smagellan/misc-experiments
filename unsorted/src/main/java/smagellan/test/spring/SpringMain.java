@@ -6,9 +6,8 @@ import org.springframework.context.annotation.AnnotationConfigApplicationContext
 import org.springframework.context.support.PropertySourcesPlaceholderConfigurer;
 import org.springframework.core.env.MapPropertySource;
 import org.springframework.core.env.MutablePropertySources;
-import org.springframework.http.ResponseEntity;
 import org.springframework.web.reactive.function.client.WebClient;
-import reactor.core.publisher.Mono;
+import reactor.core.scheduler.Schedulers;
 import smagellan.test.spring.config1.AppConfig;
 import smagellan.test.spring.config1.ComponentBeanOne;
 import smagellan.test.spring.config1.ComponentBeanTwo;
@@ -18,12 +17,14 @@ import java.time.Duration;
 import java.util.ArrayList;
 import java.util.Collection;
 import java.util.Map;
+import java.util.concurrent.CompletableFuture;
+import java.util.concurrent.ExecutionException;
 import java.util.concurrent.atomic.LongAdder;
 
 public class SpringMain {
     private static final org.slf4j.Logger logger = LoggerFactory.getLogger(AppConfig2.class);
 
-    public static void main(String[] args) {
+    public static void main(String[] args) throws Exception {
         int port = 0;
         try (AnnotationConfigApplicationContext beanFactory = new AnnotationConfigApplicationContext()) {
             beanFactory.register(AppConfig.class);
@@ -51,16 +52,16 @@ public class SpringMain {
 
             String http2Endpoint = "https://localhost:443";
             String http11Endpoint = "https://localhost:444";
-            doFetch(wc, http2Endpoint, 500);
+            doFetch(wc, http2Endpoint, 330);
             //doFetch(wc, http2Endpoint, 1_000);
 
             Stopwatch sw = Stopwatch.createStarted();
-            doFetch(wc, http2Endpoint, 500);
+            doFetch(wc, http2Endpoint, 330);
             Duration d1 = sw.elapsed();
             sw.reset().start();
 
             //HTTP 1.1
-            doFetch(wc, http11Endpoint, 500);
+            doFetch(wc, http11Endpoint, 330);
             Duration d2 = sw.elapsed();
             sw.reset();
 
@@ -68,23 +69,25 @@ public class SpringMain {
         }
     }
 
-    private static void doFetch(WebClient wc, String uri, int limit) {
-        Collection<Mono<ResponseEntity<String>>> responses = new ArrayList<>();
+    private static void doFetch(WebClient wc, String uri, int limit) throws ExecutionException, InterruptedException {
+        Collection<CompletableFuture<Void>> responses = new ArrayList<>();
+        LongAdder adder = new LongAdder();
         for (int i = 0; i < limit; ++i) {
-            Mono<ResponseEntity<String>> response = wc.get()
+            CompletableFuture<Void> future = wc.get()
                     .uri(uri + "?i=" + i)
                     .retrieve()
-                    .toEntity(String.class);
-            responses.add(response);
+                    .bodyToMono(String.class)
+                    .timeout(Duration.ofSeconds(5L))
+                    .subscribeOn(Schedulers.single())
+                    .toFuture()
+                    .thenAccept((s) -> adder.add(s.length()));
+            responses.add(future);
         }
 
-        LongAdder adder = new LongAdder();
-        for (Mono<ResponseEntity<String>> r : responses) {
-            r.subscribe((s) -> adder.add(s.getBody().length()));
-        }
-        for (Mono<ResponseEntity<String>> r : responses) {
-            r.block();
+        for (CompletableFuture<Void> r : responses) {
+            r.get();
         }
         logger.info("len: {}", adder.sum());
     }
 }
+
