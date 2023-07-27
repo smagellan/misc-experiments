@@ -1,10 +1,25 @@
 package smagellan.test.spring.config2;
 
+import org.apache.hc.client5.http.config.TlsConfig;
+import org.apache.hc.client5.http.impl.async.CloseableHttpAsyncClient;
+import org.apache.hc.client5.http.impl.async.H2AsyncClientBuilder;
+import org.apache.hc.client5.http.impl.async.HttpAsyncClientBuilder;
+import org.apache.hc.client5.http.impl.async.HttpAsyncClients;
+import org.apache.hc.client5.http.impl.nio.PoolingAsyncClientConnectionManager;
+import org.apache.hc.client5.http.impl.nio.PoolingAsyncClientConnectionManagerBuilder;
+import org.apache.hc.client5.http.ssl.DefaultClientTlsStrategy;
+import org.apache.hc.client5.http.ssl.HttpsSupport;
+import org.apache.hc.core5.http2.HttpVersionPolicy;
+import org.apache.hc.core5.http2.config.H2Config;
+import org.apache.hc.core5.pool.PoolReusePolicy;
+import org.apache.hc.core5.ssl.SSLContexts;
+import org.apache.hc.core5.util.Timeout;
+import org.apache.http.conn.ssl.NoopHostnameVerifier;
 import org.slf4j.LoggerFactory;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.core.env.Environment;
-import org.springframework.http.client.reactive.JdkClientHttpConnector;
+import org.springframework.http.client.reactive.HttpComponentsClientHttpConnector;
 import org.springframework.web.reactive.function.client.WebClient;
 
 import javax.net.ssl.SSLContext;
@@ -16,7 +31,6 @@ import java.security.KeyManagementException;
 import java.security.NoSuchAlgorithmException;
 import java.security.SecureRandom;
 import java.security.cert.X509Certificate;
-import java.net.http.HttpClient;
 
 @Configuration
 public class AppConfig2 {
@@ -33,12 +47,24 @@ public class AppConfig2 {
         SSLContext sslContext = SSLContext.getInstance("TLS");
         sslContext.init(null, INSECURE_TRUST_MANAGERS, new SecureRandom());
 
-        HttpClient clt = HttpClient.newBuilder()
-                .version(HttpClient.Version.HTTP_2)
-                .sslContext(sslContext)
+        TlsConfig tlsConfig = TlsConfig.custom()
+                .setVersionPolicy(HttpVersionPolicy.NEGOTIATE)
+                .setHandshakeTimeout(Timeout.ofMinutes(1)).build();
+
+        PoolingAsyncClientConnectionManager mgr = PoolingAsyncClientConnectionManagerBuilder.create()
+                .setTlsStrategy(new DefaultClientTlsStrategy(sslContext, NoopHostnameVerifier.INSTANCE))
+                .setDefaultTlsConfig(tlsConfig)
+                .setMaxConnTotal(20)
+                .setMaxConnPerRoute(10)
+                .setConnPoolPolicy(PoolReusePolicy.FIFO)
                 .build();
+
+        CloseableHttpAsyncClient client = HttpAsyncClients.custom()
+                .setConnectionManager(mgr)
+                .build();
+
         return WebClient.builder()
-                .clientConnector(new JdkClientHttpConnector(clt))
+                .clientConnector(new HttpComponentsClientHttpConnector(client))
                 .build();
     }
 }

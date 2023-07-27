@@ -1,4 +1,4 @@
-package smagellan.test;
+package smagellan.quarkus;
 
 import org.jboss.logmanager.EmbeddedConfigurator;
 import org.jboss.logmanager.LogContext;

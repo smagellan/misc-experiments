@@ -44,18 +44,13 @@
         <spring-integration.version>6.1.2</spring-integration.version>
         <error-prone.version>2.20.0</error-prone.version>
         <error-prone-support.version>0.12.0</error-prone-support.version>
-
-        <quarkus.platform.artifact-id>quarkus-bom</quarkus.platform.artifact-id>
-        <quarkus.platform.group-id>io.quarkus</quarkus.platform.group-id>
-        <quarkus.platform.version>3.2.2.Final</quarkus.platform.version>
-        <quarkus-plugin.version>3.2.2.Final</quarkus-plugin.version>
-
         <debezium.version>2.3.0.Final</debezium.version>
     </properties>
 
     <modules>
         <module>embedded-server</module>
         <module>unsorted</module>
+        <module>quarkus</module>
     </modules>
 
     <!-- repositories>
@@ -79,19 +74,6 @@
             </plugin>
         </plugins>
     </reporting>
-
-    <dependencyManagement>
-        <dependencies>
-            <dependency>
-                <groupId>${quarkus.platform.group-id}</groupId>
-                <artifactId>quarkus-bom</artifactId>
-                <version>${quarkus.platform.version}</version>
-                <type>pom</type>
-                <scope>import</scope>
-            </dependency>
-        </dependencies>
-    </dependencyManagement>
-
 
     <dependencies>
         <dependency>
@@ -516,7 +498,7 @@
         <dependency>
             <groupId>org.apache.activemq</groupId>
             <artifactId>artemis-jms-client</artifactId>
-            <version>2.29.0</version>
+            <version>2.30.0</version>
         </dependency>
 
         <dependency>
@@ -652,64 +634,23 @@
             <version>${jooq.version}</version>
         </dependency>
 
-        <!-- dependency>
-            <groupId>org.apache.httpcomponents</groupId>
-            <artifactId>httpclient</artifactId>
-            <version>4.5.14</version>
+        <dependency>
+            <groupId>org.apache.httpcomponents.client5</groupId>
+            <artifactId>httpclient5</artifactId>
+            <version>5.2.1</version>
         </dependency>
 
         <dependency>
+            <groupId>org.apache.httpcomponents.core5</groupId>
+            <artifactId>httpcore5-reactive</artifactId>
+            <version>5.2.2</version>
+        </dependency>
+
+        <!--dependency>
             <groupId>org.apache.maven.wagon</groupId>
             <artifactId>wagon-http</artifactId>
             <version>3.5.3</version>
         </dependency -->
-
-        <dependency>
-            <groupId>io.quarkus</groupId>
-            <artifactId>quarkus-core</artifactId>
-            <exclusions>
-                <exclusion>
-                    <groupId>org.jboss.slf4j</groupId>
-                    <artifactId>slf4j-jboss-logmanager</artifactId>
-                </exclusion>
-            </exclusions>
-        </dependency>
-        <dependency>
-            <groupId>io.quarkus</groupId>
-            <artifactId>quarkus-core-deployment</artifactId>
-            <exclusions>
-                <exclusion>
-                    <groupId>org.jboss.slf4j</groupId>
-                    <artifactId>slf4j-jboss-logmanager</artifactId>
-                </exclusion>
-            </exclusions>
-        </dependency>
-
-        <dependency>
-            <groupId>io.quarkus</groupId>
-            <artifactId>quarkus-resteasy</artifactId>
-        </dependency>
-
-        <!--dependency>
-            <groupId>io.quarkus</groupId>
-            <artifactId>quarkus-resteasy-server-common-deployment</artifactId>
-        </dependency-->
-
-        <dependency>
-            <groupId>io.quarkus</groupId>
-            <artifactId>quarkus-arc</artifactId>
-        </dependency>
-
-        <dependency>
-            <groupId>io.quarkus</groupId>
-            <artifactId>quarkus-junit5</artifactId>
-            <scope>test</scope>
-        </dependency>
-
-        <dependency>
-            <groupId>io.quarkus</groupId>
-            <artifactId>quarkus-mutiny</artifactId>
-        </dependency>
 
         <dependency>
             <groupId>io.smallrye.reactive</groupId>
@@ -1365,8 +1306,6 @@
             <artifactId>error_prone_annotations</artifactId>
             <version>${error-prone.version}</version>
         </dependency>
-
-
     </dependencies>
 
     <build>
@@ -1379,22 +1318,6 @@
                     <forkCount>2</forkCount>
                     <reuseForks>true</reuseForks>
                 </configuration>
-            </plugin>
-
-            <plugin>
-                <groupId>${quarkus.platform.group-id}</groupId>
-                <artifactId>quarkus-maven-plugin</artifactId>
-                <version>${quarkus-plugin.version}</version>
-                <extensions>true</extensions>
-                <executions>
-                    <execution>
-                        <goals>
-                            <goal>build</goal>
-                            <goal>generate-code</goal>
-                            <goal>generate-code-tests</goal>
-                        </goals>
-                    </execution>
-                </executions>
             </plugin>
 
             <plugin>

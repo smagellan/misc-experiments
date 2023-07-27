@@ -1,4 +1,4 @@
-package smagellan.test;
+package smagellan.quarkus;
 
 import io.quarkus.runtime.Quarkus;
 import io.quarkus.runtime.QuarkusApplication;
