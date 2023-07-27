@@ -56,7 +56,6 @@ public class AppConfig2 {
                 .setDefaultTlsConfig(tlsConfig)
                 .setMaxConnTotal(20)
                 .setMaxConnPerRoute(10)
-                .setConnPoolPolicy(PoolReusePolicy.FIFO)
                 .build();
 
         CloseableHttpAsyncClient client = HttpAsyncClients.custom()

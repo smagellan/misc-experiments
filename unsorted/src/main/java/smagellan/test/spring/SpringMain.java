@@ -52,7 +52,8 @@ public class SpringMain {
 
             String http2Endpoint = "https://localhost:443";
             String http11Endpoint = "https://localhost:444";
-            doFetch(wc, http2Endpoint, 330);
+            doFetch(wc, http2Endpoint, 100);
+            doFetch(wc, http11Endpoint, 100);
             //doFetch(wc, http2Endpoint, 1_000);
 
             Stopwatch sw = Stopwatch.createStarted();
