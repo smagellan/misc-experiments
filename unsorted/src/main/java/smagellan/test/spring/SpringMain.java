@@ -47,48 +47,7 @@ public class SpringMain {
             beanFactory.register(AppConfig2.class);
             beanFactory.registerShutdownHook();
             beanFactory.refresh();
-
-            WebClient wc = beanFactory.getBean(WebClient.class);
-
-            String http2Endpoint = "https://localhost:443";
-            String http11Endpoint = "https://localhost:444";
-            doFetch(wc, http2Endpoint, 100);
-            doFetch(wc, http11Endpoint, 100);
-            //doFetch(wc, http2Endpoint, 1_000);
-
-            Stopwatch sw = Stopwatch.createStarted();
-            doFetch(wc, http2Endpoint, 330);
-            Duration d1 = sw.elapsed();
-            sw.reset().start();
-
-            //HTTP 1.1
-            doFetch(wc, http11Endpoint, 330);
-            Duration d2 = sw.elapsed();
-            sw.reset();
-
-            logger.info("d1: {}. d2: {}", d1.toMillis(), d2.toMillis());
         }
-    }
-
-    private static void doFetch(WebClient wc, String uri, int limit) throws ExecutionException, InterruptedException {
-        Collection<CompletableFuture<Void>> responses = new ArrayList<>();
-        LongAdder adder = new LongAdder();
-        for (int i = 0; i < limit; ++i) {
-            CompletableFuture<Void> future = wc.get()
-                    .uri(uri + "?i=" + i)
-                    .retrieve()
-                    .bodyToMono(String.class)
-                    .timeout(Duration.ofSeconds(5L))
-                    .subscribeOn(Schedulers.single())
-                    .toFuture()
-                    .thenAccept((s) -> adder.add(s.length()));
-            responses.add(future);
-        }
-
-        for (CompletableFuture<Void> r : responses) {
-            r.get();
-        }
-        logger.info("len: {}", adder.sum());
     }
 }
 
