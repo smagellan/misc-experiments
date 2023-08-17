@@ -17,11 +17,11 @@ public class RunClientsTest {
     private static final org.slf4j.Logger logger = LoggerFactory.getLogger(RunClientsTest.class);
     public static void main(String[] args) throws ExecutionException, InterruptedException {
         try (AnnotationConfigApplicationContext beanFactory = new AnnotationConfigApplicationContext()) {
-            beanFactory.register(JettyClientConfig.class);
+            beanFactory.register(HttpClientsClientConfig.class);
             beanFactory.registerShutdownHook();
             beanFactory.refresh();
 
-            WebClient wc = beanFactory.getBean(JettyClientConfig.JETTY_CLIENT, WebClient.class);
+            WebClient wc = beanFactory.getBean(HttpClientsClientConfig.WEB_CLIENT_APACHE, WebClient.class);
             runRequests(wc);
             logger.info("about to stop the spring context");
         }

@@ -24,14 +24,14 @@
 
         <jmh.version>1.37</jmh.version>
         <mysql.version>8.1.0</mysql.version>
-        <jooq.version>3.18.5</jooq.version>
+        <jooq.version>3.18.6</jooq.version>
         <resilience4j.version>2.1.0</resilience4j.version>
         <slf4j.version>2.0.7</slf4j.version>
         <log4j.version>2.20.0</log4j.version>
         <netty.version>4.1.96.Final</netty.version>
         <quartz.version>2.3.2</quartz.version>
         <jackson.version>2.15.2</jackson.version>
-        <bytebuddy.version>1.14.5</bytebuddy.version>
+        <bytebuddy.version>1.14.6</bytebuddy.version>
         <junit.version>5.10.0</junit.version>
         <junit.platform.version>1.10.0</junit.platform.version>
         <dl4j.version>1.0.0-M2.1</dl4j.version>
@@ -39,8 +39,8 @@
         <platform.classifier>linux-x86_64</platform.classifier>
         <spotbugs-maven-plugin.version>4.7.3.5</spotbugs-maven-plugin.version>
         <vertx.version>4.4.4</vertx.version>
-        <grpc.version>1.57.1</grpc.version>
-        <opentelemetry.version>1.28.0</opentelemetry.version>
+        <grpc.version>1.57.2</grpc.version>
+        <opentelemetry.version>1.29.0</opentelemetry.version>
         <spring-integration.version>6.1.2</spring-integration.version>
         <error-prone.version>2.21.1</error-prone.version>
         <error-prone-support.version>0.12.0</error-prone-support.version>
@@ -158,19 +158,6 @@
             <version>${resilience4j.version}</version>
         </dependency>
 
-
-        <dependency>
-            <groupId>io.undertow</groupId>
-            <artifactId>undertow-core</artifactId>
-            <version>2.3.7.Final</version>
-        </dependency>
-
-        <dependency>
-            <groupId>io.undertow</groupId>
-            <artifactId>undertow-servlet</artifactId>
-            <version>2.3.7.Final</version>
-        </dependency>
-
         <dependency>
             <groupId>io.opentelemetry</groupId>
             <artifactId>opentelemetry-exporter-common</artifactId>
@@ -258,7 +245,7 @@
         <dependency>
             <groupId>io.opentelemetry.instrumentation</groupId>
             <artifactId>opentelemetry-resources</artifactId>
-            <version>1.28.0-alpha</version>
+            <version>1.29.0-alpha</version>
         </dependency>
 
 
@@ -422,7 +409,7 @@
         <dependency>
             <groupId>io.lettuce</groupId>
             <artifactId>lettuce-core</artifactId>
-            <version>6.2.5.RELEASE</version>
+            <version>6.2.6.RELEASE</version>
             <exclusions>
                 <exclusion>
                     <groupId>io.projectreactor</groupId>
@@ -480,7 +467,7 @@
         <dependency>
             <groupId>io.micrometer</groupId>
             <artifactId>micrometer-registry-prometheus</artifactId>
-            <version>1.11.2</version>
+            <version>1.11.3</version>
         </dependency>
 
         <dependency>
@@ -1157,7 +1144,7 @@
         <dependency>
             <groupId>io.github.classgraph</groupId>
             <artifactId>classgraph</artifactId>
-            <version>4.8.161</version>
+            <version>4.8.162</version>
         </dependency>
 
         <!--<dependency>
