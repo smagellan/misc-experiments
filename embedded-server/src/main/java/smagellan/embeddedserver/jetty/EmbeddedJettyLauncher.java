@@ -1,8 +1,8 @@
 package smagellan.embeddedserver.jetty;
 
-import org.eclipse.jetty.servlet.FilterHolder;
-import org.eclipse.jetty.servlet.ServletContextHandler;
-import org.eclipse.jetty.servlet.ServletHolder;
+import org.eclipse.jetty.ee10.servlet.FilterHolder;
+import org.eclipse.jetty.ee10.servlet.ServletContextHandler;
+import org.eclipse.jetty.ee10.servlet.ServletHolder;
 import org.slf4j.LoggerFactory;
 import org.springframework.core.io.ClassPathResource;
 import org.springframework.web.context.ContextLoaderListener;
@@ -38,7 +38,9 @@ public class EmbeddedJettyLauncher {
         FilterHolder filterChain = new FilterHolder(new DelegatingFilterProxy("springSecurityFilterChain", context));
         contextHandler.addFilter(filterChain, "/*", EnumSet.allOf(DispatcherType.class));
 
-        contextHandler.setResourceBase(new ClassPathResource("webapp").getURI().toString());
-        return contextHandler;
+
+        throw new IllegalArgumentException("TODO: uncomment next 2 lines and compile");
+        //contextHandler.setResourceBase(new ClassPathResource("webapp").getURI().toString());
+        //return contextHandler;
     }
 }

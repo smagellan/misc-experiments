@@ -25,10 +25,12 @@ public class JedisBuilder implements RedisTestBuilder {
         JedisCluster cl = new JedisCluster(new HostAndPort("localhost", 0));
     }
 
+    @Override
     public JedisRunnable build() {
         return new JedisRunnable(pool, keyCache, keyCache2);
     }
 
+    @Override
     public void close() throws IOException {
         pool.close();
     }

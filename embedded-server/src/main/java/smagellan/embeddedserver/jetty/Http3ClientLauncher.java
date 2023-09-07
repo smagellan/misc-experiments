@@ -1,9 +1,9 @@
 package smagellan.embeddedserver.jetty;
 
 import org.eclipse.jetty.client.HttpClient;
-import org.eclipse.jetty.client.api.ContentResponse;
+import org.eclipse.jetty.client.ContentResponse;
 import org.eclipse.jetty.http3.client.HTTP3Client;
-import org.eclipse.jetty.http3.client.http.HttpClientTransportOverHTTP3;
+import org.eclipse.jetty.http3.client.transport.HttpClientTransportOverHTTP3;
 import org.eclipse.jetty.util.ssl.SslContextFactory;
 import org.slf4j.LoggerFactory;
 
