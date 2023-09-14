@@ -1,6 +1,6 @@
 package smagellan.quarkus;
 
-import org.jboss.logmanager.EmbeddedConfigurator;
+import org.jboss.logmanager.LogContextInitializer;
 import org.jboss.logmanager.LogContext;
 import org.jetbrains.annotations.NotNull;
 
@@ -9,8 +9,9 @@ import java.util.ServiceLoader;
 
 public class ServiceLoaderLauncher {
     public static void main(String[] args) {
-        List<ServiceLoader.Provider<EmbeddedConfigurator>> providers1 = loadServices(EmbeddedConfigurator.class, LogContext.class.getClassLoader());
-        for (ServiceLoader.Provider<EmbeddedConfigurator> provider : providers1) {
+        //io.quarkus.bootstrap.logging.InitialConfigurator conf;
+        List<ServiceLoader.Provider<LogContextInitializer>> providers1 = loadServices(LogContextInitializer.class, LogContext.class.getClassLoader());
+        for (ServiceLoader.Provider<LogContextInitializer> provider : providers1) {
             System.err.println(provider.get());
         }
     }
