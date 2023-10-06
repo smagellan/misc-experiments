@@ -23,4 +23,8 @@ public class VectorApiTest {
             c[i] = (a[i] * a[i] + b[i] * b[i]) * -1f;
         }
     }
+
+    public void doWork() {
+
+    }
 }

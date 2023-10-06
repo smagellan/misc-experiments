@@ -7,6 +7,7 @@ import org.eclipse.jetty.http2.server.HTTP2ServerConnectionFactory;
 import org.eclipse.jetty.http3.server.HTTP3ServerConnectionFactory;
 import org.eclipse.jetty.http3.server.HTTP3ServerConnector;
 import org.eclipse.jetty.jmx.MBeanContainer;
+import org.eclipse.jetty.quic.common.QuicConfiguration;
 import org.eclipse.jetty.server.*;
 import org.eclipse.jetty.util.Callback;
 import org.eclipse.jetty.util.resource.URLResourceFactory;
@@ -89,6 +90,10 @@ public class Http3ServerLauncher {
 
         connector.setPort(port);
         return connector;
+
+        //QuicConfiguration conf = new QuicConfiguration();
+        //conf.setPemWorkDirectory(Path.of("/tmp/pem"));
+        //return new ConnectorProvider("h3", port, sslContextFactory(), conf, new HTTP3ServerConnectionFactory(httpConfig));
     }
 }
 
@@ -100,5 +105,54 @@ class MyCustomHandler extends Handler.Abstract {
         logger.info("uri: {}, proto: {}, headers: {}", request.getHttpURI(), request.getConnectionMetaData().getProtocol(), request.getHeaders());
         response.write(true, ByteBuffer.wrap("Hello, world".getBytes(StandardCharsets.UTF_8)), callback);
         return true;
+    }
+}
+
+interface ConnectorFactory {
+    Connector build(Server server);
+}
+
+
+class Http3ConnectorProvider implements ConnectorFactory {
+    private final String name;
+    private final SslContextFactory.Server sslContextFactory;
+    private final ConnectionFactory[] factories;
+
+    private final QuicConfiguration quicConfiguration;
+
+    private final int port;
+
+    public Http3ConnectorProvider(String name, int port, SslContextFactory.Server sslContextFactory, QuicConfiguration quicConfiguration, ConnectionFactory... factories) {
+        this.name = name;
+        this.port = port;
+        this.sslContextFactory = sslContextFactory;
+        this.factories = factories;
+        this.quicConfiguration = quicConfiguration;
+    }
+
+    public SslContextFactory.Server sslContextFactory() {
+        return sslContextFactory;
+    }
+
+    public ConnectionFactory[] factories() {
+        return factories;
+    }
+
+    public QuicConfiguration quicConfiguration() {
+        return quicConfiguration;
+    }
+
+    public int port() {
+        return port;
+    }
+
+    @Override
+    public Connector build(Server server) {
+        HTTP3ServerConnector connector = new HTTP3ServerConnector(server, sslContextFactory, factories);
+        if (quicConfiguration != null) {
+            QuicConfiguration destConf = connector.getQuicConfiguration();
+            destConf.setPemWorkDirectory(quicConfiguration.getPemWorkDirectory());
+        }
+        return connector;
     }
 }

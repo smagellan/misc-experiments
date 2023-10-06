@@ -1,17 +1,17 @@
 package smagellan.test;
 
-import org.junit.After;
-import org.junit.AfterClass;
-import org.junit.Before;
-import org.junit.BeforeClass;
+import nz.lae.stacksrc.junit5.ErrorDecorator;
+import org.junit.jupiter.api.*;
+import org.junit.jupiter.api.AfterAll;
+import org.junit.jupiter.api.BeforeAll;
 import org.junit.ClassRule;
 import org.junit.Rule;
-import org.junit.Test;
+import org.junit.jupiter.api.extension.ExtendWith;
 import org.junit.rules.TestRule;
 import org.junit.runner.Description;
 import org.junit.runners.model.Statement;
 
-
+@ExtendWith(ErrorDecorator.class)
 public class TestPhasesExample {
     @ClassRule
     public static MyRule classRule = new MyRule("@ClassRule");
@@ -19,22 +19,22 @@ public class TestPhasesExample {
     @Rule
     public MyRule instanceRule = new MyRule("@Rule");
 
-    @BeforeClass
+    @BeforeAll
     public static void beforeClass() {
         System.err.println("beforeClass");
     }
 
-    @AfterClass
+    @AfterAll
     public static void afterClass() {
         System.err.println("afterClass");
     }
 
-    @Before
+    @BeforeEach
     public void before() {
         System.err.println("before");
     }
 
-    @After
+    @AfterEach
     public void after() {
         System.err.println("after");
     }
