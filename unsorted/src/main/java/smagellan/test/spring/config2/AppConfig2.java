@@ -1,6 +1,7 @@
 package smagellan.test.spring.config2;
 
 import org.slf4j.LoggerFactory;
+import org.springframework.beans.factory.annotation.Value;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.core.env.Environment;
@@ -11,8 +12,8 @@ public class AppConfig2 {
 
 
     @Bean
-    public ComponentBeanSeven beanSeven(Environment env) {
-        return new ComponentBeanSeven();
+    public ComponentBeanSeven beanSeven(Environment env, @Value("${myconfig.port}") int port) {
+        return new ComponentBeanSeven(port);
     }
 }
 

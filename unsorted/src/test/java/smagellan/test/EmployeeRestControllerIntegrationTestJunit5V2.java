@@ -12,8 +12,11 @@ import org.springframework.test.context.junit.jupiter.SpringExtension;
 public class EmployeeRestControllerIntegrationTestJunit5V2 {
     private static final org.slf4j.Logger logger = LoggerFactory.getLogger(EmployeeRestControllerIntegrationTestJunit5V2.class);
 
-    @Autowired
     TestConfiguration configuration;
+
+    public EmployeeRestControllerIntegrationTestJunit5V2(TestConfiguration configuration) {
+        this.configuration = configuration;
+    }
 
     @Test
     public void doTest() {

@@ -35,16 +35,12 @@ import static org.junit.jupiter.api.Assertions.assertEquals;
 public class EmployeeRestControllerIntegrationTestJunit5 {
     private static final org.slf4j.Logger logger = LoggerFactory.getLogger(EmployeeRestControllerIntegrationTestJunit5.class);
 
-    @Autowired
     TestConfiguration configuration;
 
-    @Autowired
     ApplicationContext appContext;
 
-    @Autowired
     ApplicationEvents applicationEvents;
 
-    @Autowired
     MongoClient mongoClient;
 
     private final ExceptionCollector collector = new ExceptionCollector();
@@ -52,6 +48,13 @@ public class EmployeeRestControllerIntegrationTestJunit5 {
     private MockMvc mockMvc;
 
     private WebTestClient client;
+
+    public EmployeeRestControllerIntegrationTestJunit5(TestConfiguration configuration, ApplicationContext appContext, ApplicationEvents applicationEvents, MongoClient mongoClient) {
+        this.configuration = configuration;
+        this.appContext = appContext;
+        this.applicationEvents = applicationEvents;
+        this.mongoClient = mongoClient;
+    }
 
     @BeforeEach
     public void setup(WebApplicationContext wac) {

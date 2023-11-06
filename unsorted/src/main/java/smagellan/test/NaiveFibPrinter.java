@@ -2,6 +2,13 @@ package smagellan.test;
 
 public class NaiveFibPrinter {
     public static void main(String[] args) {
+        FibPrinter2 printer = new FibPrinter2();
+        for (int i = 0; i < 7; ++i) {
+            printer.doCycle();
+        }
+    }
+
+    private static void fib1() {
         int a = 1;
         int b = 2;
         System.err.println("c: " + a);
@@ -18,5 +25,19 @@ public class NaiveFibPrinter {
                 ++i;
             }
         }
+    }
+}
+
+
+class FibPrinter2 {
+    private int fib1 = 0;
+    private int fib2 = 1;
+
+    //0, 1, 1, 2, 3, 5, 8, 13, 21, 34, 55, 89, 144.
+    public void doCycle() {
+        System.err.println("fib1: " + fib1 + "; fib2: " + fib2);
+        int oldFib2 = fib2;
+        fib1 += fib2;
+        fib2 = fib1 + oldFib2;
     }
 }

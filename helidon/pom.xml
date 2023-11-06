@@ -22,43 +22,43 @@
         <dependency>
             <groupId>io.helidon.health</groupId>
             <artifactId>helidon-health</artifactId>
-            <version>3.2.2</version>
+            <version>4.0.0</version>
         </dependency>
 
         <dependency>
             <groupId>io.helidon.health</groupId>
             <artifactId>helidon-health-checks</artifactId>
-            <version>3.2.2</version>
+            <version>4.0.0</version>
         </dependency>
 
         <dependency>
             <groupId>io.helidon.webserver</groupId>
             <artifactId>helidon-webserver</artifactId>
-            <version>3.2.2</version>
+            <version>4.0.0</version>
         </dependency>
 
         <dependency>
             <groupId>io.helidon.webclient</groupId>
             <artifactId>helidon-webclient</artifactId>
-            <version>3.2.2</version>
+            <version>4.0.0</version>
         </dependency>
 
         <dependency>
             <groupId>io.helidon.microprofile.bundles</groupId>
             <artifactId>helidon-microprofile</artifactId>
-            <version>3.2.2</version>
+            <version>4.0.0</version>
         </dependency>
 
         <dependency>
             <groupId>io.helidon.microprofile.bundles</groupId>
             <artifactId>helidon-microprofile-core</artifactId>
-            <version>3.2.2</version>
+            <version>4.0.0</version>
         </dependency>
 
         <dependency>
             <groupId>io.helidon.microprofile.server</groupId>
             <artifactId>helidon-microprofile-server</artifactId>
-            <version>3.2.2</version>
+            <version>4.0.0</version>
         </dependency>
     </dependencies>
 
