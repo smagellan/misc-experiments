@@ -332,14 +332,14 @@
         <dependency>
             <groupId>io.netty.incubator</groupId>
             <artifactId>netty-incubator-codec-native-quic</artifactId>
-            <version>0.0.51.Final</version>
+            <version>0.0.52.Final</version>
             <classifier>${platform.classifier}</classifier>
         </dependency>
 
         <dependency>
             <groupId>io.netty.incubator</groupId>
             <artifactId>netty-incubator-codec-http3</artifactId>
-            <version>0.0.21.Final</version>
+            <version>0.0.22.Final</version>
         </dependency>
 
         <dependency>
@@ -961,7 +961,7 @@
             <groupId>org.mongodb</groupId>
             <artifactId>mongodb-driver-legacy</artifactId>
             <!--version>3.12.10</version-->
-            <version>4.11.0</version>
+            <version>4.11.1</version>
         </dependency>
 
         <dependency>
@@ -1238,7 +1238,7 @@
         <dependency>
             <groupId>org.apache.calcite</groupId>
             <artifactId>calcite-core</artifactId>
-            <version>1.35.0</version>
+            <version>1.36.0</version>
         </dependency>
 
         <dependency>
@@ -1256,7 +1256,7 @@
         <dependency>
             <groupId>org.apache.maven.surefire</groupId>
             <artifactId>surefire-logger-api</artifactId>
-            <version>3.2.1</version>
+            <version>3.2.2</version>
             <!-- to get around https://github.com/junit-team/junit5/issues/1367 -->
             <scope>test</scope>
             <optional>true</optional>
@@ -1384,6 +1384,11 @@
             <scope>test</scope>
         </dependency>
 
+        <dependency>
+            <groupId>net.openhft</groupId>
+            <artifactId>chronicle-map</artifactId>
+            <version>3.25ea0</version>
+        </dependency>
     </dependencies>
 
     <build>
@@ -1391,7 +1396,7 @@
             <plugin>
                 <groupId>org.apache.maven.plugins</groupId>
                 <artifactId>maven-surefire-plugin</artifactId>
-                <version>3.2.1</version>
+                <version>3.2.2</version>
                 <configuration>
                     <forkCount>2</forkCount>
                     <reuseForks>true</reuseForks>
