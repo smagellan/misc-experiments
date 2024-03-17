@@ -8,6 +8,7 @@ import org.eclipse.jetty.http3.server.HTTP3ServerConnectionFactory;
 import org.eclipse.jetty.http3.server.HTTP3ServerConnector;
 import org.eclipse.jetty.jmx.MBeanContainer;
 import org.eclipse.jetty.quic.common.QuicConfiguration;
+import org.eclipse.jetty.quic.server.ServerQuicConfiguration;
 import org.eclipse.jetty.server.*;
 import org.eclipse.jetty.util.Callback;
 import org.eclipse.jetty.util.resource.URLResourceFactory;
@@ -15,6 +16,7 @@ import org.eclipse.jetty.util.ssl.SslContextFactory;
 import org.eclipse.jetty.util.thread.QueuedThreadPool;
 import org.jetbrains.annotations.NotNull;
 import org.slf4j.LoggerFactory;
+import smagellan.embeddedserver.JettyUtils;
 
 import java.lang.management.ManagementFactory;
 import java.nio.ByteBuffer;
@@ -29,7 +31,7 @@ public class Http3ServerLauncher {
     }
 
     @NotNull
-    private static Server createServer() {
+    private static Server createServer() throws Exception {
         QueuedThreadPool serverThreads = new QueuedThreadPool();
         serverThreads.setName("server");
 
@@ -80,12 +82,13 @@ public class Http3ServerLauncher {
     }
 
     @NotNull
-    private static HTTP3ServerConnector h3Connector(int port, Server server) {
+    private static HTTP3ServerConnector h3Connector(int port, Server server) throws Exception {
         HttpConfiguration httpConfig = new HttpConfiguration();
         httpConfig.addCustomizer(new SecureRequestCustomizer());
         httpConfig.addCustomizer(new HostHeaderCustomizer());
 
-        HTTP3ServerConnector connector = new HTTP3ServerConnector(server, sslContextFactory(), new HTTP3ServerConnectionFactory(httpConfig));
+        ServerQuicConfiguration quicConf = new ServerQuicConfiguration(JettyUtils.jettySslServerContextFactory(), null);
+        HTTP3ServerConnector connector = null; //TODO: new HTTP3ServerConnector(server, quicConf, new HTTP3ServerConnectionFactory(quicConf));
         connector.getQuicConfiguration().setPemWorkDirectory(Path.of("/tmp/pem"));
 
         connector.setPort(port);

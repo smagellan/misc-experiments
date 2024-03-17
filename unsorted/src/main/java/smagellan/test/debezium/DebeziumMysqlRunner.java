@@ -1,4 +1,4 @@
-package smagellan.test;
+package smagellan.test.debezium;
 
 import io.debezium.config.Configuration;
 import io.debezium.connector.mysql.MySqlConnectorConfig;
@@ -7,12 +7,12 @@ import io.debezium.relational.history.MemorySchemaHistory;
 
 import java.util.function.Function;
 
-public class DebeziumRunner {
+public class DebeziumMysqlRunner {
 
     public static final String APP_NAME = "DebeziumRunner";
     private final Configuration config;
 
-    public DebeziumRunner() {
+    public DebeziumMysqlRunner() {
         config = Configuration.empty().withSystemProperties(Function.identity()).edit()
                 .with(EmbeddedEngine.CONNECTOR_CLASS, "io.debezium.connector.mysql.MySqlConnector")
                 .with(EmbeddedEngine.ENGINE_NAME, APP_NAME)

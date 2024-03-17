@@ -10,26 +10,25 @@
     </parent>
 
     <artifactId>embedded-server</artifactId>
-
     <properties>
         <maven.compiler.source>18</maven.compiler.source>
         <maven.compiler.target>18</maven.compiler.target>
         <project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
-        <tomcat.version>10.1.13</tomcat.version>
-        <jetty.version>12.0.1</jetty.version>
+        <tomcat.version>10.1.19</tomcat.version>
+        <jetty.version>12.0.7</jetty.version>
     </properties>
 
     <dependencies>
         <dependency>
             <groupId>io.undertow</groupId>
             <artifactId>undertow-core</artifactId>
-            <version>2.3.8.Final</version>
+            <version>2.3.12.Final</version>
         </dependency>
 
         <dependency>
             <groupId>io.undertow</groupId>
             <artifactId>undertow-servlet</artifactId>
-            <version>2.3.8.Final</version>
+            <version>2.3.12.Final</version>
         </dependency>
 
         <dependency>
@@ -173,7 +172,7 @@
         <dependency>
             <groupId>org.eclipse.jetty</groupId>
             <artifactId>jetty-reactive-httpclient</artifactId>
-            <version>4.0.0</version>
+            <version>4.0.3</version>
         </dependency>
 
         <dependency>
@@ -185,19 +184,31 @@
         <dependency>
             <groupId>org.webjars</groupId>
             <artifactId>webjars-locator</artifactId>
-            <version>0.47</version>
+            <version>0.52</version>
+        </dependency>
+
+        <dependency>
+            <groupId>org.webjars</groupId>
+            <artifactId>webjars-locator-core</artifactId>
+            <version>0.58</version>
         </dependency>
 
         <dependency>
             <groupId>org.webjars</groupId>
             <artifactId>bootstrap</artifactId>
-            <version>5.3.1</version>
+            <version>5.3.3</version>
         </dependency>
 
         <dependency>
             <groupId>org.webjars</groupId>
             <artifactId>jquery</artifactId>
-            <version>3.7.0</version>
+            <version>3.7.1</version>
+        </dependency>
+
+        <dependency>
+            <groupId>io.github.openfeign</groupId>
+            <artifactId>feign-core</artifactId>
+            <version>13.2.1</version>
         </dependency>
     </dependencies>
 

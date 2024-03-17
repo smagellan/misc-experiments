@@ -9,12 +9,14 @@ import org.eclipse.jetty.http3.client.HTTP3Client;
 import org.eclipse.jetty.http3.client.transport.ClientConnectionFactoryOverHTTP3;
 import org.eclipse.jetty.io.ClientConnectionFactory;
 import org.eclipse.jetty.io.ClientConnector;
+import org.eclipse.jetty.quic.client.ClientQuicConfiguration;
 import org.eclipse.jetty.util.ssl.SslContextFactory;
 import org.jetbrains.annotations.NotNull;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.http.client.reactive.JettyClientHttpConnector;
 import org.springframework.web.reactive.function.client.WebClient;
+import smagellan.embeddedserver.JettyUtils;
 
 @Configuration
 public class JettyClientConfig {
@@ -49,8 +51,9 @@ public class JettyClientConfig {
     }
 
     @NotNull
-    private static ClientConnectionFactoryOverHTTP3.HTTP3 http3Client(SslContextFactory.Client sslContextFactory) {
-        HTTP3Client http3Client = new HTTP3Client();
+    private static ClientConnectionFactoryOverHTTP3.HTTP3 http3Client(SslContextFactory.Client sslContextFactory) throws Exception {
+        ClientQuicConfiguration quicConfig = new ClientQuicConfiguration(JettyUtils.jettySslClientContextFactory(), null);
+        HTTP3Client http3Client = new HTTP3Client(quicConfig);
         http3Client.getClientConnector().setSslContextFactory(sslContextFactory);
         ClientConnectionFactoryOverHTTP3.HTTP3 http3 = new ClientConnectionFactoryOverHTTP3.HTTP3(http3Client);
         return http3;

@@ -5,7 +5,6 @@ import org.slf4j.LoggerFactory;
 import org.springframework.integration.aggregator.FluxAggregatorMessageHandler;
 import org.springframework.integration.channel.QueueChannel;
 import org.springframework.integration.dsl.IntegrationFlow;
-import org.springframework.integration.dsl.IntegrationFlows;
 import org.springframework.integration.dsl.MessageChannels;
 import org.springframework.integration.dsl.Pollers;
 import org.springframework.integration.dsl.context.IntegrationFlowContext;
