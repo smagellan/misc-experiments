@@ -15,7 +15,7 @@
         <maven.compiler.source>18</maven.compiler.source>
         <maven.compiler.target>18</maven.compiler.target>
         <project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
-        <helidon.version>4.0.6</helidon.version>
+        <helidon.version>4.0.7</helidon.version>
     </properties>
 
     <dependencies>

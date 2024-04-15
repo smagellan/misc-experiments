@@ -80,7 +80,7 @@ class MongobbDebeziumContext {
                 .with(EmbeddedEngineConfig.OFFSET_STORAGE, "org.apache.kafka.connect.storage.FileOffsetBackingStore")
                 .with(EmbeddedEngineConfig.OFFSET_STORAGE_FILE_FILENAME, offsetStorageTempFile.getAbsolutePath())
                 .with(EmbeddedEngineConfig.OFFSET_FLUSH_INTERVAL_MS, "60000")
-                .with(MongoDbConnectorConfig.CONNECTION_MODE, "replica_set")
+                //.with(MongoDbConnectorConfig.CONNECTION_MODE, "replica_set")
                 // connector specific properties
                 .with(MongoDbConnectorConfig.CONNECTION_STRING, "mongodb://localhost:12345")
                 .with(CommonConnectorConfig.TOPIC_PREFIX, "sbd-mongodb-connector")

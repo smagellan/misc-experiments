@@ -35,6 +35,7 @@ public class SpringMain {
             port = beanOne.port();
         }
 
+        //for tests: @DynamicPropertySource
         PropertySourcesPlaceholderConfigurer configurer = new PropertySourcesPlaceholderConfigurer();
         MutablePropertySources propertySources = new MutablePropertySources();
         MapPropertySource propertySource = new MapPropertySource("custom0", Map.of("myconfig.port", port));

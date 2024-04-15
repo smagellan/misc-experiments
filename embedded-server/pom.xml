@@ -14,8 +14,8 @@
         <maven.compiler.source>18</maven.compiler.source>
         <maven.compiler.target>18</maven.compiler.target>
         <project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
-        <tomcat.version>10.1.19</tomcat.version>
-        <jetty.version>12.0.7</jetty.version>
+        <tomcat.version>10.1.20</tomcat.version>
+        <jetty.version>12.0.8</jetty.version>
     </properties>
 
     <dependencies>
@@ -181,6 +181,7 @@
             <version>${log4j.version}</version>
         </dependency>
 
+        <!-- or https://github.com/webjars/webjars-locator-lite -->
         <dependency>
             <groupId>org.webjars</groupId>
             <artifactId>webjars-locator</artifactId>
