@@ -1,4 +1,4 @@
-package smagellan.test;
+package smagellan.test.btrace;
 
 import net.bytebuddy.agent.ByteBuddyAgent;
 

@@ -1,5 +1,6 @@
 package smagellan.test.redis;
 
+import com.google.common.cache.CacheBuilder;
 import org.slf4j.LoggerFactory;
 
 import java.io.IOException;
