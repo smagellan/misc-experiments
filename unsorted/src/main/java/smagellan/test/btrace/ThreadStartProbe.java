@@ -12,20 +12,30 @@ import static org.openjdk.btrace.core.BTraceUtils.*;
  * A D-script like jthread.d may be used to get the
  * associated DTrace probe events.
  */
+//
 @BTrace
 public class ThreadStartProbe {
     @OnMethod(
             clazz = "java.lang.Thread",
-            method = "/.*/"
+            method = "start"
     )
-    public static void onnewThread(@Self Thread t) {
+    public static void onNewThread(@Self Thread t) {
         //D.probe("jthreadstart", Threads.name(t));
         println("starting " + Threads.name(t));
     }
 
     @OnMethod(
+            clazz = "java.lang.Thread",
+            method = "interrupt"
+    )
+    public static void onThreadInterrupt(@Self Thread t) {
+        //D.probe("jthreadstart", Threads.name(t));
+        println("interrupted: " + Threads.name(t));
+    }
+
+    @OnMethod(
             clazz = "smagellan.test.btrace.ThreadSpawner",
-            method = "/.*/"
+            method = "spawnThread"
     )
     public static void onSpawnThread(@Self Object thisObject, @ProbeMethodName String probeMethod) {
         println("onMethod; probeMethod: " + probeMethod);
