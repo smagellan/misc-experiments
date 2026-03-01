@@ -6,7 +6,7 @@ import org.springframework.integration.channel.FluxMessageChannel;
 import org.springframework.integration.dsl.IntegrationFlow;
 import org.springframework.integration.dsl.Pollers;
 import org.springframework.integration.endpoint.AbstractEndpoint;
-import org.springframework.integration.file.FileReadingMessageSource;
+import org.springframework.integration.file.inbound.FileReadingMessageSource;
 import org.springframework.integration.file.tail.FileTailingMessageProducerSupport;
 import org.springframework.integration.file.tail.OSDelegatingFileTailingMessageProducer;
 import org.springframework.messaging.Message;

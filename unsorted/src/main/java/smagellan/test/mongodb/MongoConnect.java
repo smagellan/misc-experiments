@@ -10,6 +10,7 @@ import de.bwaldvogel.mongo.backend.DefaultQueryMatcher;
 import de.bwaldvogel.mongo.backend.memory.MemoryBackend;
 import org.bson.Document;
 import org.slf4j.LoggerFactory;
+import org.springframework.context.annotation.AnnotationConfigApplicationContext;
 
 import java.net.InetSocketAddress;
 import java.util.Arrays;
@@ -19,30 +20,21 @@ public class MongoConnect {
     private static final org.slf4j.Logger logger = LoggerFactory.getLogger(MongoConnect.class);
 
     public static void main(String[] args) throws InterruptedException {
-        testMatcher();
+        //testMatcher();
         //BasicDBObject.parse();
 
-        MongoClientOptions opts = new MongoClientOptions.Builder()
-                .applicationName("testApp")
-                .addServerListener(new TracingServerListener())
-                .addServerMonitorListener(new TracingServerMonitorListener())
-                .compressorList(Arrays.asList(MongoCompressor.createZlibCompressor(), MongoCompressor.createSnappyCompressor()))
-                .heartbeatFrequency(10_000)
-                .build();
-        logger.info("compressor list: {}", opts.getCompressorList());
+
+        //logger.info("compressor list: {}", opts.getCompressorList());
         //MongoCredential credential = MongoCredential.createCredential("mongouser", "admin", "someothersecret".toCharArray());
         //MongoCredential credential = MongoCredential.createCredential("mongoadmin", "admin", "secret".toCharArray());
         //MongoCredential credential = MongoCredential.createPlainCredential("mongoadmin", "admin", "secret".toCharArray());
         MongoCredential credential = null;
 
-        MongoServer srv = null;
-        try {
-            MongoBackend backend = new MemoryBackend()
-                    .version(ServerVersion.MONGO_3_6);
-            srv = new MongoServer(backend);
-            InetSocketAddress serverAddress = srv.bind();
+        try (AnnotationConfigApplicationContext ctx = new AnnotationConfigApplicationContext(MongoDbServerConfiguration.class)) {
+            ctx.registerShutdownHook();
+            MongoBackend backend = ctx.getBean(MongoBackend.class);
+            MongoClient client = ctx.getBean(MongoClient.class);
             logger.info("server status: {}", backend.getServerStatus());
-            try (MongoClient client = new MongoClient(new ServerAddress("localhost", serverAddress.getPort()), credential, opts)) {
                 MongoIterable<String> namesIterable = client.listDatabaseNames();
                 List<String> dbNames = MongoUtils.pull(namesIterable);
                 MongoDatabase testDb = client.getDatabase("testDb");
@@ -57,11 +49,7 @@ public class MongoConnect {
                 }
                 testCommand(testDb);
                 //Thread.sleep(30 * 1000);
-            }
-        } finally {
-            if (srv != null) {
-                srv.shutdown();
-            }
+
         }
     }
 

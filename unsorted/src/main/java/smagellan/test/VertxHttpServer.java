@@ -3,10 +3,10 @@ package smagellan.test;
 import io.vertx.core.*;
 import io.vertx.core.buffer.Buffer;
 import io.vertx.core.http.*;
-import io.vertx.core.impl.VertxBuilder;
 import io.vertx.core.json.JsonObject;
 import io.vertx.core.net.OpenSSLEngineOptions;
 import io.vertx.core.net.PemKeyCertOptions;
+import io.vertx.core.transport.Transport;
 import io.vertx.ext.web.common.template.TemplateEngine;
 import io.vertx.ext.web.templ.rocker.RockerTemplateEngine;
 import org.slf4j.LoggerFactory;
@@ -18,14 +18,14 @@ public class VertxHttpServer {
         System.err.println("ours pid: " + ProcessHandle.current().pid());
         VertxOptions options = new VertxOptions()
                 .setPreferNativeTransport(true);
-        Vertx vertx = new VertxBuilder(options)
-                .findTransport(new IOURingTransport())
-                .vertx();
+        Vertx vertx = Vertx.builder().with(options)
+                .withTransport(Transport.IO_URING)
+                .build();
         DeploymentOptions deploymentOptions = new DeploymentOptions()
                 .setInstances(1);
                 //.setInstances(Runtime.getRuntime().availableProcessors());
-        vertx.deployVerticle(() -> new ServerVerticle(8080, false),
-                deploymentOptions, r -> logger.info("server start succeeded: {}", r.succeeded()));
+        vertx.deployVerticle(() -> new ServerVerticle(8080, false), deploymentOptions)
+                .andThen(r -> logger.info("server start succeeded: {}", r.succeeded()));
 
         //vertx.deployVerticle(() -> new ClientVerticle(8080), deploymentOptions,
         //        r -> logger.info("client start succeeded: {}", r.succeeded()));
@@ -49,10 +49,11 @@ class ClientVerticle extends AbstractVerticle {
 
     private void doHttpRequest(Long timerId) {
         HttpClient client = getVertx().createHttpClient(new HttpClientOptions().setKeepAlive(true));
-        client.request(HttpMethod.GET, port, "localhost", "http://localhost:" + port, r1 -> {
+        client.request(HttpMethod.GET, port, "localhost", "http://localhost:" + port)
+                .andThen(r1 -> {
             logger.info("http succeeded: {}", r1.succeeded(), r1.cause());
             if (r1.succeeded()) {
-                r1.result().send("", r2 -> {
+                r1.result().send("").andThen(r2 -> {
                     logger.info("http response succeeded: {}", r2.succeeded(), r2.cause());
                     if (r2.succeeded()) {
                         logger.info("response: {}", r2.result().bodyHandler(body -> {
@@ -91,18 +92,20 @@ class ServerVerticle extends AbstractVerticle {
             PemKeyCertOptions permKeyOptions = new PemKeyCertOptions()
                     .setKeyPath("tls/server-key.pem")
                     .setCertPath("tls/server-cert.pem");
+
+
             httpOptions = httpOptions
                     .setSsl(true)
                     .setUseAlpn(true)
                     .setSslEngineOptions(new OpenSSLEngineOptions())
                      //httpOptions.setSslEngineOptions(new JdkSSLEngineOptions());
                     .addEnabledCipherSuite("TLS_ECDHE_RSA_WITH_AES_128_GCM_SHA256")
-                    .setPemKeyCertOptions(permKeyOptions);
+                    .setKeyCertOptions(permKeyOptions);
         }
         HttpServer server = getVertx().createHttpServer(httpOptions);
 
         server.requestHandler(ServerVerticle::rockerHttpHandler);
-        server.listen(port, ar -> {
+        server.listen(port).andThen(ar -> {
             if (ar.succeeded()) {
                 startFuture.complete(null);
             } else {
@@ -125,7 +128,8 @@ class ServerVerticle extends AbstractVerticle {
 
         HttpServerResponse response = request.response();
         response.putHeader("Content-Type", "text/plain");
-        engine.render(context, "TestRockerTemplate2.rocker.html", r -> afterRender(response, r));
+        engine.render(context, "TestRockerTemplate2.rocker.html")
+                .andThen(r -> afterRender(response, r));
     }
 
     public static void afterRender(HttpServerResponse response, AsyncResult<Buffer> result) {

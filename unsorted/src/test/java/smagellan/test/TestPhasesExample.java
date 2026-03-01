@@ -10,8 +10,12 @@ import org.junit.jupiter.api.extension.ExtendWith;
 import org.junit.rules.TestRule;
 import org.junit.runner.Description;
 import org.junit.runners.model.Statement;
+import org.springframework.test.context.ContextConfiguration;
+import org.springframework.test.context.TestExecutionListeners;
 
 @ExtendWith(ErrorDecorator.class)
+@ContextConfiguration
+@TestExecutionListeners({})
 public class TestPhasesExample {
     @ClassRule
     public static MyRule classRule = new MyRule("@ClassRule");

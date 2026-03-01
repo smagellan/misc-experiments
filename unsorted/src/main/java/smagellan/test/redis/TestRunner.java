@@ -45,14 +45,15 @@ public class TestRunner {
     }
 
     public static List<byte[]> keysCache2(int limit) {
-        List<byte[]> tmp = new ArrayList<>(IntStream.range(0, limit).boxed().
-                map(e -> e.toString().getBytes(StandardCharsets.UTF_8) ).collect(Collectors.toList()));
-        return Collections.unmodifiableList(tmp);
+        return IntStream.range(0, limit).boxed().
+                map(e -> e.toString().getBytes(StandardCharsets.UTF_8))
+                .toList();
     }
 
 
     public static List<String> keysCache(int limit) {
-        List<String> tmp = IntStream.range(0, limit).boxed().map(Object::toString).collect(Collectors.toList());
-        return Collections.unmodifiableList(tmp);
+        return IntStream.range(0, limit).boxed()
+                .map(Object::toString)
+                .toList();
     }
 }

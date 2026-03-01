@@ -8,6 +8,7 @@ import com.mongodb.client.MongoCollection;
 import com.mongodb.client.MongoDatabase;
 import io.grpc.ManagedChannel;
 import io.grpc.ManagedChannelBuilder;
+import io.opentelemetry.api.common.AttributeKey;
 import io.opentelemetry.api.common.Attributes;
 import io.opentelemetry.api.trace.Span;
 import io.opentelemetry.api.trace.StatusCode;
@@ -20,8 +21,6 @@ import io.opentelemetry.sdk.OpenTelemetrySdk;
 import io.opentelemetry.sdk.trace.SdkTracerProvider;
 import io.opentelemetry.sdk.trace.export.SimpleSpanProcessor;
 import io.opentelemetry.sdk.trace.export.SpanExporter;
-import io.opentelemetry.semconv.resource.attributes.ResourceAttributes;
-import io.opentelemetry.semconv.trace.attributes.SemanticAttributes;
 import io.opentracing.contrib.mongo.common.TracingCommandListener;
 import io.opentracing.contrib.mongo.common.providers.PrefixSpanNameProvider;
 import org.bson.Document;
@@ -35,6 +34,10 @@ import java.util.concurrent.TimeUnit;
 
 //based on https://github.com/open-telemetry/opentelemetry-java/blob/master/examples/jaeger/
 public class OpenTelemetryExample {
+    public static final AttributeKey<String> SERVICE_NAME = AttributeKey.stringKey("service.name");
+    public static final AttributeKey<String> HOST_ARCH = AttributeKey.stringKey("HOST_ARCH");
+    public static final AttributeKey<String> AMD64 = AttributeKey.stringKey("amd64");
+
     private static void myWonderfulUseCase(io.opentelemetry.api.trace.Tracer tracer) {
         Span span = tracer.spanBuilder("/otel-endpoint").startSpan();
         try {
@@ -81,8 +84,8 @@ public class OpenTelemetryExample {
                     myWonderfulUseCase(tracer);
                 }
                 //example.doMongoWork();
-                parentSpan.recordException(new RuntimeException("test exception"),
-                        Attributes.of(SemanticAttributes.EXCEPTION_ESCAPED, false));
+                //Attributes.of(SemanticAttributes.EXCEPTION_ESCAPED, false)
+                parentSpan.recordException(new RuntimeException("test exception"));
                 parentSpan.setStatus(StatusCode.ERROR);
             } finally {
                 parentSpan.end();
@@ -103,8 +106,8 @@ class OpenTelemetryConfiguration {
     public SdkTracerProvider sdkTracerProvider(SpanExporter exporter) {
         Resource serviceNameResource =
                 Resource.create(Attributes.of(
-                        ResourceAttributes.SERVICE_NAME, "otel-example",
-                        ResourceAttributes.HOST_ARCH, ResourceAttributes.HostArchValues.AMD64
+                        OpenTelemetryExample.SERVICE_NAME, "otel-example",
+                        OpenTelemetryExample.HOST_ARCH, "amd64"
                         //ResourceAttributes.HOST_NAME, "unknown-hostname"
                 ));
         return SdkTracerProvider.builder()

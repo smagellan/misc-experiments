@@ -2,7 +2,7 @@ package smagellan.test.debezium;
 
 import io.debezium.config.Configuration;
 import io.debezium.connector.mysql.MySqlConnectorConfig;
-import io.debezium.embedded.EmbeddedEngine;
+import io.debezium.embedded.async.AsyncEmbeddedEngine;
 import io.debezium.relational.history.MemorySchemaHistory;
 
 import java.util.function.Function;
@@ -14,13 +14,13 @@ public class DebeziumMysqlRunner {
 
     public DebeziumMysqlRunner() {
         config = Configuration.empty().withSystemProperties(Function.identity()).edit()
-                .with(EmbeddedEngine.CONNECTOR_CLASS, "io.debezium.connector.mysql.MySqlConnector")
-                .with(EmbeddedEngine.ENGINE_NAME, APP_NAME)
+                .with(AsyncEmbeddedEngine.CONNECTOR_CLASS, "io.debezium.connector.mysql.MySqlConnector")
+                .with(AsyncEmbeddedEngine.ENGINE_NAME, APP_NAME)
                 .with(MySqlConnectorConfig.TOPIC_PREFIX,APP_NAME)
                 .with(MySqlConnectorConfig.SERVER_ID, 8192)
 
                 // for demo purposes let's store offsets and history only in memory
-                .with(EmbeddedEngine.OFFSET_STORAGE, "org.apache.kafka.connect.storage.MemoryOffsetBackingStore")
+                .with(AsyncEmbeddedEngine.OFFSET_STORAGE, "org.apache.kafka.connect.storage.MemoryOffsetBackingStore")
                 .with(MySqlConnectorConfig.SCHEMA_HISTORY, MemorySchemaHistory.class.getName())
 
                 // Send JSON without schema

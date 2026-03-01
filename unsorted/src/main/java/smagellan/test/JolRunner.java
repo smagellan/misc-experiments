@@ -13,7 +13,9 @@ public class JolRunner {
                 .boxed()
                 .map(Object::toString)
                 .collect(Collectors.toMap(Function.identity(), Function.identity()));
-        //needs -Djdk.attach.allowAttachSelf
+        //needs -Djdk.attach.allowAttachSelf  -XX:+EnableDynamicAgentLoading
+        //-Djdk.instrument.traceUsage
+        //WARNING: Unable to attach Serviceability Agent. You can try again with escalated privileges. Two options: a) use -Djol.tryWithSudo=true to try with sudo; b) echo 0 | sudo tee /proc/sys/kernel/yama/ptrace_scope
         String footprint = GraphLayout.parseInstance(obj).toFootprint();
         System.err.println(footprint);
     }

@@ -4,8 +4,9 @@ import org.eclipse.jetty.alpn.server.ALPNServerConnectionFactory;
 import org.eclipse.jetty.http2.HTTP2Cipher;
 import org.eclipse.jetty.http2.server.HTTP2CServerConnectionFactory;
 import org.eclipse.jetty.http2.server.HTTP2ServerConnectionFactory;
-import org.eclipse.jetty.http3.server.HTTP3ServerConnectionFactory;
-import org.eclipse.jetty.http3.server.HTTP3ServerConnector;
+//import org.eclipse.jetty.http3.server.HTTP3ServerConnectionFactory;
+//import org.eclipse.jetty.http3.server.HTTP3ServerConnector;
+import org.eclipse.jetty.quic.server.QuicServerConnector;
 import org.eclipse.jetty.jmx.MBeanContainer;
 import org.eclipse.jetty.quic.common.QuicConfiguration;
 import org.eclipse.jetty.quic.server.ServerQuicConfiguration;
@@ -82,13 +83,13 @@ public class Http3ServerLauncher {
     }
 
     @NotNull
-    private static HTTP3ServerConnector h3Connector(int port, Server server) throws Exception {
+    private static QuicServerConnector h3Connector(int port, Server server) throws Exception {
         HttpConfiguration httpConfig = new HttpConfiguration();
         httpConfig.addCustomizer(new SecureRequestCustomizer());
         httpConfig.addCustomizer(new HostHeaderCustomizer());
 
         ServerQuicConfiguration quicConf = new ServerQuicConfiguration(JettyUtils.jettySslServerContextFactory(), null);
-        HTTP3ServerConnector connector = null; //TODO: new HTTP3ServerConnector(server, quicConf, new HTTP3ServerConnectionFactory(quicConf));
+        QuicServerConnector connector = null; //TODO: new HTTP3ServerConnector(server, quicConf, new HTTP3ServerConnectionFactory(quicConf));
         connector.getQuicConfiguration().setPemWorkDirectory(Path.of("/tmp/pem"));
 
         connector.setPort(port);
@@ -151,7 +152,7 @@ class Http3ConnectorProvider implements ConnectorFactory {
 
     @Override
     public Connector build(Server server) {
-        HTTP3ServerConnector connector = new HTTP3ServerConnector(server, sslContextFactory, factories);
+        QuicServerConnector connector = new QuicServerConnector(server, new ServerQuicConfiguration(sslContextFactory, null), factories);
         if (quicConfiguration != null) {
             QuicConfiguration destConf = connector.getQuicConfiguration();
             destConf.setPemWorkDirectory(quicConfiguration.getPemWorkDirectory());
